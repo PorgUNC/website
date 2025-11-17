@@ -840,7 +840,100 @@ export interface Poll {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  layout: (BannerBlock | CodeBlock | MediaBlock | CallToActionBlock | ContentBlock | FormBlock | PdfBlock)[];
+  layout: (
+    | BannerBlock
+    | CodeBlock
+    | MediaBlock
+    | CallToActionBlock
+    | ContentBlock
+    | FormBlock
+    | PdfBlock
+    | {
+        /**
+         * Index of the line chart from the Statistics tab (starting at 0).
+         */
+        chartIndex: number;
+        showLegend?: boolean | null;
+        showDots?: boolean | null;
+        lineChart?: {
+          label?: string | null;
+          series?:
+            | {
+                name: string;
+                data?:
+                  | {
+                      x: string;
+                      y: number;
+                      id?: string | null;
+                    }[]
+                  | null;
+                color?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'lineChart';
+      }
+    | {
+        /**
+         * Index of the pie chart from the Statistics tab (starting at 0).
+         */
+        chartIndex: number;
+        showLegend?: boolean | null;
+        pieChart?: {
+          label?: string | null;
+          data?:
+            | {
+                name: string;
+                value: number;
+                color?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pieChart';
+      }
+  )[];
+  statistics?: {
+    pieCharts?:
+      | {
+          label?: string | null;
+          data?:
+            | {
+                name: string;
+                value: number;
+                color?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    lineCharts?:
+      | {
+          label?: string | null;
+          series?:
+            | {
+                name: string;
+                data?:
+                  | {
+                      x: string;
+                      y: number;
+                      id?: string | null;
+                    }[]
+                  | null;
+                color?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   relatedPolls?: (number | Poll)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
@@ -1313,6 +1406,93 @@ export interface PollsSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pdfBlock?: T | PdfBlockSelect<T>;
+        lineChart?:
+          | T
+          | {
+              chartIndex?: T;
+              showLegend?: T;
+              showDots?: T;
+              lineChart?:
+                | T
+                | {
+                    label?: T;
+                    series?:
+                      | T
+                      | {
+                          name?: T;
+                          data?:
+                            | T
+                            | {
+                                x?: T;
+                                y?: T;
+                                id?: T;
+                              };
+                          color?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        pieChart?:
+          | T
+          | {
+              chartIndex?: T;
+              showLegend?: T;
+              pieChart?:
+                | T
+                | {
+                    label?: T;
+                    data?:
+                      | T
+                      | {
+                          name?: T;
+                          value?: T;
+                          color?: T;
+                          id?: T;
+                        };
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  statistics?:
+    | T
+    | {
+        pieCharts?:
+          | T
+          | {
+              label?: T;
+              data?:
+                | T
+                | {
+                    name?: T;
+                    value?: T;
+                    color?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        lineCharts?:
+          | T
+          | {
+              label?: T;
+              series?:
+                | T
+                | {
+                    name?: T;
+                    data?:
+                      | T
+                      | {
+                          x?: T;
+                          y?: T;
+                          id?: T;
+                        };
+                    color?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
       };
   relatedPolls?: T;
   categories?: T;

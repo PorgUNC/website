@@ -8,6 +8,8 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { PdfBlock } from '@/blocks/PdfBlock/Component'
+import LineChartBlock from '@/blocks/LineChartBlock/Component'
+import PieChartBlock from '@/blocks/PieChartBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -16,6 +18,8 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   pdfBlock: PdfBlock,
+  lineChart: LineChartBlock,
+  pieChart: PieChartBlock,
 }
 
 type BlockType = Page['layout'][0] | Post['layout'][0] | Poll['layout'][0]

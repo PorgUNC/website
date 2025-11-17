@@ -22,6 +22,8 @@ import { slugField } from '@/fields/slug'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
 import { FormBlock } from '@/blocks/Form/config'
+import { LineChartBlock } from '@/blocks/LineChartBlock/config'
+import { PieChartBlock } from '@/blocks/PieChartBlock/config'
 
 import {
   MetaDescriptionField,
@@ -104,7 +106,101 @@ export const Polls: CollectionConfig<'polls'> = {
                 CallToAction,
                 Content,
                 FormBlock,
-                PdfBlock
+                PdfBlock,
+                LineChartBlock,
+                PieChartBlock
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Statistics',
+
+          fields: [
+            {
+              name: 'statistics',
+              type: 'group',
+              fields: [
+                {
+                  name: 'pieCharts',
+                  type: 'array',
+                  labels: {
+                    singular: 'Pie Chart',
+                    plural: 'Pie Charts',
+                  },
+                  fields: [
+                    {
+                      name: 'label',
+                      type: 'text',
+                    },
+                    {
+                      name: 'data',
+                      type: 'array',
+                      labels: {
+                        singular: 'Slice',
+                        plural: 'Slices',
+                      },
+                      fields: [
+                        { name: 'name', type: 'text', required: true },
+                        { name: 'value', type: 'number', required: true },
+                        { name: 'color', type: 'text' },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  name: 'lineCharts',
+                  type: 'array',
+                  labels: {
+                    singular: 'Line Chart',
+                    plural: 'Line Charts',
+                  },
+                  fields: [
+                    {
+                      name: 'label',
+                      type: 'text',
+                    },
+                    {
+                      name: 'series',
+                      type: 'array',
+                      labels: {
+                        singular: 'Series',
+                        plural: 'Series',
+                      },
+                      fields: [
+                        {
+                          name: 'name',
+                          type: 'text',
+                          required: true,
+                        },
+                        {
+                          name: 'data',
+                          type: 'array',
+                          labels: {
+                            singular: 'Point',
+                            plural: 'Points',
+                          },
+                          fields: [
+                            {
+                              name: 'x',
+                              type: 'text',
+                              required: true,
+                            },
+                            {
+                              name: 'y',
+                              type: 'number',
+                              required: true,
+                            },
+                          ],
+                        },
+                        {
+                          name: 'color',
+                          type: 'text',
+                        },
+                      ],
+                    },
+                  ],
+                },
               ],
             },
           ],
@@ -225,7 +321,7 @@ export const Polls: CollectionConfig<'polls'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 100,
       },
       schedulePublish: true,
     },

@@ -6,6 +6,7 @@ export const PdfBlock: Block = {
   labels: {
     singular: 'PDF Block',
     plural: 'PDF Blocks',
+
   },
   fields: [
     {
