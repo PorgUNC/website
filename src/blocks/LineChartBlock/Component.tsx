@@ -12,8 +12,6 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-/* ------------------ Types ------------------ */
-
 export interface LinePoint {
   x: string
   y: number
@@ -39,7 +37,18 @@ export interface LineChartBlockProps {
   id: string
 }
 
-/* ------------------ Component ------------------ */
+const defaultColors = [
+  '#8884d8',
+  '#82ca9d',
+  '#ff7300',
+  '#0088fe',
+  '#ff0000',
+  '#00c49f',
+  '#ffbb28',
+  '#a4de6c',
+]
+
+
 
 const LineChartBlock: React.FC<LineChartBlockProps> = ({
                                                                   lineChart,
@@ -66,7 +75,7 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
   return (
     <div className="w-full h-96 my-6">
       {lineChart.label && (
-        <h3 className="text-lg font-semibold mb-2">{lineChart.label}</h3>
+        <h3 className="text-lg font-semibold text-center mb-2">{lineChart.label}</h3>
       )}
 
       <ResponsiveContainer width="100%" height="100%" minWidth={0}>
@@ -74,20 +83,25 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="x" />
           <YAxis />
-          <Tooltip />
+
+          <Tooltip
+            labelStyle={{ color: 'black' }}
+          />
+
           {showLegend && <Legend />}
 
-          {lineChart.series.map((series) => (
+          {lineChart.series.map((series, i) => (
             <Line
               key={series.name}
               type="monotone"
               dataKey={series.name}
-              stroke={series.color || undefined}
+              stroke={series.color || defaultColors[i % defaultColors.length]}
               dot={showDots}
             />
           ))}
         </LineChart>
       </ResponsiveContainer>
+
     </div>
   )
 }
