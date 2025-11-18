@@ -25,7 +25,28 @@ export const Logo = (props: Props) => {
       // className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
       className={clsx('', className)} // max-w-[9.375rem] w-full h-[60px]
       // src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
-      src={"/porgplaceholder.svg"}
+      src={"/favicon.svg"}
+    />
+  )
+}
+
+export const LogoTagline = (props: Props) => {
+  const {loading: loadingFromProps, priority: priorityFromProps, className} = props
+
+  const loading = loadingFromProps || 'lazy'
+  const priority = priorityFromProps || 'low'
+
+  return (
+    /* eslint-disable @next/next/no-img-element */
+    <img
+      alt="PorgUNC Logo"
+      width={230}
+      height={50}
+      loading={loading}
+      fetchPriority={priority}
+      decoding="async"
+      className={clsx('', className)} // max-w-[9.375rem] w-full h-[34px]
+      src="/logo_tagline.svg"
     />
   )
 }

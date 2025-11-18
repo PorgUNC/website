@@ -24,6 +24,9 @@
     "generate:migration": "payload migrate:create"
   },
   "dependencies": {
+    "@heroui/navbar": "^2.2.25",
+    "@heroui/system": "^2.4.23",
+    "@heroui/theme": "^2.4.23",
     "@payloadcms/admin-bar": "3.63.0",
     "@payloadcms/db-postgres": "3.63.0",
     "@payloadcms/live-preview-react": "3.63.0",
@@ -48,6 +51,7 @@
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
+    "framer-motion": "12.23.24",
     "geist": "^1.3.0",
     "graphql": "^16.8.2",
     "lucide-react": "^0.378.0",
@@ -94,8 +98,8 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "sharp",
       "esbuild",
+      "sharp",
       "unrs-resolver"
     ]
   }

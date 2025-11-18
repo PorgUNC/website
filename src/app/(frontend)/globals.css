@@ -12,7 +12,7 @@
 
 @plugin "@tailwindcss/typography";
 /*@plugin '../../lib/hero.ts';*/
-/*@source '../../node_modules/@heroui/theme/dist/components/navbar.js';*/
+@source '../../node_modules/@heroui/theme/dist/components/navbar.js';
 
 /* ================================
    UNC THEMES (LIGHT + DARK)
