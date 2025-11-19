@@ -8,6 +8,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { PdfBlock } from '@/blocks/PdfBlock/Component'
+import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
 import LineChartBlock from '@/blocks/LineChartBlock/Component'
 import PieChartBlock from '@/blocks/PieChartBlock/Component'
 
@@ -18,6 +19,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   pdfBlock: PdfBlock,
+  richText: RichTextBlock,
   lineChart: LineChartBlock,
   pieChart: PieChartBlock,
 }

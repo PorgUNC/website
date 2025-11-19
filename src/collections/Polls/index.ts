@@ -21,6 +21,7 @@ import { revalidateDelete, revalidatePoll } from './hooks/revalidatePoll'
 import { slugField } from '@/fields/slug'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
+import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { LineChartBlock } from '@/blocks/LineChartBlock/config'
 import { PieChartBlock } from '@/blocks/PieChartBlock/config'
@@ -105,6 +106,7 @@ export const Polls: CollectionConfig<'polls'> = {
                 MediaBlock,
                 CallToAction,
                 Content,
+                RichTextBlock,
                 FormBlock,
                 PdfBlock,
                 LineChartBlock,

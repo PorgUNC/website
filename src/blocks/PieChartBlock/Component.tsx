@@ -80,7 +80,6 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({
       <h3 className="text-center text-lg font-semibold mb-4">
         {chartLabel}
       </h3>
-
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie

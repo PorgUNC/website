@@ -1,37 +1,34 @@
 'use client'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import React, { useState } from 'react'
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from '@/components/ui/select'
+import React, {useEffect, useState} from 'react'
 
-import type { Theme } from './types'
+import type {Theme} from './types'
+import {themeLocalStorageKey} from './types'
 
-import { useTheme } from '..'
-import { themeLocalStorageKey } from './types'
+import {useTheme} from '..'
 
 export const ThemeSelector: React.FC = () => {
-  const { setTheme } = useTheme()
-  const [value, setValue] = useState('')
+  const {setTheme} = useTheme()
+  const [value, setValue] = useState<Theme>('light')
 
-  const onThemeChange = (themeToSet: Theme & 'auto') => {
-    if (themeToSet === 'auto') {
-      setTheme(null)
-      setValue('auto')
-    } else {
-      setTheme(themeToSet)
-      setValue(themeToSet)
-    }
+  const onThemeChange = (themeToSet: Theme) => {
+    setTheme(themeToSet)
+    setValue(themeToSet)
+    window.localStorage.setItem(themeLocalStorageKey, themeToSet)
   }
 
-  React.useEffect(() => {
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
-    setValue(preference ?? 'auto')
-  }, [])
+  useEffect(() => {
+    const preference = window.localStorage.getItem(themeLocalStorageKey) as Theme | null
+    if (preference) {
+      setValue(preference)
+      setTheme(preference)
+    } else {
+      setValue('light')
+      setTheme('light')
+      window.localStorage.setItem(themeLocalStorageKey, 'light')
+    }
+  }, [setTheme])
 
   return (
     <Select onValueChange={onThemeChange} value={value}>
@@ -39,10 +36,9 @@ export const ThemeSelector: React.FC = () => {
         aria-label="Select a theme"
         className="w-auto bg-transparent gap-2 pl-0 md:pl-3 border-none"
       >
-        <SelectValue placeholder="Theme" />
+        <SelectValue placeholder="Theme"/>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="auto">Auto</SelectItem>
         <SelectItem value="light">Light</SelectItem>
         <SelectItem value="dark">Dark</SelectItem>
       </SelectContent>

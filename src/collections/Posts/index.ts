@@ -17,6 +17,12 @@ import {MediaBlock} from '@/blocks/MediaBlock/config'
 import {generatePreviewPath} from '@/utilities/generatePreviewPath'
 import {populateAuthors} from './hooks/populateAuthors'
 import {revalidateDelete, revalidatePost} from './hooks/revalidatePost'
+import {slugField} from '@/fields/slug'
+import { CallToAction } from '@/blocks/CallToAction/config'
+import { Content } from '@/blocks/Content/config'
+import { RichTextBlock } from '@/blocks/RichTextBlock/config'
+import { FormBlock } from '@/blocks/Form/config'
+import { PdfBlock } from '@/blocks/PdfBlock/config'
 
 import {
   MetaDescriptionField,
@@ -25,11 +31,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import {slugField} from '@/fields/slug'
-import { CallToAction } from '@/blocks/CallToAction/config'
-import { Content } from '@/blocks/Content/config'
-import { FormBlock } from '@/blocks/Form/config'
-import { PdfBlock } from '@/blocks/PdfBlock/config'
+
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -102,6 +104,7 @@ export const Posts: CollectionConfig<'posts'> = {
                 MediaBlock,
                 CallToAction,
                 Content,
+                RichTextBlock,
                 FormBlock,
                 PdfBlock
               ],

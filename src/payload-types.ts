@@ -197,7 +197,20 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | PdfBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | RichTextBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | PdfBlock
+    | {
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pollArchive';
+      }
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -221,7 +234,16 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  layout: (BannerBlock | CodeBlock | MediaBlock | CallToActionBlock | ContentBlock | FormBlock | PdfBlock)[];
+  layout: (
+    | BannerBlock
+    | CodeBlock
+    | MediaBlock
+    | CallToActionBlock
+    | ContentBlock
+    | RichTextBlock
+    | FormBlock
+    | PdfBlock
+  )[];
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
@@ -486,6 +508,30 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -846,6 +892,7 @@ export interface Poll {
     | MediaBlock
     | CallToActionBlock
     | ContentBlock
+    | RichTextBlock
     | FormBlock
     | PdfBlock
     | {
@@ -1276,10 +1323,17 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pdfBlock?: T | PdfBlockSelect<T>;
+        pollArchive?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1347,6 +1401,15 @@ export interface ContentBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
@@ -1404,6 +1467,7 @@ export interface PollsSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pdfBlock?: T | PdfBlockSelect<T>;
         lineChart?:
@@ -1554,6 +1618,7 @@ export interface PostsSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pdfBlock?: T | PdfBlockSelect<T>;
       };
