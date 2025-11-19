@@ -23,6 +23,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { PollArchiveBlock } from '@/blocks/PollArchiveBlock/config'
+import { FeaturedChartBlock } from '@/blocks/FeaturedChartBlock/config'
 
 
 export const Pages: CollectionConfig<'pages'> = {
@@ -79,7 +80,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, RichTextBlock, MediaBlock, Archive, FormBlock, PdfBlock, PollArchiveBlock],
+              blocks: [CallToAction, Content, RichTextBlock, MediaBlock, Archive, FormBlock, PdfBlock, PollArchiveBlock, FeaturedChartBlock],
               required: true,
               admin: {
                 initCollapsed: true,

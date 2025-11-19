@@ -12,6 +12,7 @@ import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
 import LineChartBlock from '@/blocks/LineChartBlock/Component'
 import PieChartBlock from '@/blocks/PieChartBlock/Component'
 import { PollArchiveBlock } from '@/blocks/PollArchiveBlock/Component'
+import { FeaturedChartBlock } from '@/blocks/FeaturedChartBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -23,7 +24,8 @@ const blockComponents = {
   richText: RichTextBlock,
   lineChart: LineChartBlock,
   pieChart: PieChartBlock,
-  pollarchive: PollArchiveBlock
+  pollarchive: PollArchiveBlock,
+  featuredchart: FeaturedChartBlock
 }
 
 type BlockType = Page['layout'][0] | Post['layout'][0] | Poll['layout'][0]

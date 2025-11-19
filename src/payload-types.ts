@@ -213,6 +213,12 @@ export interface Page {
         blockName?: string | null;
         blockType: 'pollarchive';
       }
+    | {
+        featuredpoll?: (number | null) | Poll;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'featuredchart';
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -1335,6 +1341,13 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               number?: T;
+              id?: T;
+              blockName?: T;
+            };
+        featuredchart?:
+          | T
+          | {
+              featuredpoll?: T;
               id?: T;
               blockName?: T;
             };
