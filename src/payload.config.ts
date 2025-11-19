@@ -69,7 +69,7 @@ export default buildConfig({
   }),
   collections: [Pages, Polls, Posts, Media, Pdfs, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, FeaturedPoll],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

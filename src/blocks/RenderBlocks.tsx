@@ -11,6 +11,7 @@ import { PdfBlock } from '@/blocks/PdfBlock/Component'
 import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
 import LineChartBlock from '@/blocks/LineChartBlock/Component'
 import PieChartBlock from '@/blocks/PieChartBlock/Component'
+import { PollArchiveBlock } from '@/blocks/PollArchiveBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -22,6 +23,7 @@ const blockComponents = {
   richText: RichTextBlock,
   lineChart: LineChartBlock,
   pieChart: PieChartBlock,
+  pollarchive: PollArchiveBlock
 }
 
 type BlockType = Page['layout'][0] | Post['layout'][0] | Poll['layout'][0]

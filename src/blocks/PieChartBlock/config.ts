@@ -13,7 +13,7 @@ export const PieChartBlock: Block = {
       required: true,
       admin: {
         description:
-          "Index of the pie chart from the Statistics tab (starting at 0).",
+          "Index of the pie chart from the Statistics tab (starting at 1).",
       },
     },
     {
@@ -51,7 +51,7 @@ export const PieChartBlock: Block = {
       hooks: {
         afterRead: [
           ({ data, siblingData }) => {
-            return data?.statistics?.pieCharts[siblingData.chartIndex]
+            return data?.statistics?.pieCharts[siblingData.chartIndex - 1]
           }
         ]
       }

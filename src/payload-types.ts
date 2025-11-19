@@ -109,10 +109,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'featured-poll': FeaturedPoll;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'featured-poll': FeaturedPollSelect<false> | FeaturedPollSelect<true>;
   };
   locale: null;
   user: User & {
@@ -206,9 +208,10 @@ export interface Page {
     | FormBlock
     | PdfBlock
     | {
+        number?: number | null;
         id?: string | null;
         blockName?: string | null;
-        blockType: 'pollArchive';
+        blockType: 'pollarchive';
       }
   )[];
   meta?: {
@@ -897,7 +900,7 @@ export interface Poll {
     | PdfBlock
     | {
         /**
-         * Index of the line chart from the Statistics tab (starting at 0).
+         * Index of the line chart from the Statistics tab (starting at 1).
          */
         chartIndex: number;
         showLegend?: boolean | null;
@@ -925,7 +928,7 @@ export interface Poll {
       }
     | {
         /**
-         * Index of the pie chart from the Statistics tab (starting at 0).
+         * Index of the pie chart from the Statistics tab (starting at 1).
          */
         chartIndex: number;
         showLegend?: boolean | null;
@@ -1328,9 +1331,10 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         pdfBlock?: T | PdfBlockSelect<T>;
-        pollArchive?:
+        pollarchive?:
           | T
           | {
+              number?: T;
               id?: T;
               blockName?: T;
             };
@@ -2125,6 +2129,19 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "featured-poll".
+ */
+export interface FeaturedPoll {
+  id: number;
+  /**
+   * Select the poll to feature.
+   */
+  poll?: (number | null) | Poll;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2165,6 +2182,16 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "featured-poll_select".
+ */
+export interface FeaturedPollSelect<T extends boolean = true> {
+  poll?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

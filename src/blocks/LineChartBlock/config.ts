@@ -13,7 +13,7 @@ export const LineChartBlock: Block = {
       required: true,
       admin: {
         description:
-          "Index of the line chart from the Statistics tab (starting at 0).",
+          "Index of the line chart from the Statistics tab (starting at 1).",
       },
     },
     {
@@ -83,7 +83,7 @@ export const LineChartBlock: Block = {
       hooks: {
         afterRead: [
           ({ data, siblingData }) => {
-            return data?.statistics?.lineCharts[siblingData.chartIndex]
+            return data?.statistics?.lineCharts[siblingData.chartIndex - 1]
           }
         ]
       }
