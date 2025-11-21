@@ -209,12 +209,20 @@ export interface Page {
     | PdfBlock
     | {
         number?: number | null;
+        /**
+         * Enable to let this block span the full page width.
+         */
+        fullWidth?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'pollarchive';
       }
     | {
         featuredpoll?: (number | null) | Poll;
+        /**
+         * Enable to let this block span the full page width.
+         */
+        fullWidth?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'featuredchart';
@@ -883,6 +891,10 @@ export interface ArchiveBlock {
           }
       )[]
     | null;
+  /**
+   * Enable to let this block span the full page width.
+   */
+  fullWidth?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
@@ -1341,6 +1353,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               number?: T;
+              fullWidth?: T;
               id?: T;
               blockName?: T;
             };
@@ -1348,6 +1361,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               featuredpoll?: T;
+              fullWidth?: T;
               id?: T;
               blockName?: T;
             };
@@ -1445,6 +1459,7 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
+  fullWidth?: T;
   id?: T;
   blockName?: T;
 }

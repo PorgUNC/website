@@ -90,6 +90,16 @@ export const Archive: Block = {
       label: 'Selection',
       relationTo: ['polls', 'posts'],
     },
+    {
+      name: 'fullWidth',
+      type: 'checkbox',
+      label: 'Full Width (ignore layout constraints)',
+      admin: {
+        description: 'Enable to let this block span the full page width.',
+        hidden: true,
+      },
+      defaultValue: true,
+    },
   ],
   labels: {
     plural: 'Archives',

@@ -63,7 +63,7 @@ export default async function Post({params: paramsPromise}: Args) {
 
       <div className="w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto flex flex-col gap-6">
 
-        <RenderBlocks blocks={layout}/>
+        <RenderBlocks blocks={layout} constraint={"post"}/>
 
         {relatedPosts && relatedPosts.length > 0 && (
           <RelatedPosts

@@ -23,8 +23,8 @@ import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { FormBlock } from '@/blocks/Form/config'
-import { LineChartBlock } from '@/blocks/LineChartBlock/config'
-import { PieChartBlock } from '@/blocks/PieChartBlock/config'
+import { LineChartBlock } from '@/blocks/PollBlocks/LineChartBlock/config'
+import { PieChartBlock } from '@/blocks/PollBlocks/PieChartBlock/config'
 
 import {
   MetaDescriptionField,

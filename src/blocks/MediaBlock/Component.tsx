@@ -22,7 +22,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
   const {
     captionClassName,
     className,
-    enableGutter = true,
+    enableGutter = false,
     imgClassName,
     media,
     staticImage,

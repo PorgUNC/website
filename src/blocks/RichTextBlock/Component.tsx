@@ -12,7 +12,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({richText}) => {
   }
 
   return (
-    <div className="w-full max-w-full md:max-w-4xl md:mx-auto my-6">
+    <div className="">
       {/*  sm:px-6  */}
 
       <RichText data={richText as DefaultTypedEditorState} enableGutter={false}/>
