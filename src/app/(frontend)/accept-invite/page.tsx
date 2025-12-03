@@ -2,10 +2,9 @@ import {getPayload} from 'payload';
 import configPromise from '@payload-config';
 import AcceptInviteForm from "@/components/AcceptInvitationForm";
 
-export default async function AcceptInvitePage({ searchParams }: any) {
+export default async function AcceptInvitePage({searchParams }: { searchParams: { token: string } }) {
   const payload = await getPayload({ config: configPromise });
-  const params = await searchParams;
-  const token = params?.token ?? '';
+  const { token } = await searchParams
 
   const inviteResults = await payload.find({
     collection: 'invitations',
