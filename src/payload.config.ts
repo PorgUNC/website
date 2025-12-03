@@ -21,6 +21,7 @@ import { Pdfs } from '@/collections/Pdfs'
 import { Polls } from '@/collections/Polls'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import nodemailer from 'nodemailer'
+import { Invitations } from './collections/Invitations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -83,7 +84,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Polls, Posts, Media, Pdfs, Categories, Users],
+  collections: [Pages, Polls, Posts, Media, Pdfs, Categories, Users, Invitations],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, FeaturedPoll],
   plugins: [

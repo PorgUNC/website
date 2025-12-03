@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+// import { authenticated } from '../../access/authenticated'
 import {User} from '@/payload-types'
 import { protectRoles } from '@/collections/Users/hooks/protectRoles'
 import { checkRole } from '@/collections/Users/access/checkRole'
