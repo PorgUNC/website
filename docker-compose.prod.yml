@@ -5,13 +5,13 @@ services:
       args:
         DATABASE_URI: ${DATABASE_URI}
         PAYLOAD_SECRET: ${PAYLOAD_SECRET}
-#        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL}
+        #        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL}
         CRON_SECRET: ${CRON_SECRET}
         PREVIEW_SECRET: ${PREVIEW_SECRET}
-    volumes:
-      - node_modules:/app/node_modules
-      - public:/app/public/media
-      - pdfs:/app/public/pdfs
+    # volumes:
+    # - node_modules:/app/node_modules
+    # - public:/app/public/media
+    # - pdfs:/app/public/pdfs
     env_file:
       - .env
 
