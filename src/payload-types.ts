@@ -71,6 +71,7 @@ export interface Config {
     polls: Poll;
     posts: Post;
     media: Media;
+    files: File;
     categories: Category;
     users: User;
     invitations: Invitation;
@@ -90,6 +91,7 @@ export interface Config {
     polls: PollsSelect<false> | PollsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    files: FilesSelect<false> | FilesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     invitations: InvitationsSelect<false> | InvitationsSelect<true>;
@@ -756,7 +758,7 @@ export interface Form {
  * via the `definition` "PdfBlock".
  */
 export interface PdfBlock {
-  pdf: number | Media;
+  pdf: number | File;
   caption?: {
     root: {
       type: string;
@@ -775,6 +777,40 @@ export interface PdfBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'pdfBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: number;
+  altText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publishedDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -973,7 +1009,7 @@ export interface Poll {
   };
   files?:
     | {
-        file: number | Media;
+        file: number | File;
         title: string;
         icon: 'file' | 'file-code' | 'file-text';
         id?: string | null;
@@ -1228,6 +1264,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'files';
+        value: number | File;
       } | null)
     | ({
         relationTo: 'categories';
@@ -1768,6 +1808,25 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files_select".
+ */
+export interface FilesSelect<T extends boolean = true> {
+  altText?: T;
+  publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

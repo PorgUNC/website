@@ -1,8 +1,7 @@
 import React from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-// import type { Media } from '@payload-types'
-import type { PdfBlock as PdfBlockProps, Media } from '@/payload-types'
+import type { PdfBlock as PdfBlockProps, File } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import RichText from '@/components/RichText'
 
@@ -24,19 +23,19 @@ export const PdfBlock: React.FC<Props> = async ({
 }) => {
   if (!pdfProp) return null
 
-  let pdf: Media | null = null
+  let pdf: File | null = null
 
   // If pdfProp is an object with url, use it. Otherwise, fetch the document
   if (typeof pdfProp === 'object' && 'url' in pdfProp) {
-    pdf = pdfProp as Media
+    pdf = pdfProp as File
   } else {
     const payload = await getPayload({ config })
     const { docs } = await payload.find({
-      collection: 'media',
+      collection: 'files',
       where: { id: { equals: String(pdfProp) } },
       limit: 1,
     })
-    pdf = (docs[0] as Media | undefined) ?? null
+    pdf = (docs[0] as File | undefined) ?? null
   }
 
   if (!pdf) return null
