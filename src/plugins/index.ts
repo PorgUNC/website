@@ -10,13 +10,13 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { s3Storage } from '@payloadcms/storage-s3'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title
-    ? doc.title : 'PorgUNC'
+  return doc?.title ? doc.title : 'PorgUNC'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -92,4 +92,19 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
+  s3Storage({
+    collections: {
+      media: true,
+      files: true,
+    },
+    bucket: process.env.S3_BUCKET || '',
+    config: {
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+      },
+      region: 'auto',
+      endpoint: process.env.S3_ENDPOINT || '',
+    },
+  }),
 ]
