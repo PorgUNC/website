@@ -209,7 +209,6 @@ export interface Page {
     | MediaBlock
     | ArchiveBlock
     | FormBlock
-    | PdfBlock
     | {
         number?: number | null;
         /**
@@ -254,16 +253,7 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  layout: (
-    | BannerBlock
-    | CodeBlock
-    | MediaBlock
-    | CallToActionBlock
-    | ContentBlock
-    | RichTextBlock
-    | FormBlock
-    | PdfBlock
-  )[];
+  layout: (BannerBlock | CodeBlock | MediaBlock | CallToActionBlock | ContentBlock | RichTextBlock | FormBlock)[];
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
@@ -755,65 +745,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PdfBlock".
- */
-export interface PdfBlock {
-  pdf: number | File;
-  caption?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'pdfBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "files".
- */
-export interface File {
-  id: number;
-  altText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  publishedDate?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -919,7 +850,6 @@ export interface Poll {
     | ContentBlock
     | RichTextBlock
     | FormBlock
-    | PdfBlock
     | {
         /**
          * Index of the line chart from the Statistics tab (starting at 1).
@@ -1043,6 +973,40 @@ export interface Poll {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: number;
+  altText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publishedDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1376,7 +1340,6 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        pdfBlock?: T | PdfBlockSelect<T>;
         pollarchive?:
           | T
           | {
@@ -1504,16 +1467,6 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PdfBlock_select".
- */
-export interface PdfBlockSelect<T extends boolean = true> {
-  pdf?: T;
-  caption?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "polls_select".
  */
 export interface PollsSelect<T extends boolean = true> {
@@ -1529,7 +1482,6 @@ export interface PollsSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        pdfBlock?: T | PdfBlockSelect<T>;
         lineChart?:
           | T
           | {
@@ -1689,7 +1641,6 @@ export interface PostsSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        pdfBlock?: T | PdfBlockSelect<T>;
       };
   relatedPosts?: T;
   categories?: T;

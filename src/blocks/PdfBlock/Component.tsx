@@ -27,7 +27,7 @@ export const PdfBlock: React.FC<Props> = async ({
 
   // If pdfProp is an object with url, use it. Otherwise, fetch the document
   if (typeof pdfProp === 'object' && 'url' in pdfProp) {
-    pdf = pdfProp as File
+    pdf = pdfProp
   } else {
     const payload = await getPayload({ config })
     const { docs } = await payload.find({

@@ -1,4 +1,4 @@
-import type {CollectionConfig} from 'payload'
+import type { CollectionConfig } from 'payload'
 
 import {
   BlocksFeature,
@@ -9,20 +9,20 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import {authenticated} from '@/access/authenticated'
-import {authenticatedOrPublished} from '@/access/authenticatedOrPublished'
-import {Banner} from '@/blocks/Banner/config'
-import {Code} from '@/blocks/Code/config'
-import {MediaBlock} from '@/blocks/MediaBlock/config'
-import {generatePreviewPath} from '@/utilities/generatePreviewPath'
-import {populateAuthors} from './hooks/populateAuthors'
-import {revalidateDelete, revalidatePost} from './hooks/revalidatePost'
-import {slugField} from '@/fields/slug'
+import { authenticated } from '@/access/authenticated'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { Banner } from '@/blocks/Banner/config'
+import { Code } from '@/blocks/Code/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { generatePreviewPath } from '@/utilities/generatePreviewPath'
+import { populateAuthors } from './hooks/populateAuthors'
+import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { slugField } from '@/fields/slug'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { FormBlock } from '@/blocks/Form/config'
-import { PdfBlock } from '@/blocks/PdfBlock/config'
+// import { PdfBlock } from '@/blocks/PdfBlock/config'
 
 import {
   MetaDescriptionField,
@@ -31,7 +31,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -56,7 +55,7 @@ export const Posts: CollectionConfig<'posts'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({data, req}) => {
+      url: ({ data, req }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'posts',
@@ -66,7 +65,7 @@ export const Posts: CollectionConfig<'posts'> = {
         return path
       },
     },
-    preview: (data, {req}) =>
+    preview: (data, { req }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'posts',
@@ -98,16 +97,7 @@ export const Posts: CollectionConfig<'posts'> = {
               admin: {
                 initCollapsed: true,
               },
-              blocks: [
-                Banner,
-                Code,
-                MediaBlock,
-                CallToAction,
-                Content,
-                RichTextBlock,
-                FormBlock,
-                PdfBlock
-              ],
+              blocks: [Banner, Code, MediaBlock, CallToAction, Content, RichTextBlock, FormBlock],
             },
           ],
         },
@@ -120,8 +110,8 @@ export const Posts: CollectionConfig<'posts'> = {
               admin: {
                 position: 'sidebar',
               },
-              filterOptions: ({id}) => ({
-                id: {not_in: [id]},
+              filterOptions: ({ id }) => ({
+                id: { not_in: [id] },
               }),
               hasMany: true,
               relationTo: 'posts',
@@ -166,12 +156,12 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'publishedAt',
       type: 'date',
       admin: {
-        date: {pickerAppearance: 'dayAndTime'},
+        date: { pickerAppearance: 'dayAndTime' },
         position: 'sidebar',
       },
       hooks: {
         beforeChange: [
-          ({siblingData, value}) => {
+          ({ siblingData, value }) => {
             if (siblingData._status === 'published' && !value) {
               return new Date()
             }
@@ -200,8 +190,8 @@ export const Posts: CollectionConfig<'posts'> = {
         readOnly: true,
       },
       fields: [
-        {name: 'id', type: 'text'},
-        {name: 'name', type: 'text'},
+        { name: 'id', type: 'text' },
+        { name: 'name', type: 'text' },
         {
           name: 'jobTitle',
           type: 'text',
@@ -211,8 +201,8 @@ export const Posts: CollectionConfig<'posts'> = {
           },
         },
         {
-          name: "authorPage",
-          type: "number",
+          name: 'authorPage',
+          type: 'number',
           required: false,
         },
       ],

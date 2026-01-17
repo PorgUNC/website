@@ -14,7 +14,7 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { PdfBlock } from '@/blocks/PdfBlock/config'
+// import { PdfBlock } from '@/blocks/PdfBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePoll } from './hooks/revalidatePoll'
@@ -107,7 +107,6 @@ export const Polls: CollectionConfig<'polls'> = {
                 Content,
                 RichTextBlock,
                 FormBlock,
-                PdfBlock,
                 LineChartBlock,
                 PieChartBlock,
               ],
