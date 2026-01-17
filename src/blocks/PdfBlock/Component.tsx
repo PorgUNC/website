@@ -1,7 +1,7 @@
 import React from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import type { PdfBlock as PdfBlockProps, File } from '@/payload-types'
+import type { PdfBlock as PdfBlockProps } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import RichText from '@/components/RichText'
 
