@@ -1,7 +1,7 @@
 import React from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import type { PdfBlock as PdfBlockProps, Pdf } from '@/payload-types'
+import type { PdfBlock as PdfBlockProps, File } from '@/payload-types'
 import { cn } from '@/utilities/ui'
 import RichText from '@/components/RichText'
 
@@ -14,44 +14,44 @@ type Props = PdfBlockProps & {
 }
 
 export const PdfBlock: React.FC<Props> = async ({
-                                                  pdf: pdfProp,
-                                                  caption,
-                                                  className,
-                                                  captionClassName,
-                                                  enableGutter = true,
-                                                  disableInnerContainer,
-                                                }) => {
+  pdf: pdfProp,
+  caption,
+  className,
+  captionClassName,
+  enableGutter = true,
+  disableInnerContainer,
+}) => {
   if (!pdfProp) return null
 
-  let pdf: Pdf | null = null
+  let pdf: File | null = null
 
   // If pdfProp is an object with url, use it. Otherwise, fetch the document
   if (typeof pdfProp === 'object' && 'url' in pdfProp) {
-    pdf = pdfProp as Pdf
+    pdf = pdfProp as File
   } else {
     const payload = await getPayload({ config })
     const { docs } = await payload.find({
-      collection: 'pdfs',
+      collection: 'files',
       where: { id: { equals: String(pdfProp) } },
       limit: 1,
     })
-    pdf = docs[0] as Pdf | undefined ?? null
+    pdf = (docs[0] as File | undefined) ?? null
   }
 
   if (!pdf) return null
 
   return (
     <div
-      // className={cn(
-      //   '',
-      //   {
-      //     // container: enableGutter,
-      //   },
-      //   className
-      // )}
+    // className={cn(
+    //   '',
+    //   {
+    //     // container: enableGutter,
+    //   },
+    //   className
+    // )}
     >
       {/* Embedded PDF */}
-      <div className="w-full aspect-[3/4] border border-border rounded-lg overflow-hidden">
+      <div className="w-full aspect-3/4 border border-border rounded-lg overflow-hidden">
         <iframe
           src={pdf.url ?? undefined} // <-- ensure it's string | undefined
           title={pdf.filename ?? 'PDF'}
@@ -68,7 +68,7 @@ export const PdfBlock: React.FC<Props> = async ({
             {
               container: !disableInnerContainer,
             },
-            captionClassName
+            captionClassName,
           )}
         >
           <RichText data={caption} enableGutter={false} />

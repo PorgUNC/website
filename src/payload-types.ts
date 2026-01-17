@@ -71,7 +71,7 @@ export interface Config {
     polls: Poll;
     posts: Post;
     media: Media;
-    pdfs: Pdf;
+    files: File;
     categories: Category;
     users: User;
     invitations: Invitation;
@@ -91,7 +91,7 @@ export interface Config {
     polls: PollsSelect<false> | PollsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    pdfs: PdfsSelect<false> | PdfsSelect<true>;
+    files: FilesSelect<false> | FilesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     invitations: InvitationsSelect<false> | InvitationsSelect<true>;
@@ -108,6 +108,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
+  fallbackLocale: null;
   globals: {
     header: Header;
     footer: Footer;
@@ -757,7 +758,7 @@ export interface Form {
  * via the `definition` "PdfBlock".
  */
 export interface PdfBlock {
-  pdf: number | Pdf;
+  pdf: number | File;
   caption?: {
     root: {
       type: string;
@@ -779,11 +780,11 @@ export interface PdfBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pdfs".
+ * via the `definition` "files".
  */
-export interface Pdf {
+export interface File {
   id: number;
-  caption?: {
+  altText?: {
     root: {
       type: string;
       children: {
@@ -973,6 +974,7 @@ export interface Poll {
     pieCharts?:
       | {
           label?: string | null;
+          hide?: boolean | null;
           data?:
             | {
                 name: string;
@@ -1005,6 +1007,14 @@ export interface Poll {
         }[]
       | null;
   };
+  files?:
+    | {
+        file: number | File;
+        title: string;
+        icon: 'file' | 'file-code' | 'file-text';
+        id?: string | null;
+      }[]
+    | null;
   relatedPolls?: (number | Poll)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
@@ -1256,8 +1266,8 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'pdfs';
-        value: number | Pdf;
+        relationTo: 'files';
+        value: number | File;
       } | null)
     | ({
         relationTo: 'categories';
@@ -1577,6 +1587,7 @@ export interface PollsSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
+              hide?: T;
               data?:
                 | T
                 | {
@@ -1607,6 +1618,14 @@ export interface PollsSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+      };
+  files?:
+    | T
+    | {
+        file?: T;
+        title?: T;
+        icon?: T;
+        id?: T;
       };
   relatedPolls?: T;
   categories?: T;
@@ -1792,10 +1811,10 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pdfs_select".
+ * via the `definition` "files_select".
  */
-export interface PdfsSelect<T extends boolean = true> {
-  caption?: T;
+export interface FilesSelect<T extends boolean = true> {
+  altText?: T;
   publishedDate?: T;
   updatedAt?: T;
   createdAt?: T;

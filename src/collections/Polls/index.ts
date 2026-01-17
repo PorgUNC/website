@@ -34,7 +34,6 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 
-
 export const Polls: CollectionConfig<'polls'> = {
   slug: 'polls',
   access: {
@@ -110,7 +109,7 @@ export const Polls: CollectionConfig<'polls'> = {
                 FormBlock,
                 PdfBlock,
                 LineChartBlock,
-                PieChartBlock
+                PieChartBlock,
               ],
             },
           ],
@@ -134,6 +133,11 @@ export const Polls: CollectionConfig<'polls'> = {
                     {
                       name: 'label',
                       type: 'text',
+                    },
+                    {
+                      name: 'hide',
+                      type: 'checkbox',
+                      defaultValue: false,
                     },
                     {
                       name: 'data',
@@ -208,6 +212,42 @@ export const Polls: CollectionConfig<'polls'> = {
           ],
         },
         {
+          label: 'Files',
+          fields: [
+            {
+              name: 'files',
+              type: 'array',
+              labels: {
+                singular: 'File',
+                plural: 'Files',
+              },
+              fields: [
+                {
+                  name: 'file',
+                  type: 'upload',
+                  relationTo: 'files',
+                  required: true,
+                },
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'icon',
+                  type: 'select',
+                  required: true,
+                  options: [
+                    { label: 'file', value: 'file' },
+                    { label: 'file-code', value: 'file-code' },
+                    { label: 'file-text', value: 'file-text' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Meta',
           fields: [
             {
@@ -216,8 +256,8 @@ export const Polls: CollectionConfig<'polls'> = {
               admin: {
                 position: 'sidebar',
               },
-              filterOptions: ({id}) => ({
-                id: {not_in: [id]},
+              filterOptions: ({ id }) => ({
+                id: { not_in: [id] },
               }),
               hasMany: true,
               relationTo: 'polls',
@@ -262,12 +302,12 @@ export const Polls: CollectionConfig<'polls'> = {
       name: 'publishedAt',
       type: 'date',
       admin: {
-        date: {pickerAppearance: 'dayAndTime'},
+        date: { pickerAppearance: 'dayAndTime' },
         position: 'sidebar',
       },
       hooks: {
         beforeChange: [
-          ({siblingData, value}) => {
+          ({ siblingData, value }) => {
             if (siblingData._status === 'published' && !value) {
               return new Date()
             }
@@ -296,8 +336,8 @@ export const Polls: CollectionConfig<'polls'> = {
         readOnly: true,
       },
       fields: [
-        {name: 'id', type: 'text'},
-        {name: 'name', type: 'text'},
+        { name: 'id', type: 'text' },
+        { name: 'name', type: 'text' },
         {
           name: 'jobTitle',
           type: 'text',
@@ -307,8 +347,8 @@ export const Polls: CollectionConfig<'polls'> = {
           },
         },
         {
-          name: "authorPage",
-          type: "number",
+          name: 'authorPage',
+          type: 'number',
           required: false,
         },
       ],

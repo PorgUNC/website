@@ -1,17 +1,17 @@
-import {Block} from 'payload'
+import { Block } from 'payload'
 import { updateFeaturedChartGlobal } from '@/blocks/FeaturedChartBlock/hooks/updateFeaturedChartGlobal'
 
 export const FeaturedChartBlock: Block = {
   slug: 'featuredchart',
   labels: {
     singular: 'Featured Chart',
-    plural: 'Featured Charts'
+    plural: 'Featured Charts',
   },
   fields: [
     {
       type: 'relationship',
       name: 'featuredpoll',
-      label: "Featured Polls",
+      label: 'Featured Polls',
       relationTo: 'polls',
       required: false,
       filterOptions: { _status: { equals: 'published' } },
@@ -27,7 +27,7 @@ export const FeaturedChartBlock: Block = {
         description: 'Enable to let this block span the full page width.',
         hidden: true,
       },
-      defaultValue: true,
+      defaultValue: false,
     },
-  ]
+  ],
 }

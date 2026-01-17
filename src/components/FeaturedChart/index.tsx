@@ -1,40 +1,16 @@
-'use client';
+'use client'
 
-import Link from "next/link";
-import React from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+import Link from 'next/link'
+import React, { useEffect, useRef, useState } from 'react'
 import { Poll } from '@/payload-types'
-
-interface LinePoint {
-  x: string;
-  y: number;
-}
-
-interface LineSeries {
-  name: string;
-  data: LinePoint[];
-  color?: string;
-}
-
-interface LineChartData {
-  label?: string;
-  series?: LineSeries[];
-}
+// @ts-ignore
+import 'c3/c3.css'
 
 export type CardPollData = Pick<Poll, 'slug' | 'title' | 'statistics'>
 
 interface FeaturedChartProps {
-  doc?: CardPollData;
-  chartNum?: number;
+  doc?: CardPollData
+  chartNum?: number
 }
 
 const DEFAULT_COLORS = [
@@ -46,55 +22,120 @@ const DEFAULT_COLORS = [
   '#00c49f',
   '#ffbb28',
   '#a4de6c',
-];
+]
 
 export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps) {
-  const lineChart = doc?.statistics?.lineCharts?.[chartNum];
-  console.log(doc)
-  if (!lineChart || !lineChart.series?.length) return (<div><p>Hi there. It doesn't exist.</p></div>);
+  const chartRef = useRef<HTMLDivElement>(null)
+  const chartInstance = useRef<any>(null)
+  const [isClient, setIsClient] = useState(false)
 
-  const mergedData: Array<Record<string, any>> = [];
+  const lineChart = doc?.statistics?.lineCharts?.[chartNum]
 
-  lineChart.series.forEach((series) => {
-    series.data?.forEach((point, idx) => {
-      if (!mergedData[idx]) mergedData[idx] = { x: point.x };
-      mergedData[idx][series.name] = point.y;
-    });
-  });
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!chartRef.current || !lineChart?.series || !isClient) return
+
+    // Dynamically import c3 only on client side
+    const loadChart = async () => {
+      const c3Module = await import('c3')
+      const c3 = c3Module.default
+
+      chartInstance.current?.destroy()
+
+      if (!lineChart?.series) return
+
+      const categories = lineChart.series[0]?.data?.map((point) => point.x) ?? []
+
+      const columns: [string, ...number[]][] = lineChart.series.map(
+        (series) => [series.name, ...(series.data?.map((p) => p.y) ?? [])] as [string, ...number[]],
+      )
+
+      const colors: Record<string, string> = {}
+      lineChart.series.forEach((series, i) => {
+        colors[series.name] = series.color ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length]
+      })
+
+      // Detect if mobile screen
+      const isMobile = window.innerWidth < 640
+
+      chartInstance.current = c3.generate({
+        bindto: chartRef.current,
+        data: {
+          columns,
+          colors,
+        },
+        axis: {
+          x: {
+            type: 'category',
+            categories,
+            tick: {
+              rotate: isMobile ? 45 : 0,
+              multiline: false,
+              culling: {
+                max: isMobile ? 6 : 10,
+              },
+            },
+            height: isMobile ? 60 : 40,
+          },
+          y: {
+            tick: {
+              format: (d: number) => d.toString(),
+            },
+          },
+        },
+        legend: {
+          position: 'bottom',
+        },
+        grid: {
+          y: {
+            show: true,
+          },
+          focus: {
+            show: true,
+          },
+        },
+        point: {
+          r: 5,
+          focus: {
+            expand: {
+              enabled: true,
+              r: 7,
+            },
+          },
+        },
+
+        padding: {
+          left: isMobile ? 30 : undefined,
+          right: isMobile ? 10 : undefined,
+          bottom: isMobile ? 20 : undefined,
+        },
+      })
+    }
+
+    loadChart()
+
+    return () => {
+      chartInstance.current?.destroy()
+      chartInstance.current = null
+    }
+  }, [lineChart, isClient])
+
+  if (!lineChart || !lineChart.series?.length) {
+    return <p>Hi there. It doesn&apos;t exist.</p>
+  }
 
   return (
-    <Link
-      href={`/polls/${doc.slug}`}
-      className="block w-full max-w-7xl mx-auto px-4"
-    >
-      <div className="w-full border rounded-xl p-4 shadow-sm hover:shadow-md transition bg-white dark:bg-neutral-900 flex flex-col">
-        <h2 className="text-xl font-semibold mb-2 text-center flex-shrink-0">
-          {doc.title}
-        </h2>
+    <div className="max-w-7xl mx-auto px-4 pt-6 pb-4">
+      <div className="w-full flex flex-col border rounded-4xl p-4 shadow-sm hover:shadow-md transition">
+        <Link href={`/polls/${doc?.slug}`}>
+          <h2 className="text-xl font-semibold mb-4 text-center hover:underline">{doc?.title}</h2>
+        </Link>
 
-        <div className="w-full h-64">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-            <LineChart data={mergedData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="x" />
-              <YAxis />
-
-              <Tooltip labelStyle={{ color: 'black' }} />
-              <Legend />
-
-              {lineChart.series.map((series, i) => (
-                <Line
-                  key={series.name}
-                  type="monotone"
-                  dataKey={series.name}
-                  stroke={series.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
-                  dot={true}
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <div ref={chartRef} />
       </div>
-    </Link>
-  );
+    </div>
+  )
 }

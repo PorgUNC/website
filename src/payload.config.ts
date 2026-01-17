@@ -17,7 +17,7 @@ import { FeaturedPoll } from './globals/FeaturedPoll'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { Pdfs } from '@/collections/Pdfs'
+import { Files } from '@/collections/Files'
 import { Polls } from '@/collections/Polls'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import nodemailer from 'nodemailer'
@@ -27,20 +27,21 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  ...(process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_PREVIEW !== "true" && {
-    email: nodemailerAdapter({
-      defaultFromAddress: process.env.SMTP_FROM_ADDRESS ?? 'info@payloadcms.com',
-      defaultFromName: process.env.SMTP_FROM_NAME ?? 'Payload',
-      transport: await nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: 587,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
+  ...(process.env.NODE_ENV === 'production' &&
+    process.env.NEXT_PUBLIC_PREVIEW !== 'true' && {
+      email: nodemailerAdapter({
+        defaultFromAddress: process.env.SMTP_FROM_ADDRESS ?? 'info@payloadcms.com',
+        defaultFromName: process.env.SMTP_FROM_NAME ?? 'Payload',
+        transport: await nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port: 587,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        }),
       }),
     }),
-  }),
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -84,7 +85,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Polls, Posts, Media, Pdfs, Categories, Users, Invitations],
+  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, FeaturedPoll],
   plugins: [

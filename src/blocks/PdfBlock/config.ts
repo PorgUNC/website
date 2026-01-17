@@ -6,14 +6,13 @@ export const PdfBlock: Block = {
   labels: {
     singular: 'PDF Block',
     plural: 'PDF Blocks',
-
   },
   fields: [
     {
       name: 'pdf',
       label: 'PDF',
       type: 'upload',
-      relationTo: 'pdfs',
+      relationTo: 'files',
       required: true,
     },
     {
@@ -24,4 +23,3 @@ export const PdfBlock: Block = {
     },
   ],
 }
-

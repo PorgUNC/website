@@ -1,104 +1,128 @@
-'use client';
+'use client'
 
-import Link from "next/link";
-import React from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  Sector,
-} from 'recharts';
+import Link from 'next/link'
+import React, { useEffect, useRef, useState } from 'react'
+// @ts-ignore
+import 'c3/c3.css'
+
 import { Poll } from '@/payload-types'
-
-interface PieSlice {
-  name: string;
-  value: number;
-  color?: string;
-  [key: string]: any;
-}
 
 export type CardPollData = Pick<Poll, 'slug' | 'title' | 'statistics'>
 
-interface PollPieCardProps {
-  doc?: CardPollData;
-  chartNum?: number;
+interface PieChartData {
+  name: string
+  value: number
+  color?: string
 }
 
-export default function PollPieCard({ doc, chartNum = 0 }: PollPieCardProps) {
-  const pieChart = doc?.statistics?.pieCharts?.[chartNum];
-  if (!pieChart) return null;
+interface PieChart {
+  id: string
+  data?: PieChartData[]
+  hide?: boolean
+}
 
-  const DEFAULT_COLORS = [
-    "#8884d8",
-    "#82ca9d",
-    "#ffc658",
-    "#ff8042",
-    "#a4de6c",
-    "#d0ed57",
-    "#8dd1e1",
-    "#d88884",
-  ];
+interface PollPieCardProps {
+  chart: PieChart
+  slug: string
+  title: string
+}
 
-  const renderActiveShape = (props: any) => {
-    const RADIAN = Math.PI / 180;
-    const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
-    const offset = 8;
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const newCx = cx + cos * offset;
-    const newCy = cy + sin * offset;
+const DEFAULT_COLORS = [
+  '#8884d8',
+  '#82ca9d',
+  '#ffc658',
+  '#ff8042',
+  '#a4de6c',
+  '#d0ed57',
+  '#8dd1e1',
+  '#d88884',
+]
 
-    return (
-      <Sector
-        cx={newCx}
-        cy={newCy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius + 8}
-        fill={fill}
-      />
-    );
-  };
-  if (!pieChart || !pieChart.data?.length) return null;
+export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
+  const chartRef = useRef<HTMLDivElement>(null)
+  const chartInstance = useRef<any>(null)
+  const [isClient, setIsClient] = useState(false)
+
+  const pieChart = chart
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!chartRef.current || !isClient) return
+
+    // Dynamically import c3 only on client side
+    const loadChart = async () => {
+      const c3Module = await import('c3')
+      const c3 = c3Module.default
+
+      chartInstance.current?.destroy()
+
+      if (!pieChart.data) return
+
+      const columns: [string, number][] = pieChart.data.map((slice: PieChartData) => [
+        slice.name,
+        slice.value,
+      ])
+
+      const colors: Record<string, string> = {}
+      pieChart.data.forEach((slice: PieChartData, i: number) => {
+        colors[slice.name] = slice.color ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length]
+      })
+
+      // Detect if mobile screen
+      const isMobile = window.innerWidth < 640
+
+      chartInstance.current = c3.generate({
+        bindto: chartRef.current,
+        data: {
+          columns,
+          type: 'pie',
+          colors,
+        },
+        pie: {
+          label: {
+            show: !isMobile, // Hide labels on mobile
+            format: (_value: number, ratio: number, id: string) =>
+              `${id}: ${Math.round(ratio * 100)}%`,
+          },
+        },
+        legend: {
+          position: 'bottom',
+        },
+        tooltip: {
+          format: {
+            value: (value: number) => value.toString(),
+          },
+        },
+        size: {
+          height: isMobile ? 250 : undefined,
+        },
+      })
+    }
+
+    loadChart()
+
+    return () => {
+      chartInstance.current?.destroy()
+      chartInstance.current = null
+    }
+  }, [pieChart, isClient])
+
+  if (!pieChart || !pieChart.data?.length) return null
+
   return (
-    <Link href={`/polls/${doc.slug}`} className="block">
-      <div className="aspect-square w-full border rounded-xl p-4 shadow-sm hover:shadow-md transition bg-white dark:bg-neutral-900 flex flex-col">
-        <h2 className="text-xl font-semibold mb-2 text-center flex-shrink-0">
-          {doc.title}
-        </h2>
+    <div className="aspect-square w-full border rounded-4xl p-4 shadow-sm hover:shadow-md transition flex flex-col">
+      <h2 className="text-xl font-semibold mb-2 text-center">
+        <Link className="hover:underline" href={`/polls/${slug}`}>
+          {title}
+        </Link>
+      </h2>
 
-        <div className="flex-1 min-h-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-              data={pieChart.data}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius="80%"
-              activeShape={renderActiveShape}
-              paddingAngle={1}
-            >
-              {pieChart.data.map((slice, i) => (
-                <Cell
-                  key={i}
-                  fill={slice.color ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length]}
-                />
-              ))}
-            </Pie>
-
-
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+      <div className="flex-1 min-h-0">
+        <div ref={chartRef} className="w-full h-full" />
       </div>
-    </Link>
-  );
+    </div>
+  )
 }

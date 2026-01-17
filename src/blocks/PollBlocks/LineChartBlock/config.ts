@@ -1,31 +1,30 @@
-import type { Block } from "payload";
+import type { Block } from 'payload'
 
 export const LineChartBlock: Block = {
-  slug: "lineChart",
+  slug: 'lineChart',
   labels: {
-    singular: "Line Chart",
-    plural: "Line Charts",
+    singular: 'Line Chart',
+    plural: 'Line Charts',
   },
   fields: [
     {
-      name: "chartIndex",
-      type: "number",
+      name: 'chartIndex',
+      type: 'number',
       required: true,
       admin: {
-        description:
-          "Index of the line chart from the Statistics tab (starting at 1).",
+        description: 'Index of the line chart from the Statistics tab (starting at 1).',
       },
     },
     {
-      name: "showLegend",
-      type: "checkbox",
-      label: "Show Legend",
+      name: 'showLegend',
+      type: 'checkbox',
+      label: 'Show Legend',
       defaultValue: true,
     },
     {
-      name: "showDots",
-      type: "checkbox",
-      label: "Show Data Points",
+      name: 'showDots',
+      type: 'checkbox',
+      label: 'Show Data Points',
       defaultValue: true,
     },
     {
@@ -33,7 +32,7 @@ export const LineChartBlock: Block = {
       type: 'group',
       virtual: true,
       admin: {
-        hidden: true
+        hidden: true,
       },
       fields: [
         {
@@ -84,9 +83,9 @@ export const LineChartBlock: Block = {
         afterRead: [
           ({ data, siblingData }) => {
             return data?.statistics?.lineCharts[siblingData.chartIndex - 1]
-          }
-        ]
-      }
+          },
+        ],
+      },
     },
   ],
-};
+}

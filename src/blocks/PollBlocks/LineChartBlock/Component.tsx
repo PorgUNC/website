@@ -1,16 +1,8 @@
 'use client'
 
-import React from 'react'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts'
+import React, { useEffect, useRef, useState } from 'react'
+// @ts-ignore
+import 'c3/c3.css'
 
 export interface LinePoint {
   x: string
@@ -48,13 +40,116 @@ const defaultColors = [
   '#a4de6c',
 ]
 
-
-
 const LineChartBlock: React.FC<LineChartBlockProps> = ({
-                                                                  lineChart,
-                                                                  showLegend = true,
-                                                                  showDots = true,
-                                                                }) => {
+  lineChart,
+  showLegend = true,
+  showDots = true,
+}) => {
+  const chartRef = useRef<HTMLDivElement>(null)
+  const chartInstance = useRef<any>(null)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!chartRef.current || !isClient || !lineChart?.series?.length) return
+
+    // Dynamically import c3 only on client side
+    const loadChart = async () => {
+      const c3Module = await import('c3')
+      const c3 = c3Module.default
+
+      chartInstance.current?.destroy()
+
+      if (!lineChart?.series) return
+
+      /**
+       * X-axis categories (from first series)
+       */
+      const categories = lineChart.series[0]?.data.map((p) => p.x) ?? []
+
+      /**
+       * Series → columns
+       */
+      const columns: [string, ...number[]][] = lineChart.series.map(
+        (series) => [series.name, ...series.data.map((p) => p.y)] as [string, ...number[]],
+      )
+
+      /**
+       * Colors
+       */
+      const colors: Record<string, string> = {}
+      lineChart.series.forEach((series, i) => {
+        colors[series.name] = series.color ?? defaultColors[i % defaultColors.length]
+      })
+
+      // Detect if mobile screen
+      const isMobile = window.innerWidth < 640
+
+      chartInstance.current = c3.generate({
+        bindto: chartRef.current,
+        data: {
+          columns,
+          colors,
+          type: 'line',
+        },
+        axis: {
+          x: {
+            type: 'category',
+            categories,
+            tick: {
+              rotate: isMobile ? 45 : 0,
+              multiline: false,
+              culling: {
+                max: isMobile ? 6 : 10,
+              },
+            },
+            height: isMobile ? 60 : 40,
+          },
+        },
+        grid: {
+          y: {
+            show: true,
+          },
+          focus: {
+            show: true,
+          },
+        },
+        point: {
+          show: showDots,
+          r: showDots ? 5 : 0,
+          focus: {
+            expand: {
+              enabled: true,
+              r: 7,
+            },
+          },
+        },
+        legend: {
+          show: showLegend,
+          position: 'bottom',
+        },
+        tooltip: {
+          grouped: true,
+        },
+        padding: {
+          left: isMobile ? 30 : undefined,
+          right: isMobile ? 10 : undefined,
+          bottom: isMobile ? 20 : undefined,
+        },
+      })
+    }
+
+    loadChart()
+
+    return () => {
+      chartInstance.current?.destroy()
+      chartInstance.current = null
+    }
+  }, [lineChart, showLegend, showDots, isClient])
+
   if (!lineChart || !lineChart.series?.length) {
     return (
       <div className="text-red-500 text-sm">
@@ -63,45 +158,13 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
     )
   }
 
-  const mergedData: Array<Record<string, any>> = []
-
-  lineChart.series.forEach((series) => {
-    series.data.forEach((point, idx) => {
-      if (!mergedData[idx]) mergedData[idx] = { x: point.x }
-      mergedData[idx][series.name] = point.y
-    })
-  })
-
   return (
     <div className="w-full h-96 my-6">
       {lineChart.label && (
         <h3 className="text-lg font-semibold text-center mb-2">{lineChart.label}</h3>
       )}
 
-      <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-        <LineChart data={mergedData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="x" />
-          <YAxis />
-
-          <Tooltip
-            labelStyle={{ color: 'black' }}
-          />
-
-          {showLegend && <Legend />}
-
-          {lineChart.series.map((series, i) => (
-            <Line
-              key={series.name}
-              type="monotone"
-              dataKey={series.name}
-              stroke={series.color || defaultColors[i % defaultColors.length]}
-              dot={showDots}
-            />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
-
+      <div ref={chartRef} className="w-full h-full" />
     </div>
   )
 }
