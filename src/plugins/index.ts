@@ -95,7 +95,7 @@ export const plugins: Plugin[] = [
   s3Storage({
     collections: {
       media: true,
-      files: true,
+      // files: true,
     },
     bucket: process.env.S3_BUCKET || '',
     config: {

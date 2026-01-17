@@ -12,7 +12,7 @@ export const PdfBlock: Block = {
       name: 'pdf',
       label: 'PDF',
       type: 'upload',
-      relationTo: 'files',
+      relationTo: 'media',
       required: true,
     },
     {

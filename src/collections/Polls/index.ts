@@ -225,7 +225,7 @@ export const Polls: CollectionConfig<'polls'> = {
                 {
                   name: 'file',
                   type: 'upload',
-                  relationTo: 'files',
+                  relationTo: 'media',
                   required: true,
                 },
                 {

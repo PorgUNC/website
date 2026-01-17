@@ -18,7 +18,7 @@ import { plugins } from './plugins'
 import { defaultLexical } from './fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Polls } from './collections/Polls'
-import { Files } from './collections/Files'
+// import { Files } from './collections/Files'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import nodemailer from 'nodemailer'
 import { Invitations } from './collections/Invitations'
@@ -85,7 +85,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations],
+  collections: [Pages, Polls, Posts, Media, Categories, Users, Invitations],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, FeaturedPoll],
   plugins: [
