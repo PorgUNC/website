@@ -140,7 +140,7 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
     <div className="max-w-7xl mx-auto px-4 pt-6 pb-4">
       <div className="w-full flex flex-col border rounded-4xl p-4 shadow-sm hover:shadow-md transition">
         <Link href={`/polls/${doc?.slug}`}>
-          <h2 className="text-xl font-semibold mb-4 text-center hover:underline">{doc?.title}</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-center hover:underline">{doc?.title}</h2>
         </Link>
 
         <div ref={chartRef} />
