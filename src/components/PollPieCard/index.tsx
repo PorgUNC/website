@@ -85,7 +85,9 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
           label: {
             show: !isMobile, // Hide labels on mobile
             format: (_value: number, ratio: number, id: string) =>
-              `${id}: ${Math.round(ratio * 100)}%`,
+              // `${id}: ${Math.round(ratio * 100)}%`,
+              `${Math.round(ratio * 100)}%`,
+            threshold: 0.05
           },
         },
         legend: {

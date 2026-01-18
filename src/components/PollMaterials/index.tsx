@@ -29,7 +29,7 @@ export default function PollMaterials({ sidebar }: PollMaterialsProps) {
             Report Materials
           </h2>
         </div>
-        <div className="divide-y divide-border">{/* ...existing code... */}
+        <div className="divide-y divide-border">
           {sidebar.map((item, index) => {
             const file = typeof item.file === 'object' ? item.file : null
             if (!file) return null

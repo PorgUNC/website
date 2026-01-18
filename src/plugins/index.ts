@@ -106,19 +106,24 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
-  s3Storage({
-    collections: {
-      // media: false,
-      // files: false,
-    },
-    bucket: process.env.S3_BUCKET || '',
-    config: {
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-      },
-      region: 'auto',
-      endpoint: process.env.S3_ENDPOINT || '',
-    },
-  }),
+
+  ...(process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_PREVIEW !== 'true'
+    ? [
+        s3Storage({
+          collections: {
+            media: true,
+            files: true,
+          },
+          bucket: process.env.S3_BUCKET || '',
+          config: {
+            credentials: {
+              accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+              secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+            },
+            region: 'auto',
+            endpoint: process.env.S3_ENDPOINT || '',
+          },
+        }),
+      ]
+    : []),
 ]
