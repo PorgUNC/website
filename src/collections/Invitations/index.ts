@@ -28,7 +28,7 @@ export const Invitations: CollectionConfig = {
       async ({ req, doc }) => {
         await req.payload.sendEmail({
           to: doc.email,
-          subject: 'You have been invited to the PorgUNC!',
+          subject: 'You have been invited to PorgUNC!',
           html: `<a href="${getServerSideURL()}/accept-invite?token=${doc.token}">
                   Click to join
                  </a>`

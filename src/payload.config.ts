@@ -32,7 +32,8 @@ export default buildConfig({
       email: nodemailerAdapter({
         defaultFromAddress: process.env.SMTP_FROM_ADDRESS ?? 'info@payloadcms.com',
         defaultFromName: process.env.SMTP_FROM_NAME ?? 'Payload',
-        transport: await nodemailer.createTransport({
+        skipVerify: true,
+        transport: nodemailer.createTransport({
           host: process.env.SMTP_HOST,
           port: 587,
           auth: {
