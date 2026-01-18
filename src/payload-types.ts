@@ -937,11 +937,11 @@ export interface Poll {
         }[]
       | null;
   };
-  files?:
+  sidebar?:
     | {
         file: number | File;
         title: string;
-        icon: 'file' | 'file-code' | 'file-text';
+        icon: 'FaFilePdf' | 'FaFile' | 'FaFileCode' | 'FaFileAlt' | 'FaFileImage';
         id?: string | null;
       }[]
     | null;
@@ -1571,7 +1571,7 @@ export interface PollsSelect<T extends boolean = true> {
               id?: T;
             };
       };
-  files?:
+  sidebar?:
     | T
     | {
         file?: T;

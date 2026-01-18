@@ -6,7 +6,6 @@ import configPromise from '@payload-config'
 import { getPayload, RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import RichText from '@/components/RichText'
 
 import type { Post } from '@/payload-types'
 
@@ -15,6 +14,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import PollMaterials from '@/components/PollMaterials'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -62,8 +62,9 @@ export default async function Poll({params: paramsPromise}: Args) {
       <PostHero post={poll as Post}/>
 
       <div className="w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto flex flex-col gap-6">
-
         <RenderBlocks blocks={layout} constraint={"post"}/>
+
+        <PollMaterials sidebar={poll.sidebar} />
 
         {relatedPolls && relatedPolls.length > 0 && (
           <RelatedPosts
