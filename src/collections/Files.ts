@@ -15,6 +15,9 @@ const dirname = path.dirname(filename)
 
 export const Files: CollectionConfig = {
   slug: 'files',
+  admin: {
+    group: 'Uploads'
+  },
   labels: {
     singular: 'File',
     plural: 'Files',

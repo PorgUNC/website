@@ -29,6 +29,9 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts', 'polls'],
     overrides: {
+      admin: {
+        group: 'Meta'
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -60,7 +63,15 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    formSubmissionOverrides: {
+      admin: {
+        group: 'Forms'
+      },
+    },
     formOverrides: {
+      admin: {
+        group: 'Forms'
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -86,6 +97,9 @@ export const plugins: Plugin[] = [
     collections: ['polls'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      admin: {
+        group: 'Meta'
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
@@ -94,8 +108,8 @@ export const plugins: Plugin[] = [
   payloadCloudPlugin(),
   s3Storage({
     collections: {
-      media: true,
-      files: true,
+      // media: false,
+      // files: false,
     },
     bucket: process.env.S3_BUCKET || '',
     config: {

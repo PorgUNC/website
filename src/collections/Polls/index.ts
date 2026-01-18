@@ -1,20 +1,10 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  BlocksFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  HorizontalRuleFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-// import { PdfBlock } from '@/blocks/PdfBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePoll } from './hooks/revalidatePoll'
@@ -211,10 +201,10 @@ export const Polls: CollectionConfig<'polls'> = {
           ],
         },
         {
-          label: 'Files',
+          label: 'Sidebar',
           fields: [
             {
-              name: 'files',
+              name: 'sidebar',
               type: 'array',
               labels: {
                 singular: 'File',
@@ -237,9 +227,11 @@ export const Polls: CollectionConfig<'polls'> = {
                   type: 'select',
                   required: true,
                   options: [
-                    { label: 'file', value: 'file' },
-                    { label: 'file-code', value: 'file-code' },
-                    { label: 'file-text', value: 'file-text' },
+                    {label: 'PDF', value: 'FaFilePdf'},
+                    { label: 'File', value: 'FaFile' },
+                    { label: 'Code', value: 'FaFileCode' },
+                    { label: 'Text', value: 'FaFileAlt' },
+                    { label: 'Image', value: 'FaFileImage' },
                   ],
                 },
               ],
