@@ -48,13 +48,40 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
   const chartRef = useRef<HTMLDivElement>(null)
   const chartInstance = useRef<any>(null)
   const [isClient, setIsClient] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
   }, [])
 
+  // Intersection Observer for lazy loading
   useEffect(() => {
-    if (!chartRef.current || !isClient || !lineChart?.series?.length) return
+    if (!chartRef.current || !isClient) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+            observer.disconnect()
+          }
+        })
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before element is visible
+        threshold: 0.1,
+      }
+    )
+
+    observer.observe(chartRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [isClient])
+
+  useEffect(() => {
+    if (!chartRef.current || !isClient || !lineChart?.series?.length || !isVisible) return
 
     // Dynamically import billboard.js only on client side
     const loadChart = async () => {
@@ -159,7 +186,7 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
       chartInstance.current?.destroy()
       chartInstance.current = null
     }
-  }, [lineChart, showLegend, showDots, isClient])
+  }, [lineChart, showLegend, showDots, isClient, isVisible])
 
   if (!lineChart || !lineChart.series?.length) {
     return (

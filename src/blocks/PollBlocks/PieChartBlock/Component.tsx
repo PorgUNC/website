@@ -36,13 +36,40 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
   const chartRef = useRef<HTMLDivElement>(null)
   const chartInstance = useRef<any>(null)
   const [isClient, setIsClient] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
   }, [])
 
+  // Intersection Observer for lazy loading
   useEffect(() => {
-    if (!chartRef.current || !isClient || !pieChart?.data?.length) return
+    if (!chartRef.current || !isClient) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+            observer.disconnect()
+          }
+        })
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before element is visible
+        threshold: 0.1,
+      }
+    )
+
+    observer.observe(chartRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [isClient])
+
+  useEffect(() => {
+    if (!chartRef.current || !isClient || !pieChart?.data?.length || !isVisible) return
 
     // Dynamically import billboard.js only on client side
     const loadChart = async () => {
@@ -114,7 +141,7 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
       chartInstance.current?.destroy()
       chartInstance.current = null
     }
-  }, [pieChart, showLegend, isClient])
+  }, [pieChart, showLegend, isClient, isVisible])
 
   if (!pieChart?.data?.length) return null
 

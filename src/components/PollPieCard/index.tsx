@@ -42,6 +42,7 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
   const chartRef = useRef<HTMLDivElement>(null)
   const chartInstance = useRef<any>(null)
   const [isClient, setIsClient] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   const pieChart = chart
 
@@ -49,8 +50,34 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
     setIsClient(true)
   }, [])
 
+  // Intersection Observer for lazy loading
   useEffect(() => {
     if (!chartRef.current || !isClient) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+            observer.disconnect()
+          }
+        })
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before element is visible
+        threshold: 0.1,
+      }
+    )
+
+    observer.observe(chartRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [isClient])
+
+  useEffect(() => {
+    if (!chartRef.current || !isClient || !isVisible) return
 
     // Dynamically import billboard.js only on client side
     const loadChart = async () => {
@@ -122,7 +149,7 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
       chartInstance.current?.destroy()
       chartInstance.current = null
     }
-  }, [pieChart, isClient])
+  }, [pieChart, isClient, isVisible])
 
   if (!pieChart || !pieChart.data?.length) return null
 

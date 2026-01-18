@@ -28,6 +28,7 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
   const chartRef = useRef<HTMLDivElement>(null)
   const chartInstance = useRef<any>(null)
   const [isClient, setIsClient] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   const lineChart = doc?.statistics?.lineCharts?.[chartNum]
 
@@ -35,8 +36,34 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
     setIsClient(true)
   }, [])
 
+  // Intersection Observer for lazy loading
   useEffect(() => {
-    if (!chartRef.current || !lineChart?.series || !isClient) return
+    if (!chartRef.current || !isClient) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true)
+            observer.disconnect()
+          }
+        })
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before element is visible
+        threshold: 0.1,
+      }
+    )
+
+    observer.observe(chartRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [isClient])
+
+  useEffect(() => {
+    if (!chartRef.current || !lineChart?.series || !isClient || !isVisible) return
 
     // Dynamically import billboard.js only on client side
     const loadChart = async () => {
@@ -130,7 +157,7 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
       chartInstance.current?.destroy()
       chartInstance.current = null
     }
-  }, [lineChart, isClient])
+  }, [lineChart, isClient, isVisible])
 
   if (!lineChart || !lineChart.series?.length) {
     return <p>Hi there. It doesn&apos;t exist.</p>
