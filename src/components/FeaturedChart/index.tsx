@@ -108,7 +108,7 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
                 max: isMobile ? 6 : 10,
               },
             },
-            height: isMobile ? 60 : 40,
+            height: isMobile ? 110 : 40,
           },
         },
         legend: {
@@ -136,7 +136,7 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
         padding: {
           left: isMobile ? 30 : undefined,
           right: isMobile ? 10 : undefined,
-          bottom: isMobile ? 20 : undefined,
+          bottom: isMobile ? 70 : undefined,
         },
         transition: {
           duration: 1000,
@@ -167,7 +167,7 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
     <div className="max-w-7xl mx-auto px-4 pt-6 pb-4">
       <div className="w-full flex flex-col border rounded-4xl p-4 shadow-sm hover:shadow-md transition">
         <Link href={`/polls/${doc?.slug}`}>
-          <h2 className="text-2xl font-semibold mb-4 text-center hover:underline">{doc?.title}</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-center hover:underline">{doc?.statistics?.lineCharts?.[chartNum].label}</h2>
         </Link>
 
         <div ref={chartRef} />

@@ -134,7 +134,7 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
                 max: isMobile ? 6 : 10,
               },
             },
-            height: isMobile ? 60 : 40,
+            height: isMobile ? 110 : 40,
           },
         },
         grid: {
@@ -165,7 +165,7 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
         padding: {
           left: isMobile ? 30 : undefined,
           right: isMobile ? 10 : undefined,
-          bottom: isMobile ? 20 : undefined,
+          bottom: isMobile ? 70 : undefined,
         },
         transition: {
           duration: 1000,
