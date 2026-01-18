@@ -74,6 +74,7 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
             tick: {
               rotate: isMobile ? 45 : 0,
               multiline: false,
+              format: '%m-%d-%Y',
               culling: {
                 max: isMobile ? 6 : 10,
               },
