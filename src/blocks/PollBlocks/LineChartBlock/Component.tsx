@@ -73,6 +73,9 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
       const columns: [string, ...number[]][] = lineChart.series.map(
         (series) => [series.name, ...series.data.map((p) => p.y)] as [string, ...number[]],
       )
+      const emptyColumns: [string, ...number[]][] = lineChart.series.map(
+        (series) => [series.name, ...series.data.map(() => 0)] as [string, ...number[]],
+      )
 
       /**
        * Colors
@@ -85,10 +88,11 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
       // Detect if mobile screen
       const isMobile = window.innerWidth < 640
 
+      // Initialize chart with 0 values for animation
       chartInstance.current = bb.generate({
         bindto: chartRef.current,
         data: {
-          columns,
+          columns: emptyColumns,
           colors,
           type: line(),
         },
@@ -136,7 +140,17 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
           right: isMobile ? 10 : undefined,
           bottom: isMobile ? 20 : undefined,
         },
+        transition: {
+          duration: 1000,
+        },
       })
+
+      // Load actual data with animation
+      setTimeout(() => {
+        chartInstance.current?.load({
+          columns,
+        })
+      }, 100)
     }
 
     loadChart()

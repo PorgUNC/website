@@ -55,6 +55,7 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
        * Convert slices → billboard.js columns
        */
       const columns: [string, number][] = pieChart.data.map((slice) => [slice.name, slice.value])
+      const emptyColumns: [string, number][] = pieChart.data.map((slice) => [slice.name, 0])
 
       /**
        * Colors
@@ -64,10 +65,11 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
         colors[slice.name] = slice.color ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length]
       })
 
+      // Initialize chart with 0 values for animation
       chartInstance.current = bb.generate({
         bindto: chartRef.current,
         data: {
-          columns,
+          columns: emptyColumns,
           type: pie(),
           colors,
         },
@@ -93,7 +95,17 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
           left: 20,
           right: 20,
         },
+        transition: {
+          duration: 1000,
+        },
       })
+
+      // Load actual data with animation
+      setTimeout(() => {
+        chartInstance.current?.load({
+          columns,
+        })
+      }, 100)
     }
 
     loadChart()

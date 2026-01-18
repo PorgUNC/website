@@ -62,6 +62,10 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
         slice.name,
         slice.value,
       ])
+      const emptyColumns: [string, number][] = pieChart.data.map((slice: PieChartData) => [
+        slice.name,
+        0,
+      ])
 
       const colors: Record<string, string> = {}
       pieChart.data.forEach((slice: PieChartData, i: number) => {
@@ -71,10 +75,11 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
       // Detect if mobile screen
       const isMobile = window.innerWidth < 640
 
+      // Initialize chart with 0 values for animation
       chartInstance.current = bb.generate({
         bindto: chartRef.current,
         data: {
-          columns,
+          columns: emptyColumns,
           type: pie(),
           colors,
         },
@@ -98,7 +103,17 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
         size: {
           height: isMobile ? 250 : undefined,
         },
+        transition: {
+          duration: 1000,
+        },
       })
+
+      // Load actual data with animation
+      setTimeout(() => {
+        chartInstance.current?.load({
+          columns,
+        })
+      }, 100)
     }
 
     loadChart()
