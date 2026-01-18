@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
-// @ts-ignore
-import 'c3/c3.css'
+import 'billboard.js/dist/billboard.css'
+import bb, {pie} from "billboard.js";
 
 import { Poll } from '@/payload-types'
 
@@ -52,11 +52,8 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
   useEffect(() => {
     if (!chartRef.current || !isClient) return
 
-    // Dynamically import c3 only on client side
+    // Dynamically import billboard.js only on client side
     const loadChart = async () => {
-      const c3Module = await import('c3')
-      const c3 = c3Module.default
-
       chartInstance.current?.destroy()
 
       if (!pieChart.data) return
@@ -74,23 +71,23 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
       // Detect if mobile screen
       const isMobile = window.innerWidth < 640
 
-      chartInstance.current = c3.generate({
+      chartInstance.current = bb.generate({
         bindto: chartRef.current,
         data: {
           columns,
-          type: 'pie',
+          type: pie(),
           colors,
         },
         pie: {
           label: {
             show: !isMobile, // Hide labels on mobile
-            format: (_value: number, ratio: number, id: string) =>
-              // `${id}: ${Math.round(ratio * 100)}%`,
+            format: (_value: number, ratio: number, _id: string) =>
               `${Math.round(ratio * 100)}%`,
-            threshold: 0.05
+            threshold: 0.05,
           },
         },
         legend: {
+          show: true,
           position: 'bottom',
         },
         tooltip: {

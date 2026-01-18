@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-// @ts-ignore
-import 'c3/c3.css'
+import 'billboard.js/dist/billboard.css'
+import bb, {pie} from "billboard.js";
 
 type PieSlice = {
   name: string
@@ -44,17 +44,15 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
   useEffect(() => {
     if (!chartRef.current || !isClient || !pieChart?.data?.length) return
 
-    // Dynamically import c3 only on client side
+    // Dynamically import billboard.js only on client side
     const loadChart = async () => {
-      const c3Module = await import('c3')
-      const c3 = c3Module.default
 
       chartInstance.current?.destroy()
 
       if (!pieChart.data) return
 
       /**
-       * Convert slices → C3 columns
+       * Convert slices → billboard.js columns
        */
       const columns: [string, number][] = pieChart.data.map((slice) => [slice.name, slice.value])
 
@@ -66,17 +64,17 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
         colors[slice.name] = slice.color ?? DEFAULT_COLORS[i % DEFAULT_COLORS.length]
       })
 
-      chartInstance.current = c3.generate({
+      chartInstance.current = bb.generate({
         bindto: chartRef.current,
         data: {
           columns,
-          type: 'pie',
+          type: pie(),
           colors,
         },
         pie: {
           label: {
             show: true,
-            format: (_value: number, ratio: number, id: string) => `${Math.round(ratio * 100)}%`,
+            format: (_value: number, ratio: number, _id: string) => `${Math.round(ratio * 100)}%`,
             threshold: 0.05, // Only show label if slice is at least 5% to avoid clutter
           },
         },

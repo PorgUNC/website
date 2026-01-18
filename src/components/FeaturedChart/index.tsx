@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { Poll } from '@/payload-types'
-// @ts-ignore
-import 'c3/c3.css'
+import 'billboard.js/dist/billboard.css'
+import bb, {line} from "billboard.js";
 
 export type CardPollData = Pick<Poll, 'slug' | 'title' | 'statistics'>
 
@@ -38,10 +38,8 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
   useEffect(() => {
     if (!chartRef.current || !lineChart?.series || !isClient) return
 
-    // Dynamically import c3 only on client side
+    // Dynamically import billboard.js only on client side
     const loadChart = async () => {
-      const c3Module = await import('c3')
-      const c3 = c3Module.default
 
       chartInstance.current?.destroy()
 
@@ -61,11 +59,12 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
       // Detect if mobile screen
       const isMobile = window.innerWidth < 640
 
-      chartInstance.current = c3.generate({
+      chartInstance.current = bb.generate({
         bindto: chartRef.current,
         data: {
           columns,
           colors,
+          type: line(),
         },
         axis: {
           x: {
@@ -74,20 +73,15 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
             tick: {
               rotate: isMobile ? 45 : 0,
               multiline: false,
-              format: '%m-%d-%Y',
               culling: {
                 max: isMobile ? 6 : 10,
               },
             },
             height: isMobile ? 60 : 40,
           },
-          y: {
-            tick: {
-              format: (d: number) => d.toString(),
-            },
-          },
         },
         legend: {
+          show: true,
           position: 'bottom',
         },
         grid: {

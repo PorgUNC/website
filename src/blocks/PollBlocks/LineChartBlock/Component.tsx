@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-// @ts-ignore
-import 'c3/c3.css'
+import 'billboard.js/dist/billboard.css'
+import bb, {line} from "billboard.js";
 
 export interface LinePoint {
   x: string
@@ -56,11 +56,8 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
   useEffect(() => {
     if (!chartRef.current || !isClient || !lineChart?.series?.length) return
 
-    // Dynamically import c3 only on client side
+    // Dynamically import billboard.js only on client side
     const loadChart = async () => {
-      const c3Module = await import('c3')
-      const c3 = c3Module.default
-
       chartInstance.current?.destroy()
 
       if (!lineChart?.series) return
@@ -88,12 +85,12 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
       // Detect if mobile screen
       const isMobile = window.innerWidth < 640
 
-      chartInstance.current = c3.generate({
+      chartInstance.current = bb.generate({
         bindto: chartRef.current,
         data: {
           columns,
           colors,
-          type: 'line',
+          type: line(),
         },
         axis: {
           x: {
@@ -102,7 +99,6 @@ const LineChartBlock: React.FC<LineChartBlockProps> = ({
             tick: {
               rotate: isMobile ? 45 : 0,
               multiline: false,
-              format: '%m-%d-%Y',
               culling: {
                 max: isMobile ? 6 : 10,
               },
