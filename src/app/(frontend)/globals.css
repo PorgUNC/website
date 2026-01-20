@@ -30,8 +30,8 @@
   --background: 0 0% 100%; /* white */
   --foreground: 220 25% 15%; /* deep navy text */
 
-  --header: 204 57% 56%; /* UNC Blue (#4B9CD3) */
-  --footer: 204 57% 56%; /* UNC Blue (#4B9CD3) */
+  --header: 216, 60%, 18%;
+  --footer: 216, 60%, 18%;
 
   --card: 210 40% 98%; /* pale gray-blue card */
   --card-foreground: 220 25% 15%;
