@@ -56,7 +56,7 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
         })
       },
       {
-        rootMargin: '100px', // Start loading 100px before element is visible
+        rootMargin: '300px', // Start loading 300px before element is visible
         threshold: 0.1,
       }
     )
@@ -146,10 +146,10 @@ const PieChartBlock: React.FC<PieChartBlockProps> = ({ showLegend = true, pieCha
   if (!pieChart?.data?.length) return null
 
   return (
-    <div className="w-full min-h-[350px]">
+    <div className="w-full min-h-[450px]">
       <h3 className="text-center text-lg font-semibold mb-4">{pieChart.label || 'Pie Chart'}</h3>
 
-      <div className="w-full h-[300px]">
+      <div className="w-full h-[400px]">
         <div ref={chartRef} className="w-full h-full" />
       </div>
     </div>

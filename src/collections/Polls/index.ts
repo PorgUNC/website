@@ -77,11 +77,11 @@ export const Polls: CollectionConfig<'polls'> = {
         {
           label: 'Content',
           fields: [
-            {
-              name: 'heroImage',
-              type: 'upload',
-              relationTo: 'media',
-            },
+            // {
+            //   name: 'heroImage',
+            //   type: 'upload',
+            //   relationTo: 'media',
+            // },
             {
               name: 'layout',
               type: 'blocks',

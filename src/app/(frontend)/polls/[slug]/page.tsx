@@ -9,7 +9,7 @@ import React, { cache } from 'react'
 
 import type { Post } from '@/payload-types'
 
-import { PostHero } from '@/heros/PostHero'
+import { PollHero } from '@/heros/PollHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -59,7 +59,7 @@ export default async function Poll({params: paramsPromise}: Args) {
       <PayloadRedirects disableNotFound url={url}/>
       {draft && <LivePreviewListener/>}
 
-      <PostHero post={poll as Post}/>
+      <PollHero post={poll as Post}/>
 
       <div className="w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto flex flex-col gap-6">
         <RenderBlocks blocks={layout} constraint={"post"}/>

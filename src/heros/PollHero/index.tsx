@@ -10,22 +10,18 @@ import {getServerSideURL} from '@/utilities/getURL'
 
 
 
-export const PostHero: React.FC<{
+export const PollHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, heroImage, populatedAuthors, publishedAt, title, slug } = post
+  const { categories, populatedAuthors, publishedAt, title, slug } = post
   const siteUrl = getServerSideURL() || 'https://www.porgunc.com'
-  const postUrl = siteUrl + '/posts/' + slug
+  const postUrl = siteUrl + '/polls/' + slug
   const hasAuthors =
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
     <div
-      className={
-        heroImage && typeof heroImage !== 'string'
-          ? 'relative -mt-[10.4rem] flex items-end'
-          : 'relative'
-      }
+
     >
       <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] pb-4"> {/* removed text that made it permawhite*/}
         <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
@@ -68,13 +64,7 @@ export const PostHero: React.FC<{
         </div>
       </div>
 
-      {/* Render image section only if heroImage exists */}
-      {heroImage && typeof heroImage !== 'string' && (
-        <div className="min-h-[80vh] select-none">
-          <Media fill priority imgClassName="-z-10 object-cover" resource={heroImage} />
-          <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
-        </div>
-      )}
+
       <div className="container lg:grid lg:grid-cols-[1fr_48rem_1fr]">
         <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2 flex flex-col gap-2">
           <ShareButton url={postUrl} title={title} />

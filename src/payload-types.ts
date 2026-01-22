@@ -841,7 +841,6 @@ export interface ArchiveBlock {
 export interface Poll {
   id: number;
   title: string;
-  heroImage?: (number | null) | Media;
   layout: (
     | BannerBlock
     | CodeBlock
@@ -1471,7 +1470,6 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PollsSelect<T extends boolean = true> {
   title?: T;
-  heroImage?: T;
   layout?:
     | T
     | {
