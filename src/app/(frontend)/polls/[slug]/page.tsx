@@ -61,10 +61,13 @@ export default async function Poll({params: paramsPromise}: Args) {
 
       <PollHero post={poll as Post}/>
 
-      <div className="w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto flex flex-col gap-6">
+      <div className="w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto flex flex-col gap-2">
+        <div className={"mt-4"}>
+          <PollMaterials sidebar={poll.sidebar} />
+        </div>
         <RenderBlocks blocks={layout} constraint={"post"}/>
 
-        <PollMaterials sidebar={poll.sidebar} />
+
 
         {relatedPolls && relatedPolls.length > 0 && (
           <RelatedPosts

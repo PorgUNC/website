@@ -1,7 +1,7 @@
 "use client";
 
 import {Navbar, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuToggle,} from "@heroui/navbar";
-import { Logo, LogoTagline } from '@/components/Logo/Logo'
+import { Logo, LogoMobile, LogoTagline } from '@/components/Logo/Logo'
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import React from "react";
@@ -37,8 +37,7 @@ const HeroHeader = () => {
 
         <NavbarContent justify="center">
           <Link href="/" className="flex flex-row items-center gap-1">
-            <Logo className="h-10" />
-            <LogoTagline className="h-12 invert dark:invert-0" />
+            <LogoMobile className="h-10" />
           </Link>
         </NavbarContent>
 

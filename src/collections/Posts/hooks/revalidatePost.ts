@@ -2,7 +2,7 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 
-import type { Post } from '../../../payload-types'
+import type { Post } from '@/payload-types'
 
 export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   doc,
@@ -17,6 +17,10 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
       revalidatePath(path)
       revalidateTag('posts-sitemap')
+
+      payload.logger.info(`Revalidating main page for changed post.`)
+      revalidatePath('/')
+      revalidateTag('pages-sitemap')
     }
 
     // If the post was previously published, we need to revalidate the old path
@@ -27,6 +31,10 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
       revalidatePath(oldPath)
       revalidateTag('posts-sitemap')
+
+      payload.logger.info(`Revalidating main page for changed post.`)
+      revalidatePath('/')
+      revalidateTag('pages-sitemap')
     }
   }
   return doc
@@ -38,6 +46,9 @@ export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { 
 
     revalidatePath(path)
     revalidateTag('posts-sitemap')
+
+    revalidatePath('/')
+    revalidateTag('pages-sitemap')
   }
 
   return doc

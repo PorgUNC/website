@@ -30,15 +30,19 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   ...(process.env.NODE_ENV === 'production' &&
-    process.env.NEXT_PUBLIC_PREVIEW !== 'true' && {
-      email: resendAdapter({
-        defaultFromAddress: process.env.SMTP_FROM_ADDRESS ?? '',
+  process.env.NEXT_PUBLIC_PREVIEW !== 'true' && {
+    email: resendAdapter({
+      defaultFromAddress: process.env.SMTP_FROM_ADDRESS ?? '',
         defaultFromName: process.env.SMTP_FROM_NAME ?? '',
-        apiKey: process.env.RESEND_API_KEY || '',
-      }),
+          apiKey: process.env.RESEND_API_KEY || '',
     }),
+  }),
   admin: {
     components: {
+      graphics: {
+        Logo: '/components/Logo/Logo.tsx#LogoTagline',
+        Icon: '/components/Logo/Logo.tsx#Logo',
+      },
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       // beforeLogin: ['@/components/BeforeLogin'],
@@ -82,29 +86,29 @@ export default buildConfig({
   }),
   collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, FeaturedPoll],
-  plugins: [
-    ...plugins,
-    // storage-adapter-placeholder
-  ],
-  secret: process.env.PAYLOAD_SECRET,
-  sharp,
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
-  jobs: {
-    access: {
-      run: ({ req }: { req: PayloadRequest }): boolean => {
-        // Allow logged in users to execute this endpoint (default)
-        if (req.user) return true
+                           globals: [Header, Footer, FeaturedPoll],
+                           plugins: [
+                             ...plugins,
+                             // storage-adapter-placeholder
+                           ],
+                           secret: process.env.PAYLOAD_SECRET,
+                           sharp,
+                           typescript: {
+                             outputFile: path.resolve(dirname, 'payload-types.ts'),
+                           },
+                           jobs: {
+                             access: {
+                               run: ({ req }: { req: PayloadRequest }): boolean => {
+                                 // Allow logged in users to execute this endpoint (default)
+                                 if (req.user) return true
 
-        // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
-        const authHeader = req.headers.get('authorization')
-        return authHeader === `Bearer ${process.env.CRON_SECRET}`
-      },
-    },
-    tasks: [],
-  },
+                                   // If there is no logged in user, then check
+                                   // for the Vercel Cron secret to be present as an
+                                   // Authorization header:
+                                   const authHeader = req.headers.get('authorization')
+                                   return authHeader === `Bearer ${process.env.CRON_SECRET}`
+                               },
+                             },
+                             tasks: [],
+                           },
 })

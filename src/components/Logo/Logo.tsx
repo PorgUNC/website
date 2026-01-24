@@ -50,3 +50,24 @@ export const LogoTagline = (props: Props) => {
     />
   )
 }
+
+export const LogoMobile = (props: Props) => {
+  const {loading: loadingFromProps, priority: priorityFromProps, className} = props
+
+  const loading = loadingFromProps || 'lazy'
+  const priority = priorityFromProps || 'low'
+
+  return (
+    /* eslint-disable @next/next/no-img-element */
+    <img
+      alt="PorgUNC Logo"
+      width={178}
+      height={60}
+      loading={loading}
+      fetchPriority={priority}
+      decoding="async"
+      className={clsx('', className)} // max-w-[9.375rem] w-full h-[34px]
+      src="/logo_mobile.svg"
+    />
+  )
+}
