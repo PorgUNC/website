@@ -38,8 +38,8 @@ export default function PollMaterials({ sidebar }: PollMaterialsProps) {
             const fileUrl = file.url || ''
 
             return (
-              <li key={item.id || index} className="flex items-start">
-                <span className="mr-3 mt-1.5 text-foreground">•</span>
+              <li key={item.id || index} className="flex items-center">
+                <span className="mr-3 text-foreground">•</span>
                 <Link
                   href={fileUrl}
                   target="_blank"
