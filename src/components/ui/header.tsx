@@ -16,7 +16,6 @@ const HeroHeader = () => {
     ["News", "/posts"],
     ["Methodology", "/methodology"],
     ["About Us", "/about"],
-    ["Contact", "/contact"],
     ["Search", "/search"],
   ];
 

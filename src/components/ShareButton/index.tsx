@@ -78,18 +78,18 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ url, title }) => {
       icon: <FaReddit className="w-4 h-4" />,
       color: 'bg-[#FF4500] hover:bg-[#E03D00]',
     },
-    {
-      name: 'Instagram',
-      href: `https://www.instagram.com/`,
-      onClick: (e: React.MouseEvent) => {
-        e.preventDefault()
-        alert(
-          'Instagram does not support direct URL sharing. Please share manually in the Instagram app.',
-        )
-      },
-      icon: <FaInstagram className="w-4 h-4" />,
-      color: 'bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:opacity-90',
-    },
+    // {
+    //   name: 'Instagram',
+    //   href: `https://www.instagram.com/`,
+    //   onClick: (e: React.MouseEvent) => {
+    //     e.preventDefault()
+    //     alert(
+    //       'Instagram does not support direct URL sharing. Please share manually in the Instagram app.',
+    //     )
+    //   },
+    //   icon: <FaInstagram className="w-4 h-4" />,
+    //   color: 'bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:opacity-90',
+    // },
     {
       name: 'Email',
       href: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`,

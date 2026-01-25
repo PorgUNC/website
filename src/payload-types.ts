@@ -841,6 +841,21 @@ export interface ArchiveBlock {
 export interface Poll {
   id: number;
   title: string;
+  subtitle?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   layout: (
     | BannerBlock
     | CodeBlock
@@ -1470,6 +1485,7 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PollsSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   layout?:
     | T
     | {

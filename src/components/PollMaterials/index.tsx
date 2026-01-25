@@ -25,7 +25,7 @@ export default function PollMaterials({ sidebar }: PollMaterialsProps) {
     <aside className="w-full">
       <div className="space-y-4">
         <div className="border-b border-border pb-2">
-          <h2 className="text-xl font-semibold text-foreground">
+          <h2 className="text-xl text-foreground">
             Report Materials
           </h2>
         </div>

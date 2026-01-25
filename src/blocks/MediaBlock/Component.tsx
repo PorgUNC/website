@@ -1,12 +1,12 @@
-import type { StaticImageData } from 'next/image'
+import type {StaticImageData} from 'next/image'
 
-import { cn } from '@/utilities/ui'
+import {cn} from '@/utilities/ui'
 import React from 'react'
 import RichText from '@/components/RichText'
 
-import type { MediaBlock as MediaBlockProps } from '@/payload-types'
+import type {MediaBlock as MediaBlockProps} from '@/payload-types'
 
-import { Media } from '@/components/Media'
+import {Media} from '../../components/Media'
 
 type Props = MediaBlockProps & {
   breakout?: boolean
@@ -52,14 +52,14 @@ export const MediaBlock: React.FC<Props> = (props) => {
       {caption && (
         <div
           className={cn(
-            'mt-6',
+            'mt-2',
             {
               container: !disableInnerContainer,
             },
             captionClassName,
           )}
         >
-          <RichText data={caption} enableGutter={false} />
+          <RichText data={caption} enableGutter={false} textSize="base" />
         </div>
       )}
     </div>

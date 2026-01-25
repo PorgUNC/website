@@ -1,19 +1,21 @@
 import { formatDateTime } from 'src/utilities/formatDateTime'
 import React from 'react'
 
-import type { Post } from '@/payload-types'
+import type { Poll } from '@/payload-types'
 
-import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import {ShareButton} from '@/components/ShareButton'
 import {getServerSideURL} from '@/utilities/getURL'
+import {hasText} from '@payloadcms/richtext-lexical/shared'
+import RichText from '@/components/RichText'
+import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 
 
 export const PollHero: React.FC<{
-  post: Post
+  post: Poll
 }> = ({ post }) => {
-  const { categories, populatedAuthors, publishedAt, title, slug } = post
+  const { categories, populatedAuthors, publishedAt, title, slug, subtitle } = post
   const siteUrl = getServerSideURL() || 'https://www.porgunc.com'
   const postUrl = siteUrl + '/polls/' + slug
   const hasAuthors =
@@ -43,8 +45,14 @@ export const PollHero: React.FC<{
             })}
           </div>
 
-          <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl max-w-3xl">{title}</h1>
-
+          <h1 className="mb-3 text-3xl md:text-5xl lg:text-5xl max-w-3xl">{title}</h1>
+          {hasText(subtitle) && (
+            <RichText
+              className="text-2xl font-utopiasubhead [&_a]:text-gray-600 [&_a]:underline [&_a]:hover:text-gray-900 [&_p]:text-gray-600 dark:[&_a]:text-white dark:[&_a]:hover:text-blue-500 dark:[&_p]:text-white mb-3 max-w-3xl mx-px"
+              data={subtitle as DefaultTypedEditorState}
+              enableGutter={false}
+            />
+          )}
           <div className="flex flex-col md:flex-row gap-4 md:gap-16">
             {hasAuthors && (
               <div className="flex flex-col gap-4">
@@ -55,9 +63,8 @@ export const PollHero: React.FC<{
               </div>
             )}
             {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
+              <div>
+                <time dateTime={publishedAt}>Published: {formatDateTime(publishedAt)}</time>
               </div>
             )}
           </div>

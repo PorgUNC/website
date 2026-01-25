@@ -108,6 +108,7 @@ export const plugins: Plugin[] = [
   // payloadCloudPlugin(),
   s3Storage({
     enabled: process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_PREVIEW !== 'true',
+    // enabled: true,
     collections: {
       media: true,
       files: true,

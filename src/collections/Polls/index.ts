@@ -23,6 +23,11 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import {
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 export const Polls: CollectionConfig<'polls'> = {
   slug: 'polls',
@@ -82,6 +87,16 @@ export const Polls: CollectionConfig<'polls'> = {
             //   type: 'upload',
             //   relationTo: 'media',
             // },
+            {
+              name: 'subtitle',
+              type: 'richText',
+              label: 'Poll Subtitle',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
+                },
+              }),
+            },
             {
               name: 'layout',
               type: 'blocks',
@@ -201,7 +216,7 @@ export const Polls: CollectionConfig<'polls'> = {
           ],
         },
         {
-          label: 'Sidebar',
+          label: 'Files',
           fields: [
             {
               name: 'sidebar',

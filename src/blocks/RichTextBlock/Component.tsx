@@ -15,7 +15,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({richText}) => {
     <div className="">
       {/*  sm:px-6  */}
 
-      <RichText data={richText as DefaultTypedEditorState} enableGutter={false}/>
+      <RichText data={richText as DefaultTypedEditorState} enableGutter={false} textSize="xl"/>
     </div>
 
   )
