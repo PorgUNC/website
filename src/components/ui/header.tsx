@@ -13,8 +13,8 @@ const HeroHeader = () => {
   const navItems = [
     ["Home", "/"],
     ["Polls", "/polls"],
-    ["News", "/news"],
-    ["Methodology", "/about"],
+    ["News", "/posts"],
+    ["Methodology", "/methodology"],
     ["About Us", "/about"],
     ["Contact", "/contact"],
     ["Search", "/search"],
