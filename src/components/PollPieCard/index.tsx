@@ -156,7 +156,7 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
   return (
     <div className="aspect-square w-full border rounded-4xl p-4 shadow-sm hover:shadow-md transition flex flex-col">
       <h2 className="text-xl font-semibold mb-2 text-center">
-        <Link className="hover:underline" href={`/polls/${slug}`}>
+        <Link className="underline sm:no-underline sm:hover:underline" href={`/polls/${slug}`}>
           {title}
         </Link>
       </h2>

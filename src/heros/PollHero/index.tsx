@@ -22,60 +22,53 @@ export const PollHero: React.FC<{
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
-    <div
+    <div className="w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto">
+      <div className="z-10 relative pb-4">
+        <div className="uppercase text-sm mb-4">
+          {categories?.map((category, index) => {
+            if (typeof category === 'object' && category !== null) {
+              const { title: categoryTitle } = category
+              const titleToUse = categoryTitle || 'Untitled category'
+              const isLast = index === categories.length - 1
 
-    >
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] pb-4"> {/* removed text that made it permawhite*/}
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
-            {categories?.map((category, index) => {
-              if (typeof category === 'object' && category !== null) {
-                const { title: categoryTitle } = category
-                const titleToUse = categoryTitle || 'Untitled category'
-                const isLast = index === categories.length - 1
-
-                return (
-                  <React.Fragment key={index}>
-                    {titleToUse}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                  </React.Fragment>
-                )
-              }
-              return null
-            })}
-          </div>
-
-          <h1 className="mb-3 text-3xl md:text-5xl lg:text-5xl max-w-3xl">{title}</h1>
-          {hasText(subtitle) && (
-            <RichText
-              className="text-2xl font-utopiasubhead [&_a]:text-gray-600 [&_a]:underline [&_a]:hover:text-gray-900 [&_p]:text-gray-600 dark:[&_a]:text-white dark:[&_a]:hover:text-blue-500 dark:[&_p]:text-white mb-3 max-w-3xl mx-px"
-              data={subtitle as DefaultTypedEditorState}
-              enableGutter={false}
-            />
+              return (
+                <React.Fragment key={index}>
+                  {titleToUse}
+                  {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
+                </React.Fragment>
+              )
+            }
+            return null
+          })}
+        </div>
+        <h1 className="mb-3 text-4xl md:text-5xl lg:text-5xl ">{title}</h1>
+        {hasText(subtitle) && (
+          <RichText
+            className="font-utopiasubhead [&_a]:text-gray-600 [&_a]:underline [&_a]:hover:text-gray-900 [&_p]:text-gray-600 dark:[&_a]:text-white dark:[&_a]:hover:text-blue-500 dark:[&_p]:text-white mb-3 max-w-3xl mx-px"
+            data={subtitle as DefaultTypedEditorState}
+            enableGutter={false}
+            textSize={"2xl"}
+          />
+        )}
+        <div className="flex flex-col md:flex-row gap-4 md:gap-16">
+          {hasAuthors && (
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1">
+                <p className="text-sm">Author</p>
+                <p>{formatAuthors(populatedAuthors)}</p>
+              </div>
+            </div>
           )}
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
-            )}
-            {publishedAt && (
-              <div>
-                <time dateTime={publishedAt}>Published: {formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
+          {publishedAt && (
+            <div>
+              <time dateTime={publishedAt}>Published: {formatDateTime(publishedAt)}</time>
+            </div>
+          )}
         </div>
       </div>
 
-
-      <div className="container lg:grid lg:grid-cols-[1fr_48rem_1fr]">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2 flex flex-col gap-2">
-          <ShareButton url={postUrl} title={title} />
-        </div>
+      <div className="flex flex-col gap-2">
+        <ShareButton url={postUrl} title={title} />
       </div>
     </div>
   )
