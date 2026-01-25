@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import 'billboard.js/dist/billboard.css'
 import bb, {pie} from "billboard.js";
+import { Link as LinkIcon} from 'lucide-react'
 
 import { Poll } from '@/payload-types'
 
@@ -156,8 +157,9 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
   return (
     <div className="aspect-square w-full border rounded-4xl p-4 shadow-sm hover:shadow-md transition flex flex-col">
       <h2 className="text-xl font-semibold mb-2 text-center">
-        <Link className="underline sm:no-underline sm:hover:underline" href={`/polls/${slug}`}>
+        <Link className="hover:underline inline-flex items-center gap-2" href={`/polls/${slug}`}>
           {title}
+          <LinkIcon className="w-5 h-5" />
         </Link>
       </h2>
 

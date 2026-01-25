@@ -77,7 +77,6 @@ export default async function Poll({params: paramsPromise}: Args) {
         )}
       </div>
     </article>
-
   )
 }
 
