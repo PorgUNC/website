@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Poll } from '@/payload-types'
 import 'billboard.js/dist/billboard.css'
 import bb, {line} from "billboard.js";
+import { Link as LinkIcon} from 'lucide-react'
 
 export type CardPollData = Pick<Poll, 'slug' | 'title' | 'statistics'>
 
@@ -166,10 +167,10 @@ export default function FeaturedChart({ doc, chartNum = 0 }: FeaturedChartProps)
   return (
     <div className="max-w-7xl mx-auto px-4 pt-6 pb-4">
       <div className="w-full flex flex-col border rounded-4xl p-4 shadow-sm hover:shadow-md transition">
-        <Link href={`/polls/${doc?.slug}`}>
-          <h2 className="text-2xl font-semibold mb-4 text-center hover:underline">{doc?.statistics?.lineCharts?.[chartNum].label}</h2>
+        <Link href={`/polls/${doc?.slug}`} className={"group inline-flex items-center justify-center gap-2 mb-4 text-current no-underline"}>
+          <h2 className="text-2xl font-semibold inline-block hover:underline m-0">{doc?.statistics?.lineCharts?.[chartNum].label}</h2>
+          <LinkIcon className="w-5 h-5 text-current opacity-80" />
         </Link>
-
         <div ref={chartRef} />
       </div>
     </div>

@@ -113,7 +113,7 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
         },
         pie: {
           label: {
-            show: !isMobile, // Hide labels on mobile
+            show: !isMobile,
             format: (_value: number, ratio: number, _id: string) =>
               `${Math.round(ratio * 100)}%`,
             threshold: 0.05,
@@ -128,9 +128,9 @@ export default function PollPieCard({ chart, slug, title }: PollPieCardProps) {
             value: (value: number) => value.toString(),
           },
         },
-        size: {
-          height: isMobile ? 250 : undefined,
-        },
+        // size: {
+        //   height: isMobile ? 250 : undefined,
+        // },
         transition: {
           duration: 1000,
         },
