@@ -84,8 +84,8 @@ importers:
         specifier: ^1.2.4
         version: 1.2.4(@types/react@19.2.3)(react@19.2.3)
       billboard.js:
-        specifier: ^3.17.4
-        version: 3.17.4
+        specifier: ^3.18.0
+        version: 3.18.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -3247,8 +3247,8 @@ packages:
     resolution: {integrity: sha512-kX8h7K2srmDyYnXRIppo4AH/wYgzWVCs+eKr3RusRSQ5PvRYoEFmR/I0PbdTjKFAoKqp5+kbxnNTFO9jOfSVJg==}
     hasBin: true
 
-  billboard.js@3.17.4:
-    resolution: {integrity: sha512-biAEOfpuD5btDYFtOypeLuHBiL8zr+R4ytasnbqguNSz78Mwm+0DCPIOc6W6tFPmPFHAkVHsWKJ6SSvRjq1gKQ==}
+  billboard.js@3.18.0:
+    resolution: {integrity: sha512-aci69MLwOX0HfdmQHk+v/iA7L4R+wG53hW9VwhkYzMOyqemWLjscf229XsQRrTau9EJSVyOHnr/rpVukoqppXw==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -5414,6 +5414,7 @@ packages:
 
   scmp@2.1.0:
     resolution: {integrity: sha512-o/mRQGk9Rcer/jEEw/yw4mwo3EU/NvYvp577/Btqrym9Qy5/MdWGBqipbALgd2lrdWTJ5/gqDusxfnQBxOxT2Q==}
+    deprecated: Just use Node.js's crypto.timingSafeEqual()
 
   secure-json-parse@4.1.0:
     resolution: {integrity: sha512-l4KnYfEyqYJxDwlNVyRfO2E4NTHfMKAWdUuA8J0yve2Dz/E/PdBepY03RvyJpssIpRFwJoCD55wA+mEDs6ByWA==}
@@ -9636,7 +9637,7 @@ snapshots:
 
   baseline-browser-mapping@2.9.15: {}
 
-  billboard.js@3.17.4:
+  billboard.js@3.18.0:
     dependencies:
       '@types/d3-selection': 3.0.11
       '@types/d3-transition': 3.0.9
