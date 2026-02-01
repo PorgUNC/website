@@ -38,6 +38,12 @@ export default buildConfig({
     }),
   }),
   admin: {
+    timezones: {
+      supportedTimezones: [
+        { label: 'New York', value: 'America/New_York' },
+      ],
+      defaultTimezone: 'America/New_York',
+    },
     components: {
       graphics: {
         Logo: '/components/Logo/Logo.tsx#LogoTagline',

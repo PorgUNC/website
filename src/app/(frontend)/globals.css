@@ -24,6 +24,7 @@
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 86rem;
+  --font-domine: var(--font-domine);
 }
 
 :root {
@@ -63,6 +64,8 @@
   --success: 160 45% 45%;
   --warning: 40 90% 55%;
   --error: 0 75% 55%;
+
+
 }
 
 /* Dark theme overrides */
@@ -123,6 +126,7 @@
 
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    font-family: 'Domine', serif;
   }
 }
 

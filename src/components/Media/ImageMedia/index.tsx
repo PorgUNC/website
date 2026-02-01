@@ -8,6 +8,8 @@ import React from 'react'
 import type {Props as MediaProps} from '../types'
 import {cssVariables} from '@/cssVariables'
 import {getMediaUrl} from '@/utilities/getMediaUrl'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 const { breakpoints } = cssVariables
 
@@ -56,22 +58,25 @@ export const ImageMedia: React.FC<MediaProps & { style?: React.CSSProperties }> 
       .join(', ')
 
   return (
-    <picture className={cn(pictureClassName)}>
-      <NextImage
-        alt={alt || ''}
-        className={cn(imgClassName)}
-        fill={fill}
-        width={!fill ? width : undefined}
-        height={!fill ? height : undefined}
-        placeholder="blur"
-        blurDataURL={placeholderBlur}
-        priority={priority}
-        quality={100}
-        loading={loading}
-        sizes={sizes}
-        src={src}
-        style={styleFromProps}
-      />
-    </picture>
+    <Zoom>
+      <picture className={cn(pictureClassName)}>
+        <NextImage
+          alt={alt || ''}
+          className={cn(imgClassName)}
+          fill={fill}
+          width={!fill ? width : undefined}
+          height={!fill ? height : undefined}
+          placeholder="blur"
+          blurDataURL={placeholderBlur}
+          priority={priority}
+          quality={100}
+          loading={loading}
+          sizes={sizes}
+          src={src}
+          style={styleFromProps}
+        />
+      </picture>
+    </Zoom>
+
   )
 }

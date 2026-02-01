@@ -307,6 +307,7 @@ export const Polls: CollectionConfig<'polls'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      timezone: true,
       admin: {
         date: { pickerAppearance: 'dayAndTime' },
         position: 'sidebar',
