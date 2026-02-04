@@ -33,6 +33,7 @@ import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/
 import { Logo as Logo_e93e9bd37dbcbcb6182f6bb2f2523bd9 } from '../../../components/Logo/Logo.tsx'
 import { LogoTagline as LogoTagline_e93e9bd37dbcbcb6182f6bb2f2523bd9 } from '../../../components/Logo/Logo.tsx'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
+import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -69,5 +70,6 @@ export const importMap = {
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
   "/components/Logo/Logo.tsx#Logo": Logo_e93e9bd37dbcbcb6182f6bb2f2523bd9,
   "/components/Logo/Logo.tsx#LogoTagline": LogoTagline_e93e9bd37dbcbcb6182f6bb2f2523bd9,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
