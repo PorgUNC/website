@@ -16,11 +16,11 @@ export const revalidatePoll: CollectionAfterChangeHook<Poll> = ({
       payload.logger.info(`Revalidating post at path: ${path}`)
 
       revalidatePath(path)
-      revalidateTag('polls-sitemap')
+      revalidateTag('polls-sitemap', "max")
 
       payload.logger.info(`Revalidating main page for changed post.`)
       revalidatePath('/')
-      revalidateTag('pages-sitemap')
+      revalidateTag('pages-sitemap', "max")
     }
 
     // If the post was previously published, we need to revalidate the old path
@@ -30,11 +30,11 @@ export const revalidatePoll: CollectionAfterChangeHook<Poll> = ({
       payload.logger.info(`Revalidating old post at path: ${oldPath}`)
 
       revalidatePath(oldPath)
-      revalidateTag('polls-sitemap')
+      revalidateTag('polls-sitemap', "max")
 
       payload.logger.info(`Revalidating main page for changed post.`)
       revalidatePath('/')
-      revalidateTag('pages-sitemap')
+      revalidateTag('pages-sitemap', "max")
     }
   }
   return doc
@@ -45,10 +45,10 @@ export const revalidateDelete: CollectionAfterDeleteHook<Poll> = ({ doc, req: { 
     const path = `/polls/${doc?.slug}`
 
     revalidatePath(path)
-    revalidateTag('polls-sitemap')
+    revalidateTag('polls-sitemap', "max")
 
     revalidatePath('/')
-    revalidateTag('pages-sitemap')
+    revalidateTag('pages-sitemap', "max")
   }
 
   return doc
