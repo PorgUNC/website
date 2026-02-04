@@ -97,7 +97,7 @@ export async function generateStaticParams() {
   const pages: { categorySlug: string; pageNumber: string }[] = []
 
   for (const category of categories.docs) {
-    if (!category.slug) continue
+    if (!category.slug || typeof category.slug !== 'string') continue
 
     const posts = await payload.find({
       collection: 'posts',
@@ -108,7 +108,7 @@ export async function generateStaticParams() {
     const totalPages = Math.ceil((posts.totalDocs || 0) / POSTS_PER_PAGE)
     for (let i = 1; i <= totalPages; i++) {
       pages.push({
-        categorySlug: category.slug,
+        categorySlug: category.slug as string,
         pageNumber: String(i),
       })
     }

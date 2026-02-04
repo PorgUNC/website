@@ -29,6 +29,8 @@ export const Programs: React.FC<
     errors: Partial<FieldErrorsImpl>
   }
 > = ({ name, control, errors, label, required, width, defaultValue }) => {
+  const [searchQuery, setSearchQuery] = useState('')
+
   return (
     <Width width={width}>
       <Label htmlFor={name}>
@@ -44,7 +46,6 @@ export const Programs: React.FC<
         defaultValue={defaultValue ? [defaultValue] : []}
         name={name}
         render={({ field: { onChange, value } }) => {
-          const [searchQuery, setSearchQuery] = useState('')
           const selectedValues = Array.isArray(value) ? value : []
           const selectedLabels = selectedValues
             .map((val) => programOptions.find((opt) => opt.value === val)?.label)

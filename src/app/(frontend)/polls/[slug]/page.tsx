@@ -29,9 +29,11 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = polls.docs.map(({ slug }) => {
-    return { slug }
-  })
+  const params = polls.docs
+    .filter(({ slug }) => typeof slug === 'string')
+    .map(({ slug }) => {
+      return { slug: slug as string }
+    })
 
   return params
 }

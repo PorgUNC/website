@@ -26,11 +26,11 @@ export async function generateStaticParams() {
   })
 
   const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
+    .filter((doc) => {
+      return typeof doc.slug === 'string' && doc.slug !== 'home'
     })
     .map(({ slug }) => {
-      return { slug }
+      return { slug: slug as string }
     })
 
   return params

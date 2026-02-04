@@ -28,6 +28,8 @@ export const Select: React.FC<
     allowSearching?: boolean
   }
 > = ({ name, control, errors, label, options, required, width, defaultValue, allowMultiple, allowSearching }) => {
+  const [searchQuery, setSearchQuery] = useState('')
+
   return (
     <Width width={width}>
       <Label htmlFor={name}>
@@ -45,7 +47,6 @@ export const Select: React.FC<
         render={({ field: { onChange, value } }) => {
           if (allowMultiple) {
             // Multi-select mode
-            const [searchQuery, setSearchQuery] = useState('')
             const selectedValues = Array.isArray(value) ? value : []
             const selectedLabels = selectedValues
               .map((val) => options.find((opt) => opt.value === val)?.label)
