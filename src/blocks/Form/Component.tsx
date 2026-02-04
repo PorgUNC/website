@@ -16,7 +16,7 @@ export type FormBlockType = {
   blockName?: string
   blockType?: 'formBlock'
   enableIntro: boolean
-  form: FormType
+  form: FormType | string // Can be populated FormType or just an ID string
   introContent?: DefaultTypedEditorState
   token?: string
   validDuration?: number
@@ -33,7 +33,6 @@ export const FormBlock: React.FC<
   const {
     enableIntro,
     form: formFromProps,
-    form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
     token,
     validDuration,
@@ -42,8 +41,30 @@ export const FormBlock: React.FC<
     tokenGeneratedAt,
   } = props
 
+  // Type guard to check if form is populated
+  const isFormPopulated = (form: FormType | string): form is FormType => {
+    return typeof form === 'object' && form !== null && 'id' in form
+  }
+
+  // Handle case where form is not populated (just an ID after server restart)
+  let formID: string | undefined
+  let confirmationMessage: any
+  let confirmationType: any
+  let redirect: any
+  let submitButtonLabel: string = 'Submit'
+
+  if (isFormPopulated(formFromProps)) {
+    formID = formFromProps.id
+    confirmationMessage = formFromProps.confirmationMessage
+    confirmationType = formFromProps.confirmationType
+    redirect = formFromProps.redirect
+    submitButtonLabel = formFromProps.submitButtonLabel || 'Submit'
+  } else {
+    formID = formFromProps
+  }
+
   const formMethods = useForm({
-    defaultValues: formFromProps.fields,
+    defaultValues: isFormPopulated(formFromProps) ? formFromProps.fields : undefined,
   })
   const {
     control,
@@ -147,12 +168,18 @@ export const FormBlock: React.FC<
       )}
       <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
         <FormProvider {...formMethods}>
+          {!isFormPopulated(formFromProps) && (
+            <div className="text-red-600">
+              Error: Form data not loaded. This usually happens when the form relationship is not populated.
+              Please ensure the page query includes proper depth configuration.
+            </div>
+          )}
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
             <RichText data={confirmationMessage} />
           )}
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-          {!hasSubmitted && (
+          {!hasSubmitted && isFormPopulated(formFromProps) && (
             <>
               {isPoll && token && validDuration && tokenGeneratedAt && (
                 <TotpTimer
