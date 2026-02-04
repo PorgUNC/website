@@ -530,6 +530,16 @@ export interface FormBlock {
  */
 export interface Form {
   id: number;
+  isPoll?: boolean | null;
+  enabled?: boolean | null;
+  validDuration?: number | null;
+  authKey?: string | null;
+  tokens?:
+    | {
+        formToken: string;
+        id?: string | null;
+      }[]
+    | null;
   title: string;
   fields?:
     | (
@@ -551,15 +561,6 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
           }
         | {
             message?: {
@@ -605,6 +606,8 @@ export interface Form {
                 }[]
               | null;
             required?: boolean | null;
+            allowMultiple?: boolean | null;
+            allowSearching?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'select';
@@ -637,6 +640,45 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: 'textarea';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'radio';
+          }
+        | {
+            /**
+             * The name of the field that will be used in the form submission data.
+             */
+            name: string;
+            /**
+             * The label that will be displayed above the field.
+             */
+            label: string;
+            /**
+             * The width of the field as a percentage of the form width (e.g., 50 for half width).
+             */
+            width?: number | null;
+            required?: boolean | null;
+            /**
+             * Optional: A single program value to pre-select (e.g., "computer-science-major-bs").
+             */
+            defaultValue?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'programs';
           }
       )[]
     | null;
@@ -1829,6 +1871,16 @@ export interface RedirectsSelect<T extends boolean = true> {
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
+  isPoll?: T;
+  enabled?: T;
+  validDuration?: T;
+  authKey?: T;
+  tokens?:
+    | T
+    | {
+        formToken?: T;
+        id?: T;
+      };
   title?: T;
   fields?:
     | T
@@ -1845,16 +1897,6 @@ export interface FormsSelect<T extends boolean = true> {
               blockName?: T;
             };
         country?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        email?:
           | T
           | {
               name?: T;
@@ -1898,6 +1940,8 @@ export interface FormsSelect<T extends boolean = true> {
                     id?: T;
                   };
               required?: T;
+              allowMultiple?: T;
+              allowSearching?: T;
               id?: T;
               blockName?: T;
             };
@@ -1930,6 +1974,35 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        radio?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        programs?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
               id?: T;
               blockName?: T;
             };
