@@ -61,27 +61,28 @@ export const Programs: React.FC<
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="w-full justify-between font-normal"
+                  className="w-full justify-start font-normal min-h-10 h-auto"
                   id={name}
                 >
-                  {selectedLabels.length > 0 ? (
-                    <span className="truncate">{selectedLabels.join(', ')}</span>
-                  ) : (
-                    <span className="text-muted-foreground">{label}</span>
-                  )}
+                  <div className="flex flex-wrap gap-1 flex-1 items-center">
+                    {selectedLabels.length > 0 ? (
+                      selectedLabels.map((label, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium"
+                        >
+                          {label}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-muted-foreground">{label}</span>
+                    )}
+                  </div>
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-                <div className="p-2 border-b">
-                  <Input
-                    placeholder="Search programs..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-9"
-                  />
-                </div>
-                <div className="max-h-64 overflow-y-auto p-2">
+              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col" align="start">
+                <div className="max-h-64 overflow-y-auto p-2 flex-1">
                   {filteredOptions.length > 0 ? (
                     filteredOptions.map((option) => {
                       const isSelected = selectedValues.includes(option.value)
@@ -106,6 +107,14 @@ export const Programs: React.FC<
                       No programs found
                     </div>
                   )}
+                </div>
+                <div className="p-2 border-t sticky bottom-0 bg-background">
+                  <Input
+                    placeholder="Search programs..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="h-9"
+                  />
                 </div>
               </PopoverContent>
             </Popover>
