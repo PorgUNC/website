@@ -8,22 +8,20 @@ import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
-import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
-import './globals.css'
+import '../(frontend)/globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const domine = Domine({
   subsets: ['latin'],
-  // weight: ['400', '700'],
   variable: '--font-domine',
 })
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function FormLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
@@ -35,16 +33,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
-
-          <Header />
-          {/*<div className={"pb-3"}></div>*/}
+          {/*<AdminBar*/}
+          {/*  adminBarProps={{*/}
+          {/*    preview: isEnabled,*/}
+          {/*  }}*/}
+          {/*/>*/}
           {children}
-          <Footer />
+          {/*<Footer />*/}
         </Providers>
       </body>
     </html>

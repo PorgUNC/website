@@ -61,7 +61,8 @@ export const Files: CollectionConfig = {
     },
     {
       name: 'publishedDate',
-      type: 'date',
+       type: 'date',
+      timezone: true,
       admin: {
         position: 'sidebar',
       },

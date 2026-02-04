@@ -155,6 +155,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      timezone: true,
       admin: {
         date: { pickerAppearance: 'dayAndTime' },
         position: 'sidebar',

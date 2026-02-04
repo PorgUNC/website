@@ -12,54 +12,7 @@
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "supportedTimezones".
  */
-export type SupportedTimezones =
-  | 'Pacific/Midway'
-  | 'Pacific/Niue'
-  | 'Pacific/Honolulu'
-  | 'Pacific/Rarotonga'
-  | 'America/Anchorage'
-  | 'Pacific/Gambier'
-  | 'America/Los_Angeles'
-  | 'America/Tijuana'
-  | 'America/Denver'
-  | 'America/Phoenix'
-  | 'America/Chicago'
-  | 'America/Guatemala'
-  | 'America/New_York'
-  | 'America/Bogota'
-  | 'America/Caracas'
-  | 'America/Santiago'
-  | 'America/Buenos_Aires'
-  | 'America/Sao_Paulo'
-  | 'Atlantic/South_Georgia'
-  | 'Atlantic/Azores'
-  | 'Atlantic/Cape_Verde'
-  | 'Europe/London'
-  | 'Europe/Berlin'
-  | 'Africa/Lagos'
-  | 'Europe/Athens'
-  | 'Africa/Cairo'
-  | 'Europe/Moscow'
-  | 'Asia/Riyadh'
-  | 'Asia/Dubai'
-  | 'Asia/Baku'
-  | 'Asia/Karachi'
-  | 'Asia/Tashkent'
-  | 'Asia/Calcutta'
-  | 'Asia/Dhaka'
-  | 'Asia/Almaty'
-  | 'Asia/Jakarta'
-  | 'Asia/Bangkok'
-  | 'Asia/Shanghai'
-  | 'Asia/Singapore'
-  | 'Asia/Tokyo'
-  | 'Asia/Seoul'
-  | 'Australia/Brisbane'
-  | 'Australia/Sydney'
-  | 'Pacific/Guam'
-  | 'Pacific/Noumea'
-  | 'Pacific/Auckland'
-  | 'Pacific/Fiji';
+export type SupportedTimezones = 'America/New_York';
 
 export interface Config {
   auth: {
@@ -239,6 +192,7 @@ export interface Page {
     description?: string | null;
   };
   publishedAt?: string | null;
+  publishedAt_tz?: SupportedTimezones;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -265,6 +219,7 @@ export interface Post {
     description?: string | null;
   };
   publishedAt?: string | null;
+  publishedAt_tz?: SupportedTimezones;
   authors?: (number | User)[] | null;
   populatedAuthors?:
     | {
@@ -575,6 +530,16 @@ export interface FormBlock {
  */
 export interface Form {
   id: number;
+  isPoll?: boolean | null;
+  enabled?: boolean | null;
+  validDuration?: number | null;
+  authKey?: string | null;
+  tokens?:
+    | {
+        formToken: string;
+        id?: string | null;
+      }[]
+    | null;
   title: string;
   fields?:
     | (
@@ -596,15 +561,6 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
           }
         | {
             message?: {
@@ -650,6 +606,8 @@ export interface Form {
                 }[]
               | null;
             required?: boolean | null;
+            allowMultiple?: boolean | null;
+            allowSearching?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'select';
@@ -682,6 +640,45 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: 'textarea';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'radio';
+          }
+        | {
+            /**
+             * The name of the field that will be used in the form submission data.
+             */
+            name: string;
+            /**
+             * The label that will be displayed above the field.
+             */
+            label: string;
+            /**
+             * The width of the field as a percentage of the form width (e.g., 50 for half width).
+             */
+            width?: number | null;
+            required?: boolean | null;
+            /**
+             * Optional: A single program value to pre-select (e.g., "computer-science-major-bs").
+             */
+            defaultValue?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'programs';
           }
       )[]
     | null;
@@ -970,6 +967,7 @@ export interface Poll {
     description?: string | null;
   };
   publishedAt?: string | null;
+  publishedAt_tz?: SupportedTimezones;
   authors?: (number | User)[] | null;
   populatedAuthors?:
     | {
@@ -1010,6 +1008,7 @@ export interface File {
     [k: string]: unknown;
   } | null;
   publishedDate?: string | null;
+  publishedDate_tz?: SupportedTimezones;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1379,6 +1378,7 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  publishedAt_tz?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1603,6 +1603,7 @@ export interface PollsSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  publishedAt_tz?: T;
   authors?: T;
   populatedAuthors?:
     | T
@@ -1666,6 +1667,7 @@ export interface PostsSelect<T extends boolean = true> {
         description?: T;
       };
   publishedAt?: T;
+  publishedAt_tz?: T;
   authors?: T;
   populatedAuthors?:
     | T
@@ -1781,6 +1783,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface FilesSelect<T extends boolean = true> {
   altText?: T;
   publishedDate?: T;
+  publishedDate_tz?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1868,6 +1871,16 @@ export interface RedirectsSelect<T extends boolean = true> {
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
+  isPoll?: T;
+  enabled?: T;
+  validDuration?: T;
+  authKey?: T;
+  tokens?:
+    | T
+    | {
+        formToken?: T;
+        id?: T;
+      };
   title?: T;
   fields?:
     | T
@@ -1884,16 +1897,6 @@ export interface FormsSelect<T extends boolean = true> {
               blockName?: T;
             };
         country?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        email?:
           | T
           | {
               name?: T;
@@ -1937,6 +1940,8 @@ export interface FormsSelect<T extends boolean = true> {
                     id?: T;
                   };
               required?: T;
+              allowMultiple?: T;
+              allowSearching?: T;
               id?: T;
               blockName?: T;
             };
@@ -1969,6 +1974,35 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        radio?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        programs?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
               id?: T;
               blockName?: T;
             };
