@@ -23,6 +23,11 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // needed to prevent empty fields as being null, which breaks the db
+    const filteredSubmissionData = submissionData.filter(
+      (entry) => entry.value !== null && entry.value !== undefined && entry.value !== ''
+    )
+
     const payload = await getPayload({ config: configPromise })
 
     // Fetch the form to verify it exists and is enabled
@@ -85,7 +90,7 @@ export async function POST(req: NextRequest) {
       collection: 'form-submissions',
       data: {
         form: formID,
-        submissionData,
+        submissionData: filteredSubmissionData,
       },
     })
 
