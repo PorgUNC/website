@@ -2,16 +2,22 @@ import {Block} from 'payload'
 
 export const PollArchiveBlock: Block = {
   slug: 'pollarchive',
+  interfaceName: 'PollArchiveBlock',
   labels: {
     singular: 'Poll Archive',
     plural: 'Poll Archives'
   },
   fields: [
     {
-      type: 'number',
-      name: 'number',
-      label: 'Number of Polls to show',
-      defaultValue: 1,
+      name: 'selectedPolls',
+      type: 'relationship',
+      relationTo: 'polls',
+      hasMany: true,
+      required: true,
+      label: 'Select Polls',
+      admin: {
+        description: 'Choose which polls to display. All pie charts from selected polls will be shown (except those marked as hidden).',
+      },
     },
     {
       name: 'fullWidth',

@@ -162,16 +162,7 @@ export interface Page {
     | MediaBlock
     | ArchiveBlock
     | FormBlock
-    | {
-        number?: number | null;
-        /**
-         * Enable to let this block span the full page width.
-         */
-        fullWidth?: boolean | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'pollarchive';
-      }
+    | PollArchiveBlock
     | {
         featuredpoll?: (number | null) | Poll;
         /**
@@ -1023,6 +1014,23 @@ export interface File {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PollArchiveBlock".
+ */
+export interface PollArchiveBlock {
+  /**
+   * Choose which polls to display. All pie charts from selected polls will be shown (except those marked as hidden).
+   */
+  selectedPolls: (number | Poll)[];
+  /**
+   * Enable to let this block span the full page width.
+   */
+  fullWidth?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pollarchive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "invitations".
  */
 export interface Invitation {
@@ -1353,14 +1361,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        pollarchive?:
-          | T
-          | {
-              number?: T;
-              fullWidth?: T;
-              id?: T;
-              blockName?: T;
-            };
+        pollarchive?: T | PollArchiveBlockSelect<T>;
         featuredchart?:
           | T
           | {
@@ -1476,6 +1477,16 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PollArchiveBlock_select".
+ */
+export interface PollArchiveBlockSelect<T extends boolean = true> {
+  selectedPolls?: T;
+  fullWidth?: T;
   id?: T;
   blockName?: T;
 }
