@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, X } from 'lucide-react'
 import React, { useState } from 'react'
 import { Controller } from 'react-hook-form'
 
@@ -64,18 +64,30 @@ export const Programs: React.FC<
                   className="w-full justify-start font-normal min-h-10 h-auto"
                   id={name}
                 >
-                  <div className="flex flex-wrap gap-1 flex-1 items-center">
+                  <div className="flex flex-wrap gap-1 flex-1 items-center overflow-hidden">
                     {selectedLabels.length > 0 ? (
                       selectedLabels.map((label, index) => (
                         <span
                           key={index}
-                          className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium"
+                          className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium max-w-full"
                         >
-                          {label}
+                          <span className="truncate">{label}</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              const newValues = selectedValues.filter((_, i) => i !== index)
+                              onChange(newValues)
+                            }}
+                            className="shrink-0 hover:bg-secondary-foreground/20 rounded-sm"
+                          >
+                            <X className="h-3 w-3" />
+                            <span className="sr-only">Remove {label}</span>
+                          </button>
                         </span>
                       ))
                     ) : (
-                      <span className="text-muted-foreground">{label}</span>
+                      <span className="text-muted-foreground truncate">{label}</span>
                     )}
                   </div>
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
