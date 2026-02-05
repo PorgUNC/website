@@ -36,7 +36,7 @@ export const Radio: React.FC<
                 return (
                   <div key={value} className="flex items-center space-x-2">
                     <RadioGroupItem value={value} id={`${name}-${value}`} />
-                    <Label htmlFor={`${name}-${value}`} className="font-normal cursor-pointer">
+                    <Label htmlFor={`${name}-${value}`} className="text-base cursor-pointer">
                       {label}
                     </Label>
                   </div>
