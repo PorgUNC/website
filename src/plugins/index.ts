@@ -151,8 +151,14 @@ export const plugins: Plugin[] = [
         delete: authenticated,
       },
       admin: {
+        preview: () => '',
         group: 'Forms',
-        defaultColumns: ["title", "id"]
+        defaultColumns: ["title", "id"],
+        components: {
+          edit: {
+            PreviewButton: '/components/ExportFormSubmissions/ExportButton.tsx#ExportFormSubmissionsButton',
+          },
+        },
       },
       fields: ({ defaultFields }) => {
         return [
