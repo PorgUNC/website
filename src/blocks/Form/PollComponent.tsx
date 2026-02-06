@@ -6,30 +6,42 @@ import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import { TotpTimer } from '@/components/TotpTimer'
 
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
+import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
-export type FormBlockType = {
+export type PollFormBlockType = {
   blockName?: string
   blockType?: 'formBlock'
   enableIntro: boolean
   form: FormType
   introContent?: DefaultTypedEditorState
+  token: string
+  validDuration: number
+  authKey: string
+  isPoll: true
+  tokenGeneratedAt: number // timestamp in seconds when token was generated
 }
 
-export const FormBlock: React.FC<
+export const PollFormBlock: React.FC<
   {
     id?: string
-  } & FormBlockType
+  } & PollFormBlockType
 > = (props) => {
   const {
     enableIntro,
     form: formFromProps,
-    form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
+    token,
+    validDuration,
+    authKey,
+    tokenGeneratedAt,
   } = props
+
+  const formID = formFromProps.id
+  const { confirmationMessage, confirmationType, redirect, submitButtonLabel = 'Submit' } = formFromProps
 
   const formMethods = useForm({
     defaultValues: formFromProps.fields,
@@ -44,6 +56,7 @@ export const FormBlock: React.FC<
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const [isTokenExpired, setIsTokenExpired] = useState(false)
   const router = useRouter()
 
   const onSubmit = useCallback(
@@ -51,6 +64,13 @@ export const FormBlock: React.FC<
       let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
+
+        if (isTokenExpired) {
+          setError({
+            message: 'Your session has expired. Please request a new QR code.',
+          })
+          return
+        }
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
@@ -67,6 +87,9 @@ export const FormBlock: React.FC<
             body: JSON.stringify({
               form: formID,
               submissionData: dataToSend,
+              token,
+              authKey,
+              validDuration,
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -110,7 +133,7 @@ export const FormBlock: React.FC<
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType],
+    [router, formID, redirect, confirmationType, token, authKey, validDuration, isTokenExpired],
   )
 
   return (
@@ -126,38 +149,53 @@ export const FormBlock: React.FC<
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
           {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
-              </div>
+            <>
+              <TotpTimer
+                token={token}
+                validDuration={validDuration}
+                period={10}
+                tokenGeneratedAt={tokenGeneratedAt}
+                onExpired={() => setIsTokenExpired(true)}
+              />
+              <form id={formID} onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-4 last:mb-0">
+                  {formFromProps &&
+                    formFromProps.fields &&
+                    formFromProps.fields?.map((field, index) => {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                      if (Field) {
+                        return (
+                          <div className="mb-6 last:mb-0" key={index}>
+                            <Field
+                              form={formFromProps}
+                              {...field}
+                              {...formMethods}
+                              control={control}
+                              errors={errors}
+                              register={register}
+                            />
+                          </div>
+                        )
+                      }
+                      return null
+                    })}
+                </div>
 
-              <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
-              </Button>
-            </form>
+                <Button
+                  form={formID}
+                  type="submit"
+                  variant="default"
+                  disabled={isTokenExpired}
+                >
+                  {submitButtonLabel}
+                </Button>
+              </form>
+            </>
           )}
         </FormProvider>
       </div>
     </div>
   )
 }
+

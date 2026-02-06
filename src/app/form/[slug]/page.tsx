@@ -5,6 +5,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
+import { PollFormBlock } from '@/blocks/Form/PollComponent'
 import { FormBlock } from '@/blocks/Form/Component'
 import { generateMeta } from '@/utilities/generateMeta'
 import { validateTotp } from '@/lib/totp/validateTotp'
@@ -136,7 +137,7 @@ export default async function FormPage({ params: paramsPromise, searchParams: se
 
       return (
         <div className="py-16">
-          <FormBlock
+          <PollFormBlock
             form={form as unknown as FormType}
             enableIntro={false}
             token={token}
@@ -155,7 +156,6 @@ export default async function FormPage({ params: paramsPromise, searchParams: se
         <FormBlock
           form={form as unknown as FormType}
           enableIntro={false}
-          isPoll={false}
         />
       </div>
     )

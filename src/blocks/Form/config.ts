@@ -15,6 +15,11 @@ export const FormBlock: Block = {
       name: 'form',
       type: 'relationship',
       relationTo: 'forms',
+      filterOptions: {
+        isPoll: {
+          not_equals: true,
+        },
+      },
       required: true,
     },
     {
