@@ -27,6 +27,7 @@ import { Code } from '@/blocks/Code/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { authenticated } from '@/access/authenticated'
 import { Programs } from '@/blocks/Form/Programs/config'
+import { Year } from '@/blocks/Form/Year/config'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? doc.title : 'PorgUNC'
@@ -78,6 +79,7 @@ export const plugins: Plugin[] = [
       payment: false,
       email: false,
       programs: Programs,
+      year: Year,
       message: {
         ...fields.message,
         fields: [

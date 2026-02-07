@@ -9,6 +9,7 @@ import { Select } from './Select'
 import { State } from './State'
 import { Text } from './Text'
 import { Textarea } from './Textarea'
+import { Year } from './Year'
 
 export const fields = {
   checkbox: Checkbox,
@@ -22,4 +23,5 @@ export const fields = {
   state: State,
   text: Text,
   textarea: Textarea,
+  year: Year,
 }

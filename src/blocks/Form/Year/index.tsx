@@ -1,0 +1,150 @@
+import type { Control, FieldErrorsImpl } from 'react-hook-form'
+
+import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { ChevronDown, X } from 'lucide-react'
+import React, { useState } from 'react'
+import { Controller } from 'react-hook-form'
+
+import { Error } from '../Error'
+import { Width } from '../Width'
+
+export interface YearField {
+  blockName?: string
+  blockType: 'programs'
+  defaultValue?: string
+  minYear: number
+  maxYear: number
+  label?: string
+  name: string
+  required?: boolean
+  width?: number
+}
+
+export const Year: React.FC<
+  YearField & {
+  control: Control
+  errors: Partial<FieldErrorsImpl>
+}
+> = ({ name, control, errors, label, required, width, defaultValue, minYear, maxYear }) => {
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // generates inclusive
+  const yearOptions = React.useMemo(() => {
+    const options = []
+    for (let year = maxYear; year >= minYear; year--) {
+      options.push({ value: year.toString(), label: year.toString() })
+    }
+    return options
+  }, [minYear, maxYear])
+
+  return (
+    <Width width={width}>
+      <Label htmlFor={name}>
+        {label}
+        {required && (
+          <span className="required">
+            * <span className="sr-only">(required)</span>
+          </span>
+        )}
+      </Label>
+      <Controller
+        control={control}
+        defaultValue={defaultValue ? [defaultValue] : []}
+        name={name}
+        render={({ field: { onChange, value } }) => {
+          const selectedValues = Array.isArray(value) ? value : []
+          const selectedLabels = selectedValues
+            .map((val) => yearOptions.find((opt) => opt.value === val)?.label)
+            .filter(Boolean)
+
+          const filteredOptions = yearOptions.filter((option) =>
+            option.label.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+
+          return (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  className="w-full justify-start font-normal min-h-10 h-auto"
+                  id={name}
+                >
+                  <div className="flex flex-wrap gap-1 flex-1 items-center overflow-hidden">
+                    {selectedLabels.length > 0 ? (
+                      selectedLabels.map((label, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium max-w-full"
+                        >
+                          <span className="truncate">{label}</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              const newValues = selectedValues.filter((_, i) => i !== index)
+                              onChange(newValues)
+                            }}
+                            className="shrink-0 hover:bg-secondary-foreground/20 rounded-sm"
+                          >
+                            <X className="h-3 w-3" />
+                            <span className="sr-only">Remove {label}</span>
+                          </button>
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-muted-foreground truncate">{label}</span>
+                    )}
+                  </div>
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col" align="start">
+                <div className="max-h-64 overflow-y-auto p-2 flex-1">
+                  {filteredOptions.length > 0 ? (
+                    filteredOptions.map((option) => {
+                      const isSelected = selectedValues.includes(option.value)
+                      return (
+                        <div
+                          key={option.value}
+                          className="flex items-center space-x-2 rounded px-2 py-1.5 cursor-pointer hover:bg-accent"
+                          onClick={() => {
+                            const newValues = isSelected
+                              ? selectedValues.filter((val) => val !== option.value)
+                              : [...selectedValues, option.value]
+                            onChange(newValues)
+                          }}
+                        >
+                          <Checkbox checked={isSelected} />
+                          <label className="flex-1 cursor-pointer text-sm">{option.label}</label>
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <div className="py-6 text-center text-sm text-muted-foreground">
+                      No years found
+                    </div>
+                  )}
+                </div>
+                <div className="p-2 border-t sticky bottom-0 bg-background">
+                  <Input
+                    placeholder="Search years..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="h-9"
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
+          )
+        }}
+        rules={{ required }}
+      />
+      {errors[name] && <Error name={name} />}
+    </Width>
+  )
+}

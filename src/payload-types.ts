@@ -671,6 +671,33 @@ export interface Form {
             blockName?: string | null;
             blockType: 'programs';
           }
+        | {
+            /**
+             * The name of the field that will be used in the form submission data.
+             */
+            name: string;
+            /**
+             * The label that will be displayed above the field.
+             */
+            label: string;
+            /**
+             * The earliest year that can be selected (e.g., 1900).
+             */
+            minYear: number;
+            /**
+             * The latest year that can be selected (e.g., 2100).
+             */
+            maxYear: number;
+            /**
+             * The width of the field as a percentage of the form width (e.g., 50 for half width).
+             */
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'year';
+          }
       )[]
     | null;
   submitButtonLabel?: string | null;
@@ -2011,6 +2038,19 @@ export interface FormsSelect<T extends boolean = true> {
           | {
               name?: T;
               label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              id?: T;
+              blockName?: T;
+            };
+        year?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              minYear?: T;
+              maxYear?: T;
               width?: T;
               required?: T;
               defaultValue?: T;
