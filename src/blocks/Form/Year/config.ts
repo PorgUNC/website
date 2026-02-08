@@ -58,7 +58,25 @@ export const Year: Block = {
       type: 'text',
       label: 'Default Value',
       admin: {
-        // description: '',
+        description: 'The default year value to pre-select (e.g., 2000).',
+      },
+    },
+    {
+      name: 'allowMultiple',
+      type: 'checkbox',
+      label: 'Allow Multiple Selection',
+      defaultValue: false,
+      admin: {
+        description: 'Allow users to select multiple years.',
+      },
+    },
+    {
+      name: 'allowSearching',
+      type: 'checkbox',
+      label: 'Allow Searching',
+      defaultValue: false,
+      admin: {
+        description: 'Add a search box to filter year options (only works with multiple selection).',
       },
     },
   ],

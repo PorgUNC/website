@@ -693,7 +693,18 @@ export interface Form {
              */
             width?: number | null;
             required?: boolean | null;
+            /**
+             * The default year value to pre-select (e.g., 2000).
+             */
             defaultValue?: string | null;
+            /**
+             * Allow users to select multiple years.
+             */
+            allowMultiple?: boolean | null;
+            /**
+             * Add a search box to filter year options (only works with multiple selection).
+             */
+            allowSearching?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'year';
@@ -2054,6 +2065,8 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               required?: T;
               defaultValue?: T;
+              allowMultiple?: T;
+              allowSearching?: T;
               id?: T;
               blockName?: T;
             };
