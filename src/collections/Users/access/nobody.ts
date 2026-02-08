@@ -1,3 +1,5 @@
 import type {Access} from 'payload'
 
-export const nobody: Access = () => false
+const nobody: Access = () => false
+
+export default nobody

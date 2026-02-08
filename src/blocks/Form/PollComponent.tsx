@@ -83,7 +83,7 @@ export const PollFormBlock: React.FC<
         }, 1000)
 
         try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+          const req = await fetch(`${getClientSideURL()}/api/custom/forms/submit`, {
             body: JSON.stringify({
               form: formID,
               submissionData: dataToSend,

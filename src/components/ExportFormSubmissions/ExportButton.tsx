@@ -19,7 +19,7 @@ export const ExportFormSubmissionsButton: React.FC = () => {
     setError(null)
 
     try {
-      const response = await fetch(`${config.serverURL}/api/forms/${id}/export-csv`, {
+      const response = await fetch(`${config.serverURL}/api/custom/forms/${id}/export-csv`, {
         method: 'GET',
         credentials: 'include',
         headers: {

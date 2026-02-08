@@ -25,9 +25,12 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { Banner } from '@/blocks/Banner/config'
 import { Code } from '@/blocks/Code/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
-import { authenticated } from '@/access/authenticated'
 import { Programs } from '@/blocks/Form/Programs/config'
 import { Year } from '@/blocks/Form/Year/config'
+import user from '@/collections/Users/access/user'
+import admin from '@/collections/Users/access/admin'
+import nobody from '@/collections/Users/access/nobody'
+
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? doc.title : 'PorgUNC'
@@ -136,10 +139,10 @@ export const plugins: Plugin[] = [
     },
     formSubmissionOverrides: {
       access: {
-        read: authenticated,
-        update: authenticated,
-        create: authenticated,
-        delete: authenticated,
+        read: user,
+        update: nobody,
+        create: nobody,
+        delete: admin,
       },
       admin: {
         group: 'Forms'
@@ -147,10 +150,10 @@ export const plugins: Plugin[] = [
     },
     formOverrides: {
       access: {
-        read: authenticated,
-        update: authenticated,
-        create: authenticated,
-        delete: authenticated,
+        read: user,
+        update: admin,
+        create: admin,
+        delete: admin,
       },
       admin: {
         preview: () => '',

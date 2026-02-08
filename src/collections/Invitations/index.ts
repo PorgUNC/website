@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import crypto from 'crypto'
 import admin from '@/collections/Users/access/admin'
-import { nobody } from '@/collections/Users/access/nobody'
+import nobody from '@/collections/Users/access/nobody'
 import { getServerSideURL } from '@/utilities/getURL'
 
 export const Invitations: CollectionConfig = {
