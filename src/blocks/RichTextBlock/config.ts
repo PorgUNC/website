@@ -15,6 +15,10 @@ import {MediaBlock} from '@/blocks/MediaBlock/config'
 export const RichTextBlock: Block = {
   slug: 'richText',
   interfaceName: 'RichTextBlock',
+  labels: {
+    singular: 'Article Body Text',
+    plural: 'Article Body Texts',
+  },
   fields: [
     {
       name: 'richText',
