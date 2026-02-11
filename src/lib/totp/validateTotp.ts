@@ -18,7 +18,7 @@ export function validateTotp(
     issuer: 'PorgUNC',
     label: 'Poll',
     algorithm: 'SHA1',
-    digits: 12,
+    digits: 10,
     period: period, // 10 seconds
     secret: secret,
   })
