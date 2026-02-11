@@ -83,23 +83,13 @@ export default async function FormPage({ params: paramsPromise, searchParams: se
       let isValidToken = false
 
       // Check current period and previous periods within the window
+      const { generateTotpPublic } = await import('@/lib/totp/generateTotpPublic')
+
       for (let i = 0; i <= windowSize; i++) {
         const testPeriod = currentPeriod - i
         const testTimestamp = testPeriod * period
 
-        // Generate token for this period
-        const { TOTP } = await import('otpauth')
-        const totp = new TOTP({
-          issuer: 'PorgUNC',
-          label: 'Poll',
-          algorithm: 'SHA1',
-          digits: 6,
-          period: period,
-          secret: form.authKey || '',
-        })
-
-        // Check if the provided token matches this period
-        const generatedToken = totp.generate({ timestamp: testTimestamp * 1000 })
+        const generatedToken = generateTotpPublic(form.authKey || '', period, testTimestamp * 1000)
 
         if (generatedToken === token) {
           tokenGeneratedAt = testTimestamp
