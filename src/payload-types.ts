@@ -643,6 +643,7 @@ export interface Form {
                 }[]
               | null;
             required?: boolean | null;
+            otherOption?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'radio';
@@ -2040,6 +2041,7 @@ export interface FormsSelect<T extends boolean = true> {
                     id?: T;
                   };
               required?: T;
+              otherOption?: T;
               id?: T;
               blockName?: T;
             };

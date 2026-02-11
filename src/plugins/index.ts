@@ -78,7 +78,27 @@ export const plugins: Plugin[] = [
   }),
   formBuilderPlugin({
     fields: {
-      radio: true,
+      radio: {
+        ...fields.radio,
+        fields: [
+          ...(fields.radio && 'fields' in fields.radio
+            ? fields.radio.fields.map((field) => {
+              if ('name' in field && field.name === 'radio') {
+                return {
+                  ...field,
+                }
+              }
+              return field
+            })
+            : []),
+          {
+            name: 'otherOption',
+            type: 'checkbox',
+            label: 'Allow a custom response',
+            defaultValue: false,
+          },
+        ],
+      },
       payment: false,
       email: false,
       programs: Programs,

@@ -30,6 +30,19 @@ export const Programs: React.FC<
   }
 > = ({ name, control, errors, label, required, width, defaultValue }) => {
   const [searchQuery, setSearchQuery] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+  const searchInputRef = React.useRef<HTMLInputElement>(null)
+
+  React.useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      setTimeout(() => {
+        searchInputRef.current?.focus()
+        if (window.innerWidth < 768) {
+          searchInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+        }
+      }, 100)
+    }
+  }, [isOpen, name])
 
   return (
     <Width width={width}>
@@ -56,7 +69,7 @@ export const Programs: React.FC<
           )
 
           return (
-            <Popover>
+            <Popover open={isOpen} onOpenChange={setIsOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
@@ -93,8 +106,13 @@ export const Programs: React.FC<
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col" align="start">
-                <div className="max-h-64 overflow-y-auto p-2 flex-1">
+              <PopoverContent
+                className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col h-[70vh] md:h-64"
+                align="start"
+                side="bottom"
+                sideOffset={4}
+              >
+                <div className="overflow-y-auto p-2 flex-1">
                   {filteredOptions.length > 0 ? (
                     filteredOptions.map((option) => {
                       const isSelected = selectedValues.includes(option.value)
@@ -120,8 +138,9 @@ export const Programs: React.FC<
                     </div>
                   )}
                 </div>
-                <div className="p-2 border-t sticky bottom-0 bg-background">
+                <div className="p-2 border-t sticky bottom-0 bg-background z-10">
                   <Input
+                    ref={searchInputRef}
                     placeholder="Search programs..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
