@@ -12,7 +12,7 @@ export function generateTotpPublic(secret: string, period: number = 10, timestam
   const totp = new TOTP({
     issuer: 'PorgUNC',
     label: 'Poll',
-    algorithm: 'SHA1',
+    algorithm: 'SHA512',
     digits: 10,
     period: period, // new code each period
     secret: secret,
@@ -32,7 +32,7 @@ export function generateTotpUri(secret: string, label: string = 'Poll', period: 
   const totp = new TOTP({
     issuer: 'PorgUNC',
     label: label,
-    algorithm: 'SHA1',
+    algorithm: 'SHA512',
     digits: 10,
     period: period,
     secret: secret,
