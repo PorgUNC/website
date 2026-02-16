@@ -327,6 +327,7 @@ export const plugins: Plugin[] = [
     collections: {
       media: true,
       files: true,
+      avatars: true,
     },
     bucket: process.env.S3_BUCKET || '',
     config: {

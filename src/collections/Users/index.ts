@@ -33,6 +33,30 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      required: true,
+    },
+    {
+      name: 'avatar',
+      type: 'upload',
+      relationTo: 'avatars',
+      required: false,
+      admin: {
+        description: 'Optional profile picture for authors',
+      },
+    },
+    {
+      name: 'jobTitle',
+      type: 'text',
+      required: false,
+      admin: {
+        description: 'Friendly title for position.',
+      },
+      access: {
+        update: ({ req: { user } }) => {
+          const u = user as User;
+          return checkRole(['admin'], u) || u?.id === 1;
+        }
+      },
     },
     {
       name: 'roles',

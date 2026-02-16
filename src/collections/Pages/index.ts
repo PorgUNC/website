@@ -7,7 +7,6 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-// import { PdfBlock } from '@/blocks/PdfBlock/config'
 import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
@@ -24,6 +23,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { PollArchiveBlock } from '@/blocks/PollArchiveBlock/config'
 import { FeaturedChartBlock } from '@/blocks/FeaturedChartBlock/config'
+import { PersonnelCollectionBlock } from '@/blocks/PersonnelCollection/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -88,6 +88,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FormBlock,
                 PollArchiveBlock,
                 FeaturedChartBlock,
+                PersonnelCollectionBlock
               ],
               required: true,
               admin: {

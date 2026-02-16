@@ -7,12 +7,12 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
-// import { PdfBlock } from '@/blocks/PdfBlock/Component'
 import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
 import LineChartBlock from '@/blocks/PollBlocks/LineChartBlock/Component'
 import PieChartBlock from '@/blocks/PollBlocks/PieChartBlock/Component'
 import { PollArchiveBlock } from '@/blocks/PollArchiveBlock/Component'
 import { FeaturedChartBlock } from '@/blocks/FeaturedChartBlock/Component'
+import { PersonnelCollectionBlock } from '@/blocks/PersonnelCollection/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -20,12 +20,13 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
-  // pdfBlock: PdfBlock,
   richText: RichTextBlock,
   lineChart: LineChartBlock,
   pieChart: PieChartBlock,
   pollarchive: PollArchiveBlock,
   featuredchart: FeaturedChartBlock,
+  personnelCollection: PersonnelCollectionBlock,
+
 }
 
 type BlockType = Page['layout'][0] | Post['layout'][0] | Poll['layout'][0]

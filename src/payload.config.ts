@@ -24,6 +24,7 @@ import { Polls } from '@/collections/Polls'
 import { resendAdapter } from '@payloadcms/email-resend'
 
 import { Invitations } from './collections/Invitations'
+import { Avatars } from './collections/Avatars'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -90,7 +91,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations],
+  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars],
   cors: [getServerSideURL()].filter(Boolean),
                            globals: [Header, Footer, FeaturedPoll],
                            plugins: [
