@@ -6,18 +6,24 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import React from "react";
 
-const HeroHeader = () => {
+interface HeaderLink {
+  label?: string | null;
+  url?: string | null;
+  id?: string | null;
+}
+
+interface HeroHeaderProps {
+  links: HeaderLink[];
+}
+
+const HeroHeader = ({ links }: HeroHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const pathname = usePathname();
 
-  const navItems = [
-    ["Home", "/"],
-    ["Polls", "/polls"],
-    ["News", "/posts"],
-    ["Methodology", "/methodology"],
-    ["About Us", "/about"],
-    ["Search", "/search"],
-  ];
+  const navItems = links.filter(link => link.label && link.url).map(link => ({
+    label: link.label!,
+    href: link.url!,
+  }));
 
   return (
     <header className="w-full bg-background">
@@ -43,7 +49,7 @@ const HeroHeader = () => {
         <NavbarContent justify="end" />
 
         <NavbarMenu>
-          {navItems.map(([label, href]) => (
+          {navItems.map(({ label, href }) => (
             <NavbarItem key={label}>
               <Link
                 href={href}
@@ -70,7 +76,7 @@ const HeroHeader = () => {
         <Navbar position="static" isBordered isBlurred={false}>
           <NavbarContent />
           <NavbarContent className="flex gap-4" justify="center">
-            {navItems.map(([label, href]) => {
+            {navItems.map(({ label, href }) => {
               const isActive =
                 href === "/"
                   ? pathname === "/"

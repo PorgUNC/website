@@ -25,6 +25,7 @@ import { resendAdapter } from '@payloadcms/email-resend'
 
 import { Invitations } from './collections/Invitations'
 import { Avatars } from './collections/Avatars'
+import { SiteHeader } from './globals/SiteHeader/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -93,7 +94,7 @@ export default buildConfig({
   }),
   collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars],
   cors: [getServerSideURL()].filter(Boolean),
-                           globals: [Header, Footer, FeaturedPoll],
+                           globals: [Footer, FeaturedPoll, SiteHeader],
                            plugins: [
                              ...plugins,
                              // storage-adapter-placeholder

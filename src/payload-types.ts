@@ -65,14 +65,14 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
-    header: Header;
     footer: Footer;
     'featured-poll': FeaturedPoll;
+    'navigation-header': NavigationHeader;
   };
   globalsSelect: {
-    header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'featured-poll': FeaturedPollSelect<false> | FeaturedPollSelect<true>;
+    'navigation-header': NavigationHeaderSelect<false> | NavigationHeaderSelect<true>;
   };
   locale: null;
   user: User;
@@ -2420,35 +2420,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header".
- */
-export interface Header {
-  id: number;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */
 export interface Footer {
@@ -2491,26 +2462,19 @@ export interface FeaturedPoll {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header_select".
+ * via the `definition` "navigation-header".
  */
-export interface HeaderSelect<T extends boolean = true> {
-  navItems?:
-    | T
+export interface NavigationHeader {
+  id: number;
+  Links?:
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+        label?: string | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2541,6 +2505,22 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface FeaturedPollSelect<T extends boolean = true> {
   poll?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation-header_select".
+ */
+export interface NavigationHeaderSelect<T extends boolean = true> {
+  Links?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

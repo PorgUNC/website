@@ -1,7 +1,10 @@
 import {HeaderClient} from './Component.client'
 import React from 'react'
+import {getCachedGlobal} from '@/utilities/getGlobals'
 
 
 export async function Header() {
-  return <HeaderClient/>
+  const headerData = await getCachedGlobal('navigation-header', 0)()
+
+  return <HeaderClient headerData={headerData} />
 }

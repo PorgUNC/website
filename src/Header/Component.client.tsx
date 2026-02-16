@@ -2,16 +2,17 @@
 import {useHeaderTheme} from '@/providers/HeaderTheme'
 import {usePathname} from 'next/navigation'
 import React, {useEffect, useState} from 'react'
+import type {NavigationHeader} from '@/payload-types'
 
 // import type {Header} from '@/payload-types'
 import {Logo} from '@/components/Logo/Logo'
 import HeroHeader from "@/components/ui/header";
 
-// interface HeaderClientProps {
-//   data: Header
-// }
+interface HeaderClientProps {
+  headerData: NavigationHeader
+}
 
-export const HeaderClient = () => {
+export const HeaderClient = ({ headerData }: HeaderClientProps) => {
   const [theme, setTheme] = useState<string | null>(null)
   const {headerTheme, setHeaderTheme} = useHeaderTheme()
   const pathname = usePathname()
@@ -27,6 +28,6 @@ export const HeaderClient = () => {
   }, [headerTheme])
 
   return (
-    <HeroHeader></HeroHeader>
+    <HeroHeader links={headerData.Links || []} />
   )
 }
