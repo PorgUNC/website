@@ -308,7 +308,8 @@ export const plugins: Plugin[] = [
     },
   }),
   searchPlugin({
-    collections: ['polls'],
+    collections: ['polls', 'posts'],
+
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       admin: {

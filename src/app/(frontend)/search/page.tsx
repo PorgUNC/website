@@ -26,37 +26,56 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       slug: true,
       categories: true,
       meta: true,
+      doc: true,
     },
     // pagination: false reduces overhead if you don't need totalDocs
     pagination: false,
-    ...(query
-      ? {
-          where: {
-            or: [
-              {
-                title: {
-                  like: query,
-                },
+    where: {
+      and: [
+        {
+          or: [
+            {
+              'doc.relationTo': {
+                equals: 'polls',
               },
-              {
-                'meta.description': {
-                  like: query,
-                },
+            },
+            {
+              'doc.relationTo': {
+                equals: 'posts',
               },
+            },
+          ],
+        },
+        ...(query
+          ? [
               {
-                'meta.title': {
-                  like: query,
-                },
+                or: [
+                  {
+                    title: {
+                      like: query,
+                    },
+                  },
+                  {
+                    'meta.description': {
+                      like: query,
+                    },
+                  },
+                  {
+                    'meta.title': {
+                      like: query,
+                    },
+                  },
+                  {
+                    slug: {
+                      like: query,
+                    },
+                  },
+                ],
               },
-              {
-                slug: {
-                  like: query,
-                },
-              },
-            ],
-          },
-        }
-      : {}),
+            ]
+          : []),
+      ],
+    },
   })
 
   return (
@@ -73,7 +92,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       </div>
 
       {posts.totalDocs > 0 ? (
-        <CollectionArchive docs={posts.docs as CardPostData[]} relationTo={'polls'} />
+        <CollectionArchive docs={posts.docs as CardPostData[]} />
       ) : (
         <div className="container">No results found.</div>
       )}

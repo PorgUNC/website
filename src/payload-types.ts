@@ -1236,10 +1236,15 @@ export interface Search {
   id: number;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'polls';
-    value: number | Poll;
-  };
+  doc:
+    | {
+        relationTo: 'polls';
+        value: number | Poll;
+      }
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      };
   slug?: string | null;
   meta?: {
     title?: string | null;

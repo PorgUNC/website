@@ -14,12 +14,8 @@ const baseClass = 'dashboard-widget'
 
 const DashboardWidget: React.FC = () => {
   const [forms, setForms] = useState<Form[]>([])
-  const [allForms, setAllForms] = useState<Form[]>([])
-  const [filteredForms, setFilteredForms] = useState<Form[]>([])
-  const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [isSearching, setIsSearching] = useState(false)
 
   const sharedDriveUrl = process.env.NEXT_PUBLIC_SHARED_DRIVE_URL || ''
 
@@ -27,14 +23,13 @@ const DashboardWidget: React.FC = () => {
     const fetchForms = async () => {
       try {
         setLoading(true)
-        const response = await fetch('/api/forms?limit=10&depth=0&sort=-updatedAt')
+        const response = await fetch('/api/forms?limit=5&depth=0&sort=-updatedAt')
         if (!response.ok) {
           setError('Failed to fetch forms')
           return
         }
         const data = await response.json()
         setForms(data.docs || [])
-        setFilteredForms(data.docs || [])
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
@@ -45,45 +40,13 @@ const DashboardWidget: React.FC = () => {
     fetchForms()
   }, [])
 
-  useEffect(() => {
-    const searchForms = async () => {
-      if (searchQuery.trim() === '') {
-        setFilteredForms(forms)
-        setIsSearching(false)
-        return
-      }
-
-      setIsSearching(true)
-      try {
-        if (allForms.length === 0) {  // probaby shouldn't fetch all forms but meh
-          const response = await fetch('/api/forms?limit=1000&depth=0&sort=-updatedAt')
-          if (response.ok) {
-            const data = await response.json()
-            setAllForms(data.docs || [])
-            const filtered = (data.docs || []).filter((form: Form) =>
-              form.title.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-            setFilteredForms(filtered)
-          }
-        } else {
-          const filtered = allForms.filter((form) =>
-            form.title.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-          setFilteredForms(filtered)
-        }
-      } catch (err) {
-        console.error('Search error:', err)
-      } finally {
-        setIsSearching(false)
-      }
-    }
-
-    const debounceTimer = setTimeout(searchForms, 300)
-    return () => clearTimeout(debounceTimer)
-  }, [searchQuery, forms, allForms])
 
   const getFormSubmissionsUrl = (formId: string) => {
     return `/admin/collections/form-submissions?limit=10&where[or][0][and][0][form][equals]=${formId}&page=1`
+  }
+
+  const getExportCsvUrl = (formId: string) => {
+    return `/api/custom/forms/${formId}/export-csv`
   }
 
   const formatDate = (dateString: string) => {
@@ -174,30 +137,7 @@ const DashboardWidget: React.FC = () => {
 
       <div className={`${baseClass}__forms-section`}>
         <div className={`${baseClass}__section-header`}>
-          <h3 className={`${baseClass}__section-title`}>
-            {searchQuery ? 'Search Results' : 'Latest Forms'}
-          </h3>
-          {!searchQuery && (
-            <span className={`${baseClass}__section-subtitle`}>
-              Showing 10 most recent forms
-            </span>
-          )}
-        </div>
-
-        <div className={`${baseClass}__search`}>
-          <svg className={`${baseClass}__search-icon`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search all forms..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className={`${baseClass}__search-input`}
-          />
-          {isSearching && (
-            <div className={`${baseClass}__search-loading`}>Searching...</div>
-          )}
+          <h3 className={`${baseClass}__section-title`}>Latest Forms</h3>
         </div>
 
         {loading && (
@@ -208,15 +148,13 @@ const DashboardWidget: React.FC = () => {
           <div className={`${baseClass}__error`}>Error: {error}</div>
         )}
 
-        {!loading && !error && filteredForms.length === 0 && (
-          <div className={`${baseClass}__empty`}>
-            {searchQuery ? 'No forms found matching your search.' : 'No forms available yet.'}
-          </div>
+        {!loading && !error && forms.length === 0 && (
+          <div className={`${baseClass}__empty`}>No forms available yet.</div>
         )}
 
-        {!loading && !error && filteredForms.length > 0 && (
+        {!loading && !error && forms.length > 0 && (
           <div className={`${baseClass}__forms-list`}>
-            {filteredForms.map((form) => (
+            {forms.map((form) => (
               <div key={form.id} className={`${baseClass}__form-item`}>
                 <div className={`${baseClass}__form-info`}>
                   <a
@@ -244,6 +182,17 @@ const DashboardWidget: React.FC = () => {
                     <span>View Submissions</span>
                   </a>
                   <a
+                    href={getExportCsvUrl(form.id)}
+                    className={`${baseClass}__form-button ${baseClass}__form-button--export`}
+                    title="Export submissions as CSV"
+                    download
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Export CSV</span>
+                  </a>
+                  <a
                     href={`/admin/collections/forms/${form.id}`}
                     className={`${baseClass}__form-button ${baseClass}__form-button--secondary`}
                     title="Edit form"
@@ -262,17 +211,9 @@ const DashboardWidget: React.FC = () => {
 
       <div className={`${baseClass}__footer`}>
         <div className={`${baseClass}__stats`}>
-          {searchQuery ? (
-            <>
-              <span className={`${baseClass}__stat`}>
-                <strong>{filteredForms.length}</strong> {filteredForms.length === 1 ? 'form' : 'forms'} found
-              </span>
-            </>
-          ) : (
-            <span className={`${baseClass}__stat`}>
-              Showing <strong>{forms.length}</strong> most recent {forms.length === 1 ? 'form' : 'forms'}
-            </span>
-          )}
+          <span className={`${baseClass}__stat`}>
+            Showing <strong>{forms.length}</strong> most recent {forms.length === 1 ? 'form' : 'forms'}
+          </span>
         </div>
       </div>
     </div>
