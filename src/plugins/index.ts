@@ -176,12 +176,11 @@ export const plugins: Plugin[] = [
         delete: admin,
       },
       admin: {
-        preview: () => '',
         group: 'Forms',
         defaultColumns: ["title", "id"],
         components: {
           edit: {
-            PreviewButton: '/components/ExportFormSubmissions/ExportButton.tsx#ExportFormSubmissionsButton',
+            beforeDocumentControls: ['/components/ExportFormSubmissions/ExportButton.tsx#ExportFormSubmissionsButton'],
           },
         },
       },

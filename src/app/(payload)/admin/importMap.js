@@ -31,8 +31,9 @@ import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloa
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
 import { Logo as Logo_e93e9bd37dbcbcb6182f6bb2f2523bd9 } from '../../../components/Logo/Logo.tsx'
-import { LogoTagline as LogoTagline_e93e9bd37dbcbcb6182f6bb2f2523bd9 } from '../../../components/Logo/Logo.tsx'
+import { Logo as Logo_052f807f174f21c83d718b269005437c } from '../../../components/Logo/AdminLogo.tsx'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
+import { default as default_c3a9c2f6f2d79936e29a92543bf0c384 } from '@/components/DashboardWidget'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -69,7 +70,8 @@ export const importMap = {
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
   "/components/Logo/Logo.tsx#Logo": Logo_e93e9bd37dbcbcb6182f6bb2f2523bd9,
-  "/components/Logo/Logo.tsx#LogoTagline": LogoTagline_e93e9bd37dbcbcb6182f6bb2f2523bd9,
+  "/components/Logo/AdminLogo.tsx#Logo": Logo_052f807f174f21c83d718b269005437c,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
+  "@/components/DashboardWidget#default": default_c3a9c2f6f2d79936e29a92543bf0c384,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

@@ -32,23 +32,36 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   ...(process.env.NODE_ENV === 'production' &&
-  process.env.NEXT_PUBLIC_PREVIEW !== 'true' && {
-    email: resendAdapter({
-      defaultFromAddress: process.env.SMTP_FROM_ADDRESS ?? '',
+    process.env.NEXT_PUBLIC_PREVIEW !== 'true' && {
+      email: resendAdapter({
+        defaultFromAddress: process.env.SMTP_FROM_ADDRESS ?? '',
         defaultFromName: process.env.SMTP_FROM_NAME ?? '',
-          apiKey: process.env.RESEND_API_KEY || '',
+        apiKey: process.env.RESEND_API_KEY || '',
+      }),
     }),
-  }),
   admin: {
-    timezones: {
-      supportedTimezones: [
-        { label: 'New York', value: 'America/New_York' },
+    dashboard: {
+      widgets: [
+        {
+          slug: 'main-dash',
+          ComponentPath: '@/components/DashboardWidget',
+          minWidth: 'full',
+          maxWidth: 'full',
+        },
       ],
+      defaultLayout: () => {
+        return [
+          { widgetSlug: 'main-dash', width: 'full' },
+        ]
+      },
+    },
+    timezones: {
+      supportedTimezones: [{ label: 'New York', value: 'America/New_York' }],
       defaultTimezone: 'America/New_York',
     },
     components: {
       graphics: {
-        Logo: '/components/Logo/Logo.tsx#LogoTagline',
+        Logo: '/components/Logo/AdminLogo.tsx#Logo',
         Icon: '/components/Logo/Logo.tsx#Logo',
       },
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -56,7 +69,7 @@ export default buildConfig({
       // beforeLogin: ['@/components/BeforeLogin'],
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      // beforeDashboard: ['@/components/BeforeDashboard'],
+      // beforeDashboard: ['@/components/DashboardWidget'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -94,29 +107,29 @@ export default buildConfig({
   }),
   collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars],
   cors: [getServerSideURL()].filter(Boolean),
-                           globals: [Footer, FeaturedPoll, SiteHeader],
-                           plugins: [
-                             ...plugins,
-                             // storage-adapter-placeholder
-                           ],
-                           secret: process.env.PAYLOAD_SECRET,
-                           sharp,
-                           typescript: {
-                             outputFile: path.resolve(dirname, 'payload-types.ts'),
-                           },
-                           jobs: {
-                             access: {
-                               run: ({ req }: { req: PayloadRequest }): boolean => {
-                                 // Allow logged in users to execute this endpoint (default)
-                                 if (req.user) return true
+  globals: [Footer, FeaturedPoll, SiteHeader],
+  plugins: [
+    ...plugins,
+    // storage-adapter-placeholder
+  ],
+  secret: process.env.PAYLOAD_SECRET,
+  sharp,
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  jobs: {
+    access: {
+      run: ({ req }: { req: PayloadRequest }): boolean => {
+        // Allow logged in users to execute this endpoint (default)
+        if (req.user) return true
 
-                                   // If there is no logged in user, then check
-                                   // for the Vercel Cron secret to be present as an
-                                   // Authorization header:
-                                   const authHeader = req.headers.get('authorization')
-                                   return authHeader === `Bearer ${process.env.CRON_SECRET}`
-                               },
-                             },
-                             tasks: [],
-                           },
+        // If there is no logged in user, then check
+        // for the Vercel Cron secret to be present as an
+        // Authorization header:
+        const authHeader = req.headers.get('authorization')
+        return authHeader === `Bearer ${process.env.CRON_SECRET}`
+      },
+    },
+    tasks: [],
+  },
 })

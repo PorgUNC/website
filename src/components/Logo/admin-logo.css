@@ -1,0 +1,7 @@
+.admin-logo-wrapper img {
+  filter: invert(1);
+}
+
+html[data-theme='dark'] .admin-logo-wrapper img {
+  filter: invert(0);
+}
