@@ -47,7 +47,7 @@ export const plugins: Plugin[] = [
     collections: ['pages', 'posts', 'polls'],
     overrides: {
       admin: {
-        group: 'Meta'
+        group: 'Meta',
       },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
@@ -83,13 +83,13 @@ export const plugins: Plugin[] = [
         fields: [
           ...(fields.radio && 'fields' in fields.radio
             ? fields.radio.fields.map((field) => {
-              if ('name' in field && field.name === 'radio') {
-                return {
-                  ...field,
+                if ('name' in field && field.name === 'radio') {
+                  return {
+                    ...field,
+                  }
                 }
-              }
-              return field
-            })
+                return field
+              })
             : []),
           {
             name: 'otherOption',
@@ -108,24 +108,24 @@ export const plugins: Plugin[] = [
         fields: [
           ...(fields.message && 'fields' in fields.message
             ? fields.message.fields.map((field) => {
-              if ('name' in field && field.name === 'message') {
-                return {
-                  ...field,
-                  editor: lexicalEditor({
-                    features: ({ rootFeatures }) => {
-                      return [
-                        ...rootFeatures,
-                        HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-                        BlocksFeature({blocks: [Banner, Code, MediaBlock]}),
-                        FixedToolbarFeature(),
-                        InlineToolbarFeature(),
-                      ]
-                    },
-                  }),
+                if ('name' in field && field.name === 'message') {
+                  return {
+                    ...field,
+                    editor: lexicalEditor({
+                      features: ({ rootFeatures }) => {
+                        return [
+                          ...rootFeatures,
+                          HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+                          BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                          FixedToolbarFeature(),
+                          InlineToolbarFeature(),
+                        ]
+                      },
+                    }),
+                  }
                 }
-              }
-              return field
-            })
+                return field
+              })
             : []),
         ],
       },
@@ -134,13 +134,13 @@ export const plugins: Plugin[] = [
         fields: [
           ...(fields.select && 'fields' in fields.select
             ? fields.select.fields.map((field) => {
-              if ('name' in field && field.name === 'select') {
-                return {
-                  ...field,
+                if ('name' in field && field.name === 'select') {
+                  return {
+                    ...field,
+                  }
                 }
-              }
-              return field
-            })
+                return field
+              })
             : []),
           {
             name: 'allowMultiple',
@@ -165,7 +165,7 @@ export const plugins: Plugin[] = [
         delete: admin,
       },
       admin: {
-        group: 'Forms'
+        group: 'Forms',
       },
     },
     formOverrides: {
@@ -177,10 +177,12 @@ export const plugins: Plugin[] = [
       },
       admin: {
         group: 'Forms',
-        defaultColumns: ["title", "id"],
+        defaultColumns: ['title', 'id'],
         components: {
           edit: {
-            beforeDocumentControls: ['/components/ExportFormSubmissions/ExportButton.tsx#ExportFormSubmissionsButton'],
+            beforeDocumentControls: [
+              '/components/ExportFormSubmissions/ExportButton.tsx#ExportFormSubmissionsButton',
+            ],
           },
         },
       },
@@ -282,7 +284,7 @@ export const plugins: Plugin[] = [
                       ...rootFeatures,
                       FixedToolbarFeature(),
                       HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                      BlocksFeature({blocks: [Banner, Code, MediaBlock]}),
+                      BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
                     ]
                   },
                 }),
@@ -291,7 +293,7 @@ export const plugins: Plugin[] = [
             if ('name' in field && field.name === 'submitButtonLabel') {
               return {
                 ...field,
-                defaultValue: 'Submit'
+                defaultValue: 'Submit',
               } as typeof field
             }
             return field
@@ -301,7 +303,9 @@ export const plugins: Plugin[] = [
       hooks: {
         beforeChange: [
           async ({ data }) => {
-            if (data.isPoll && !data.authKey){data.authKey = generateTotpSecret()}
+            if (data.isPoll && !data.authKey) {
+              data.authKey = generateTotpSecret()
+            }
           },
         ],
       },
@@ -313,7 +317,7 @@ export const plugins: Plugin[] = [
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       admin: {
-        group: 'Meta'
+        group: 'Meta',
       },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
@@ -322,7 +326,7 @@ export const plugins: Plugin[] = [
   }),
   // payloadCloudPlugin(),
   s3Storage({
-    enabled: process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_PREVIEW !== 'true',
+    enabled: (process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_PREVIEW !== 'true') || process.env.FORCEPLUGINS === 'true',
     // enabled: true,
     collections: {
       media: true,
