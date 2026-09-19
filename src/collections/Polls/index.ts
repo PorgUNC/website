@@ -160,6 +160,7 @@ export const Polls: CollectionConfig<'polls'> = {
                 },
                 {
                   name: 'lineCharts',
+                  dbName: "plnChrt",
                   type: 'array',
                   labels: {
                     singular: 'Line Chart',
