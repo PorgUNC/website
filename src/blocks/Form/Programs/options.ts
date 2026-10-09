@@ -1,4 +1,5 @@
 export const programOptions = [
+  { label: 'Undecided', value: 'undecided' },
   { label: 'African, African American, and Diaspora Studies', value: 'african-african-american-and-diaspora-studies' },
   { label: 'American Studies', value: 'american-studies' },
   { label: 'Anthropology', value: 'anthropology' },
