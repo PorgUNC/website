@@ -604,6 +604,7 @@ export interface Form {
             required?: boolean | null;
             allowMultiple?: boolean | null;
             allowSearching?: boolean | null;
+            randomChoiceOrder?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'select';
@@ -651,6 +652,7 @@ export interface Form {
               | null;
             required?: boolean | null;
             otherOption?: boolean | null;
+            randomChoiceOrder?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'radio';
@@ -2202,6 +2204,7 @@ export interface FormsSelect<T extends boolean = true> {
               required?: T;
               allowMultiple?: T;
               allowSearching?: T;
+              randomChoiceOrder?: T;
               id?: T;
               blockName?: T;
             };
@@ -2253,6 +2256,7 @@ export interface FormsSelect<T extends boolean = true> {
                   };
               required?: T;
               otherOption?: T;
+              randomChoiceOrder?: T;
               id?: T;
               blockName?: T;
             };

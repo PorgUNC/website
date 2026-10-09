@@ -9,16 +9,34 @@ import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
+import shuffle from '@/lib/shuffleArray'
 
 export const Radio: React.FC<
   RadioField & {
     control: Control
     errors: Partial<FieldErrorsImpl>
     otherOption: boolean
+    randomChoiceOrder?: boolean
   }
-> = ({ name, control, errors, label, options, required, width, defaultValue, otherOption = false }) => {
+> = ({
+  name,
+  control,
+  errors,
+  label,
+  options,
+  required,
+  width,
+  defaultValue,
+  otherOption = false,
+  randomChoiceOrder,
+}) => {
   const [otherText, setOtherText] = React.useState('')
   const [selectedValue, setSelectedValue] = React.useState(defaultValue || '')
+  const [hasBeenRandomized, setRandomizedValue] = React.useState(0)
+  if (randomChoiceOrder && hasBeenRandomized === 0) {
+    shuffle(options)
+    setRandomizedValue(1)
+  }
 
   return (
     <Width width={width}>
@@ -93,10 +111,10 @@ export const Radio: React.FC<
           required,
           validate: (value) => {
             if (required && otherOption && selectedValue === 'other') {
-              return value && value.trim().length > 0 || 'This field is required'
+              return (value && value.trim().length > 0) || 'This field is required'
             }
             return true
-          }
+          },
         }}
       />
       {errors[name] && <Error name={name} />}

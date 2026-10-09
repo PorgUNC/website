@@ -97,6 +97,12 @@ export const plugins: Plugin[] = [
             label: 'Allow a custom response',
             defaultValue: false,
           },
+          {
+            name: 'randomChoiceOrder',
+            type: 'checkbox',
+            label: 'Randomize Choice Order',
+            defaultValue: false,
+          },
         ],
       },
       payment: false,
@@ -152,6 +158,12 @@ export const plugins: Plugin[] = [
             name: 'allowSearching',
             type: 'checkbox',
             label: 'Allow Searching Options',
+            defaultValue: false,
+          },
+          {
+            name: 'randomChoiceOrder',
+            type: 'checkbox',
+            label: 'Randomize Choice Order',
             defaultValue: false,
           },
         ],
@@ -326,7 +338,9 @@ export const plugins: Plugin[] = [
   }),
   // payloadCloudPlugin(),
   s3Storage({
-    enabled: (process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_PREVIEW !== 'true') || process.env.FORCEPLUGINS === 'true',
+    enabled:
+      (process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_PREVIEW !== 'true') ||
+      process.env.FORCEPLUGINS === 'true',
     // enabled: true,
     collections: {
       media: true,

@@ -20,15 +20,35 @@ import { Controller } from 'react-hook-form'
 import { Error } from '../Error'
 import { Width } from '../Width'
 
+import shuffle from '@/lib/shuffleArray'
+
 export const Select: React.FC<
   SelectField & {
     control: Control
     errors: Partial<FieldErrorsImpl>
     allowMultiple?: boolean
     allowSearching?: boolean
+    randomChoiceOrder?: boolean
   }
-> = ({ name, control, errors, label, options, required, width, defaultValue, allowMultiple, allowSearching }) => {
+> = ({
+  name,
+  control,
+  errors,
+  label,
+  options,
+  required,
+  width,
+  defaultValue,
+  allowMultiple,
+  allowSearching,
+  randomChoiceOrder,
+}) => {
   const [searchQuery, setSearchQuery] = useState('')
+  const [hasBeenRandomized, setRandomizedValue] = React.useState(0)
+  if (randomChoiceOrder && hasBeenRandomized === 0) {
+    shuffle(options)
+    setRandomizedValue(1)
+  }
 
   return (
     <Width width={width}>
@@ -54,7 +74,7 @@ export const Select: React.FC<
 
             const filteredOptions = allowSearching
               ? options.filter((option) =>
-                  option.label.toLowerCase().includes(searchQuery.toLowerCase())
+                  option.label.toLowerCase().includes(searchQuery.toLowerCase()),
                 )
               : options
 
@@ -84,7 +104,10 @@ export const Select: React.FC<
                     <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col" align="start">
+                <PopoverContent
+                  className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col"
+                  align="start"
+                >
                   <div className="max-h-64 overflow-y-auto p-2 flex-1">
                     {filteredOptions.length > 0 ? (
                       filteredOptions.map((option) => {
@@ -129,7 +152,10 @@ export const Select: React.FC<
             const controlledValue = options.find((t) => t.value === value)
 
             return (
-              <SelectComponent onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
+              <SelectComponent
+                onValueChange={(val) => onChange(val)}
+                value={controlledValue?.value}
+              >
                 <SelectTrigger className="w-full" id={name}>
                   <SelectValue placeholder={label} />
                 </SelectTrigger>
