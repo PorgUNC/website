@@ -37,9 +37,6 @@ export const Programs: React.FC<
     if (isOpen && searchInputRef.current) {
       setTimeout(() => {
         searchInputRef.current?.focus()
-        // if (window.innerWidth < 768) {
-        //   searchInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-        // }
       }, 100)
     }
   }, [isOpen, name])
@@ -112,6 +109,7 @@ export const Programs: React.FC<
                 align="start"
                 side="bottom"
                 sideOffset={4}
+                avoidCollisions={false}
               >
                 <div className="p-2 border-b bg-background">
                   <Input
