@@ -255,6 +255,7 @@ export const plugins: Plugin[] = [
               },
               readOnly: true,
               collapsed: true,
+              hidden: true,
             },
           },
           ...defaultFields.map((field) => {
