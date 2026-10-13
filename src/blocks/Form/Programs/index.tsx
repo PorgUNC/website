@@ -112,13 +112,26 @@ export const Programs: React.FC<
                 avoidCollisions={false}
               >
                 <div className="p-2 border-b bg-background">
-                  <Input
-                    ref={searchInputRef}
-                    placeholder="Search programs..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-9"
-                  />
+                  <div className="relative">
+                    <Input
+                      ref={searchInputRef}
+                      placeholder="Search programs..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="h-9 pr-8"
+                    />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        aria-label="Clear search"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => setSearchQuery('')}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm text-muted-foreground hover:text-foreground"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="overflow-y-auto p-2 flex-1">
                   {filteredOptions.length > 0 ? (

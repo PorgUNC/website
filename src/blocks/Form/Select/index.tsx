@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, X } from 'lucide-react'
 import React, { useState } from 'react'
 import { Controller } from 'react-hook-form'
 
@@ -94,9 +94,20 @@ export const Select: React.FC<
                         selectedLabels.map((label, index) => (
                           <span
                             key={index}
-                            className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium"
+                            className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium max-w-full"
                           >
-                            {label}
+                            <span className="truncate">{label}</span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onChange(selectedValues.filter((_, i) => i !== index))
+                              }}
+                              className="shrink-0 rounded-sm hover:bg-secondary-foreground/20"
+                              aria-label={`Remove ${label}`}
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
                           </span>
                         ))
                       ) : (
@@ -107,20 +118,36 @@ export const Select: React.FC<
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
-                  className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col"
+                  className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col h-[70vh] max-h-[calc(100dvh-1rem)] md:h-64 overflow-hidden"
                   align="start"
+                  side="bottom"
+                  sideOffset={4}
+                  avoidCollisions={false}
                 >
                   {allowSearching && (
-                    <div className="p-2 border-b bg-background">
-                      <Input
-                        placeholder="Search options..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="h-9"
-                      />
+                    <div className="shrink-0 p-2 border-b bg-background">
+                      <div className="relative">
+                        <Input
+                          placeholder="Search options..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="h-9 pr-8"
+                        />
+                        {searchQuery && (
+                          <button
+                            type="button"
+                            aria-label="Clear search"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => setSearchQuery('')}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm text-muted-foreground hover:text-foreground"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
-                  <div className="max-h-64 overflow-y-auto p-2 flex-1">
+                  <div className="min-h-0 overflow-y-auto p-2 flex-1">
                     {filteredOptions.length > 0 ? (
                       filteredOptions.map((option) => {
                         const isSelected = selectedValues.includes(option.value)
@@ -152,6 +179,74 @@ export const Select: React.FC<
           } else {
             // Single-select mode
             const controlledValue = options.find((t) => t.value === value)
+
+            if (allowSearching) {
+              const filteredOptions = options.filter((option) =>
+                option.label.toLowerCase().includes(searchQuery.toLowerCase()),
+              )
+
+              return (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="w-full justify-start font-normal"
+                      id={name}
+                    >
+                      <span className="truncate">{controlledValue?.label || label}</span>
+                      <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col h-[70vh] max-h-[calc(100dvh-1rem)] md:h-64 overflow-hidden"
+                    align="start"
+                    side="bottom"
+                    sideOffset={4}
+                    avoidCollisions={false}
+                  >
+                    <div className="shrink-0 p-2 border-b bg-background">
+                      <div className="relative">
+                        <Input
+                          placeholder="Search options..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="h-9 pr-8"
+                        />
+                        {searchQuery && (
+                          <button
+                            type="button"
+                            aria-label="Clear search"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => setSearchQuery('')}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm text-muted-foreground hover:text-foreground"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="min-h-0 overflow-y-auto p-2 flex-1">
+                      {filteredOptions.length > 0 ? (
+                        filteredOptions.map((option) => (
+                          <div
+                            key={option.value}
+                            className="rounded px-2 py-1.5 cursor-pointer hover:bg-accent text-sm"
+                            onClick={() => onChange(option.value)}
+                          >
+                            {option.label}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="py-6 text-center text-sm text-muted-foreground">
+                          No options found
+                        </div>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              )
+            }
 
             return (
               <SelectComponent
