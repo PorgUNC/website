@@ -113,15 +113,6 @@ export const Programs: React.FC<
                 side="bottom"
                 sideOffset={4}
               >
-                <div className="p-2 border-t sticky bottom-0 bg-background z-10">
-                  <Input
-                    ref={searchInputRef}
-                    placeholder="Search programs..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-9"
-                  />
-                </div>
                 <div className="overflow-y-auto p-2 flex-1">
                   {filteredOptions.length > 0 ? (
                     filteredOptions.map((option) => {
@@ -147,6 +138,15 @@ export const Programs: React.FC<
                       No programs found
                     </div>
                   )}
+                </div>
+                <div className="p-2 border-t sticky bottom-0 bg-background z-10">
+                  <Input
+                    ref={searchInputRef}
+                    placeholder="Search programs..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="h-9"
+                  />
                 </div>
               </PopoverContent>
             </Popover>
