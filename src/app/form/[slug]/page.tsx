@@ -126,7 +126,7 @@ export default async function FormPage({ params: paramsPromise, searchParams: se
       }
 
       return (
-        <div className="py-16">
+        <div className="md:py-16">
           <PollFormBlock
             form={form as unknown as FormType}
             enableIntro={false}
@@ -142,7 +142,7 @@ export default async function FormPage({ params: paramsPromise, searchParams: se
 
     // For non-poll forms, render without token requirement
     return (
-      <div className="py-16">
+      <div className="md:py-16">
         <FormBlock
           form={form as unknown as FormType}
           enableIntro={false}
