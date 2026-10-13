@@ -54,6 +54,7 @@ export const Programs: React.FC<
           </span>
         )}
       </Label>
+      <div className="my-1 h-0.5 w-1/4 border-b-primary border-b-2" aria-hidden="true" />
       <Controller
         control={control}
         defaultValue={defaultValue ? [defaultValue] : []}
@@ -65,7 +66,7 @@ export const Programs: React.FC<
             .filter(Boolean)
 
           const filteredOptions = programOptions.filter((option) =>
-            option.label.toLowerCase().includes(searchQuery.toLowerCase())
+            option.label.toLowerCase().includes(searchQuery.toLowerCase()),
           )
 
           return (
@@ -100,7 +101,7 @@ export const Programs: React.FC<
                         </span>
                       ))
                     ) : (
-                      <span className="text-muted-foreground truncate">{label}</span>
+                      <span className="text-muted-foreground truncate">Click here</span>
                     )}
                   </div>
                   <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

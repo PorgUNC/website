@@ -42,6 +42,7 @@ export const Select: React.FC<
   allowMultiple,
   allowSearching,
   randomChoiceOrder,
+  placeholder,
 }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [hasBeenRandomized, setRandomizedValue] = React.useState(0)
@@ -60,6 +61,7 @@ export const Select: React.FC<
           </span>
         )}
       </Label>
+      <div className="my-1 h-0.5 w-1/4 border-b-primary border-b-2" aria-hidden="true" />
       <Controller
         control={control}
         defaultValue={allowMultiple ? (defaultValue ? [defaultValue] : []) : defaultValue}
@@ -157,7 +159,13 @@ export const Select: React.FC<
                 value={controlledValue?.value}
               >
                 <SelectTrigger className="w-full" id={name}>
-                  <SelectValue placeholder={label} />
+                  <SelectValue
+                    placeholder={
+                      typeof placeholder === 'string' && placeholder.length > 0
+                        ? placeholder
+                        : label
+                    }
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {options.map(({ label, value }) => {
