@@ -54,7 +54,7 @@ export const Programs: React.FC<
           </span>
         )}
       </Label>
-      <div className="my-1 h-0.5 w-1/4 border-b-primary border-b-2" aria-hidden="true" />
+      <div className="my-1 h-0.5 w-1/8 border-b-primary border-b-2" aria-hidden="true" />
       <Controller
         control={control}
         defaultValue={defaultValue ? [defaultValue] : []}

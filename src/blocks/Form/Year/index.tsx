@@ -54,6 +54,7 @@ export const Year: React.FC<
           </span>
         )}
       </Label>
+      <div className="my-1 h-0.5 border-b-primary border-b-2 w-1/8" aria-hidden="true" />
       <Controller
         control={control}
         defaultValue={allowMultiple ? (defaultValue ? [defaultValue] : []) : defaultValue}
@@ -68,8 +69,8 @@ export const Year: React.FC<
 
             const filteredOptions = allowSearching
               ? yearOptions.filter((option) =>
-                option.label.toLowerCase().includes(searchQuery.toLowerCase())
-              )
+                  option.label.toLowerCase().includes(searchQuery.toLowerCase()),
+                )
               : yearOptions
 
             return (
@@ -98,7 +99,10 @@ export const Year: React.FC<
                     <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col" align="start">
+                <PopoverContent
+                  className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col"
+                  align="start"
+                >
                   <div className="max-h-64 overflow-y-auto p-2 flex-1">
                     {filteredOptions.length > 0 ? (
                       filteredOptions.map((option) => {
@@ -143,7 +147,10 @@ export const Year: React.FC<
             const controlledValue = yearOptions.find((t) => t.value === value)
 
             return (
-              <SelectComponent onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
+              <SelectComponent
+                onValueChange={(val) => onChange(val)}
+                value={controlledValue?.value}
+              >
                 <SelectTrigger className="w-full" id={name}>
                   <SelectValue placeholder="Select a year" />
                 </SelectTrigger>

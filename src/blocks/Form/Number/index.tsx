@@ -24,6 +24,7 @@ export const Number: React.FC<
           </span>
         )}
       </Label>
+      <div className="my-1 h-0.5 border-b-primary border-b-2 w-1/8" aria-hidden="true" />
       <Input
         defaultValue={defaultValue}
         id={name}
