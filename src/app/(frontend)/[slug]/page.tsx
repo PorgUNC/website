@@ -11,6 +11,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { populateFormBlocks } from '@/utilities/populateFormBlocks'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -94,7 +95,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     pagination: false,
     overrideAccess: draft,
-    depth: 2,
+    depth: 1,
     where: {
       slug: {
         equals: slug,
@@ -102,5 +103,15 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     },
   })
 
-  return result.docs?.[0] || null
+  const page = result.docs?.[0]
+  if (!page) return null
+
+  return populateFormBlocks(page, (id) =>
+    payload.findByID({
+      collection: 'forms',
+      id,
+      depth: 1,
+      overrideAccess: true,
+    }),
+  )
 })

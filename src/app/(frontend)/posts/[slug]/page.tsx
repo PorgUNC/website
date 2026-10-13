@@ -15,6 +15,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { populateFormBlocks } from '@/utilities/populateFormBlocks'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -97,7 +98,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     overrideAccess: draft,
     pagination: false,
-    depth: 2,
+    depth: 1,
     where: {
       slug: {
         equals: slug,
@@ -105,5 +106,15 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     },
   })
 
-  return result.docs?.[0] || null
+  const post = result.docs?.[0]
+  if (!post) return null
+
+  return populateFormBlocks(post, (id) =>
+    payload.findByID({
+      collection: 'forms',
+      id,
+      depth: 1,
+      overrideAccess: true,
+    }),
+  )
 })
