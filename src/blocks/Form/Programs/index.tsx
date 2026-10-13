@@ -37,9 +37,9 @@ export const Programs: React.FC<
     if (isOpen && searchInputRef.current) {
       setTimeout(() => {
         searchInputRef.current?.focus()
-        if (window.innerWidth < 768) {
-          searchInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-        }
+        // if (window.innerWidth < 768) {
+        //   searchInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+        // }
       }, 100)
     }
   }, [isOpen, name])
@@ -113,6 +113,15 @@ export const Programs: React.FC<
                 side="bottom"
                 sideOffset={4}
               >
+                <div className="p-2 border-b bg-background">
+                  <Input
+                    ref={searchInputRef}
+                    placeholder="Search programs..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="h-9"
+                  />
+                </div>
                 <div className="overflow-y-auto p-2 flex-1">
                   {filteredOptions.length > 0 ? (
                     filteredOptions.map((option) => {
@@ -138,15 +147,6 @@ export const Programs: React.FC<
                       No programs found
                     </div>
                   )}
-                </div>
-                <div className="p-2 border-t sticky bottom-0 bg-background z-10">
-                  <Input
-                    ref={searchInputRef}
-                    placeholder="Search programs..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-9"
-                  />
                 </div>
               </PopoverContent>
             </Popover>

@@ -110,6 +110,16 @@ export const Select: React.FC<
                   className="w-[var(--radix-popover-trigger-width)] p-0 flex flex-col"
                   align="start"
                 >
+                  {allowSearching && (
+                    <div className="p-2 border-b bg-background">
+                      <Input
+                        placeholder="Search options..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="h-9"
+                      />
+                    </div>
+                  )}
                   <div className="max-h-64 overflow-y-auto p-2 flex-1">
                     {filteredOptions.length > 0 ? (
                       filteredOptions.map((option) => {
@@ -136,16 +146,6 @@ export const Select: React.FC<
                       </div>
                     )}
                   </div>
-                  {allowSearching && (
-                    <div className="p-2 border-t sticky bottom-0 bg-background">
-                      <Input
-                        placeholder="Search options..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="h-9"
-                      />
-                    </div>
-                  )}
                 </PopoverContent>
               </Popover>
             )
