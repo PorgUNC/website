@@ -1,15 +1,17 @@
 import type { CollectionConfig } from 'payload'
-import { authenticated } from '@/access/authenticated'
+import { revalidatePoll } from '@/collections/Graphs/hooks/revalidatePoll'
+import admin from '@/collections/Users/access/admin'
+
 
 export const Graphs: CollectionConfig = {
   dbName: 'graphsCol',
   slug: 'graphs',
   admin: { group: 'Stats', useAsTitle: 'name' },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: admin,
+    delete: admin,
     read: () => true,
-    update: authenticated,
+    update: admin,
   },
   fields: [
     {
@@ -228,4 +230,7 @@ export const Graphs: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [revalidatePoll],
+  },
 }
