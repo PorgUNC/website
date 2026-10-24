@@ -119,7 +119,7 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
       },
 
       point: {
-        r: 5,
+        r: 3,
       },
       padding: {
         right: 24,
@@ -163,7 +163,7 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
             // rotate: 45,
             // multiline: false,
             culling: {
-              max: 8,
+              max: 5,
             },
           },
           // height: 60,
@@ -211,6 +211,11 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
                 .featured-chart .featured-chart-event text {
                     fill: hsl(var(--foreground)) !important;
                     font-weight: 600;
+                }
+                .featured-chart .bb-xgrid-line.featured-chart-event line {
+                    stroke: hsl(var(--foreground)) !important;
+                    stroke-width: 1.5px;
+                    opacity: 0.8;
                 }
                 [data-theme='dark'] .featured-chart .featured-chart-event text {
                     fill: hsl(var(--foreground)) !important;
