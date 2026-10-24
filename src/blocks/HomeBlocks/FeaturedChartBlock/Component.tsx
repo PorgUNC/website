@@ -80,8 +80,7 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
     )
     const ranges = series.map(({points: seriesPoints}) =>
       (seriesPoints ?? []).map(({y, error}) => {
-        const margin = (y * error) / 100
-        return [y + margin, y, Math.max(0, y - margin)]
+        return [y + error, y, Math.max(0, y - error)]
       }),
     )
     const sourceUrls = series.map(({points: seriesPoints}) =>
