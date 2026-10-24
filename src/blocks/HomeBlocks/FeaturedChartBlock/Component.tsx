@@ -102,19 +102,10 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
 
       data: {
         x: 'date',
-        columns: [
-          ['date', ...dates],
-          ...columns,
-        ],
+        columns: [['date', ...dates], ...columns],
         colors,
-        onclick(d) {
-          const sourceUrl = sourceUrls[d.id ? series.findIndex(({name}) => name === d.id) : 0]?.[d.index ?? 0]
-          if (sourceUrl && typeof window !== 'undefined') {
-            window.open(sourceUrl, '_blank', 'noopener,noreferrer')
-          }
-        },
         types: {
-          ...Object.fromEntries(series.map(({name}) => [name, areaLineRange()])),
+          ...Object.fromEntries(series.map(({ name }) => [name, areaLineRange()])),
         },
       },
 
@@ -131,7 +122,7 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
         contents(data, defaultTitleFormat, defaultValueFormat, color) {
           const point = data[0]
           const index = point.index ?? 0
-          const seriesIndex = series.findIndex(({name}) => name === point.id)
+          const seriesIndex = series.findIndex(({ name }) => name === point.id)
           const sourceUrl = sourceUrls[seriesIndex]?.[index]
           const [, mid] = ranges[seriesIndex]?.[index] ?? [0, 0, 0]
 
@@ -139,15 +130,9 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
                         <table class="bb-tooltip">
                             <tbody>
                                 <tr>
-                                    <th colspan="2">
-                                        ${sourceUrl ? `<a class="source-link" href="${sourceUrl}" target="_blank" rel="noreferrer" aria-label="Open data source" title="Open data source" style="color:#fff !important">` : ''}
-                                            ${renderToStaticMarkup(<Link size={14} color="#fff" aria-hidden="true" />).replace('<svg', '<svg style="color:#fff !important;stroke:#fff !important"')}
-                                        ${sourceUrl ? '</a>' : ''}
+                                    <td>
                                         ${defaultTitleFormat(point.x)}
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td class="name"><span style="background-color:${color(point)}"></span>${point.id}</td>
+                                    </td>
                                     <td class="value">${defaultValueFormat(mid, undefined, point.id)}</td>
                                 </tr>
                             </tbody>
@@ -174,12 +159,13 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
           padding: { top: 0, bottom: 0 },
           tick: {
             format: (d: number) => `${d}%`,
+            values: [25, 50, 75, 100],
           },
         },
       },
       grid: {
         x: {
-          lines: (events ?? []).map(({text, year, month, day}) => ({
+          lines: (events ?? []).map(({ text, year, month, day }) => ({
             value: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
             text,
             position: 'end' as const,
@@ -187,14 +173,14 @@ export const FeaturedChartBlock = ({chart, windows, events}: FeaturedChartBlockP
           })),
         },
       },
-      regions: (windows ?? []).map(({'start-date': start, 'end-date': end}) => ({
+      regions: (windows ?? []).map(({ 'start-date': start, 'end-date': end }) => ({
         axis: 'x' as const,
         start: `${start.year}-${String(start.month).padStart(2, '0')}-${String(start.day).padStart(2, '0')}`,
         end: `${end.year}-${String(end.month).padStart(2, '0')}-${String(end.day).padStart(2, '0')}`,
         class: 'polling-window',
         label: {
-        // text: `Polling: ${formatShortDate(start)} - ${formatShortDate(end)}`,
-        color: 'hsl(var(--muted-foreground))',
+          // text: `Polling: ${formatShortDate(start)} - ${formatShortDate(end)}`,
+          color: 'hsl(var(--muted-foreground))',
         },
       })),
     })
