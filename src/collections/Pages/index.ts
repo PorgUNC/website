@@ -21,8 +21,8 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { PollArchiveBlock } from '@/blocks/PollArchiveBlock/config'
-import { FeaturedChartBlock } from '@/blocks/FeaturedChartBlock/config'
+import { PollArchiveBlock } from '@/blocks/HomeBlocks/PollArchiveBlock/config'
+import { FeaturedChartBlock } from '@/blocks/HomeBlocks/FeaturedChartBlock/config'
 import { PersonnelCollectionBlock } from '@/blocks/PersonnelCollection/config'
 
 export const Pages: CollectionConfig<'pages'> = {

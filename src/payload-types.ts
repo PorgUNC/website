@@ -168,7 +168,54 @@ export interface Page {
     | FormBlock
     | PollArchiveBlock
     | {
-        featuredpoll?: (number | null) | Poll;
+        chart?: {
+          label?: string | null;
+          series?:
+            | {
+                name: string;
+                /**
+                 * Percentages should be entered as whole numbers (e.g. 50 for 50%)
+                 */
+                points?:
+                  | {
+                      year: number;
+                      month: number;
+                      day: number;
+                      y: number;
+                      error: number;
+                      report?: (number | null) | Poll;
+                      id?: string | null;
+                    }[]
+                  | null;
+                color?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        windows?:
+          | {
+              'start-date': {
+                year: number;
+                month: number;
+                day: number;
+              };
+              'end-date': {
+                year: number;
+                month: number;
+                day: number;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        events?:
+          | {
+              text: string;
+              year: number;
+              month: number;
+              day: number;
+              id?: string | null;
+            }[]
+          | null;
         /**
          * Enable to let this block span the full page width.
          */
@@ -256,7 +303,6 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -833,7 +879,6 @@ export interface User {
 export interface Avatar {
   id: number;
   alt?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1126,7 +1171,6 @@ export interface File {
   } | null;
   publishedDate?: string | null;
   publishedDate_tz?: SupportedTimezones;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1514,7 +1558,57 @@ export interface PagesSelect<T extends boolean = true> {
         featuredchart?:
           | T
           | {
-              featuredpoll?: T;
+              chart?:
+                | T
+                | {
+                    label?: T;
+                    series?:
+                      | T
+                      | {
+                          name?: T;
+                          points?:
+                            | T
+                            | {
+                                year?: T;
+                                month?: T;
+                                day?: T;
+                                y?: T;
+                                error?: T;
+                                report?: T;
+                                id?: T;
+                              };
+                          color?: T;
+                          id?: T;
+                        };
+                  };
+              windows?:
+                | T
+                | {
+                    'start-date'?:
+                      | T
+                      | {
+                          year?: T;
+                          month?: T;
+                          day?: T;
+                        };
+                    'end-date'?:
+                      | T
+                      | {
+                          year?: T;
+                          month?: T;
+                          day?: T;
+                        };
+                    id?: T;
+                  };
+              events?:
+                | T
+                | {
+                    text?: T;
+                    year?: T;
+                    month?: T;
+                    day?: T;
+                    id?: T;
+                  };
               fullWidth?: T;
               id?: T;
               blockName?: T;
@@ -1860,7 +1954,6 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1955,7 +2048,6 @@ export interface FilesSelect<T extends boolean = true> {
   altText?: T;
   publishedDate?: T;
   publishedDate_tz?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2031,7 +2123,6 @@ export interface InvitationsSelect<T extends boolean = true> {
  */
 export interface AvatarsSelect<T extends boolean = true> {
   alt?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

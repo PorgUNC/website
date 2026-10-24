@@ -10,8 +10,8 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { RichTextBlock } from '@/blocks/RichTextBlock/Component'
 import LineChartBlock from '@/blocks/PollBlocks/LineChartBlock/Component'
 import PieChartBlock from '@/blocks/PollBlocks/PieChartBlock/Component'
-import { PollArchiveBlock } from '@/blocks/PollArchiveBlock/Component'
-import { FeaturedChartBlock } from '@/blocks/FeaturedChartBlock/Component'
+import { PollArchiveBlock } from '@/blocks/HomeBlocks/PollArchiveBlock/Component'
+import { FeaturedChartBlock } from '@/blocks/HomeBlocks/FeaturedChartBlock/Component'
 import { PersonnelCollectionBlock } from '@/blocks/PersonnelCollection/Component'
 
 const blockComponents = {

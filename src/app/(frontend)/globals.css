@@ -412,9 +412,9 @@ html[data-theme='light'] {
 /* Region styling (if used) */
 .bb-region {
   fill: hsl(var(--accent));
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 [data-theme='dark'] .bb-region {
-  opacity: 0.2;
+  opacity: 0.4;
 }
