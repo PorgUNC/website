@@ -21,7 +21,6 @@ interface Series {
 }
 
 interface Chart {
-  label: string
   series: Series[]
 }
 
@@ -232,7 +231,7 @@ export const FeaturedChart = ({ data: { chart, events, windows, name, id }}: Fea
                 }
             `}</style>
       <div className="featured-chart max-w-7xl mx-auto">
-        <h2 className="mb-4 mt-4 text-2xl font-semibold text-center">{chart.label}</h2>
+        <h2 className="mb-4 mt-4 text-2xl font-semibold text-center">{name}</h2>
         <div ref={chartRef}></div>
       </div>
     </>
