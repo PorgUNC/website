@@ -258,6 +258,7 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -834,6 +835,7 @@ export interface User {
 export interface Avatar {
   id: number;
   alt?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1126,6 +1128,7 @@ export interface File {
   } | null;
   publishedDate?: string | null;
   publishedDate_tz?: SupportedTimezones;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1920,6 +1923,7 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2014,6 +2018,7 @@ export interface FilesSelect<T extends boolean = true> {
   altText?: T;
   publishedDate?: T;
   publishedDate_tz?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2089,6 +2094,7 @@ export interface InvitationsSelect<T extends boolean = true> {
  */
 export interface AvatarsSelect<T extends boolean = true> {
   alt?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
