@@ -29,6 +29,7 @@ export interface Config {
     users: User;
     invitations: Invitation;
     avatars: Avatar;
+    graphs: Graph;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -50,6 +51,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     invitations: InvitationsSelect<false> | InvitationsSelect<true>;
     avatars: AvatarsSelect<false> | AvatarsSelect<true>;
+    graphs: GraphsSelect<false> | GraphsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -168,54 +170,7 @@ export interface Page {
     | FormBlock
     | PollArchiveBlock
     | {
-        chart?: {
-          label?: string | null;
-          series?:
-            | {
-                name: string;
-                /**
-                 * Percentages should be entered as whole numbers (e.g. 50 for 50%)
-                 */
-                points?:
-                  | {
-                      year: number;
-                      month: number;
-                      day: number;
-                      y: number;
-                      error: number;
-                      report?: (number | null) | Poll;
-                      id?: string | null;
-                    }[]
-                  | null;
-                color?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        windows?:
-          | {
-              'start-date': {
-                year: number;
-                month: number;
-                day: number;
-              };
-              'end-date': {
-                year: number;
-                month: number;
-                day: number;
-              };
-              id?: string | null;
-            }[]
-          | null;
-        events?:
-          | {
-              text: string;
-              year: number;
-              month: number;
-              day: number;
-              id?: string | null;
-            }[]
-          | null;
+        chart: number | Graph;
         /**
          * Enable to let this block span the full page width.
          */
@@ -1202,6 +1157,63 @@ export interface PollArchiveBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "graphs".
+ */
+export interface Graph {
+  id: number;
+  name: string;
+  chart?: {
+    series?:
+      | {
+          name: string;
+          /**
+           * Percentages should be entered as whole numbers (e.g. 50 for 50%)
+           */
+          points?:
+            | {
+                year: number;
+                month: number;
+                day: number;
+                y: number;
+                error: number;
+                report?: (number | null) | Poll;
+                id?: string | null;
+              }[]
+            | null;
+          color?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  windows?:
+    | {
+        'start-date': {
+          year: number;
+          month: number;
+          day: number;
+        };
+        'end-date': {
+          year: number;
+          month: number;
+          day: number;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  events?:
+    | {
+        text: string;
+        year: number;
+        month: number;
+        day: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "PersonnelCollection".
  */
 export interface PersonnelCollection {
@@ -1460,6 +1472,10 @@ export interface PayloadLockedDocument {
         value: number | Avatar;
       } | null)
     | ({
+        relationTo: 'graphs';
+        value: number | Graph;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1558,57 +1574,7 @@ export interface PagesSelect<T extends boolean = true> {
         featuredchart?:
           | T
           | {
-              chart?:
-                | T
-                | {
-                    label?: T;
-                    series?:
-                      | T
-                      | {
-                          name?: T;
-                          points?:
-                            | T
-                            | {
-                                year?: T;
-                                month?: T;
-                                day?: T;
-                                y?: T;
-                                error?: T;
-                                report?: T;
-                                id?: T;
-                              };
-                          color?: T;
-                          id?: T;
-                        };
-                  };
-              windows?:
-                | T
-                | {
-                    'start-date'?:
-                      | T
-                      | {
-                          year?: T;
-                          month?: T;
-                          day?: T;
-                        };
-                    'end-date'?:
-                      | T
-                      | {
-                          year?: T;
-                          month?: T;
-                          day?: T;
-                        };
-                    id?: T;
-                  };
-              events?:
-                | T
-                | {
-                    text?: T;
-                    year?: T;
-                    month?: T;
-                    day?: T;
-                    id?: T;
-                  };
+              chart?: T;
               fullWidth?: T;
               id?: T;
               blockName?: T;
@@ -2208,6 +2174,65 @@ export interface AvatarsSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "graphs_select".
+ */
+export interface GraphsSelect<T extends boolean = true> {
+  name?: T;
+  chart?:
+    | T
+    | {
+        series?:
+          | T
+          | {
+              name?: T;
+              points?:
+                | T
+                | {
+                    year?: T;
+                    month?: T;
+                    day?: T;
+                    y?: T;
+                    error?: T;
+                    report?: T;
+                    id?: T;
+                  };
+              color?: T;
+              id?: T;
+            };
+      };
+  windows?:
+    | T
+    | {
+        'start-date'?:
+          | T
+          | {
+              year?: T;
+              month?: T;
+              day?: T;
+            };
+        'end-date'?:
+          | T
+          | {
+              year?: T;
+              month?: T;
+              day?: T;
+            };
+        id?: T;
+      };
+  events?:
+    | T
+    | {
+        text?: T;
+        year?: T;
+        month?: T;
+        day?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

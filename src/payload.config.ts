@@ -26,6 +26,7 @@ import { resendAdapter } from '@payloadcms/email-resend'
 import { Invitations } from './collections/Invitations'
 import { Avatars } from './collections/Avatars'
 import { SiteHeader } from './globals/SiteHeader/config'
+import { Graphs } from '@/collections/Graphs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -105,7 +106,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars],
+  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars, Graphs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Footer, FeaturedPoll, SiteHeader],
   plugins: [
