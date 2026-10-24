@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '@/access/authenticated'
-import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
 export const Graphs: CollectionConfig = {
   dbName: 'graphsCol',
@@ -9,7 +8,7 @@ export const Graphs: CollectionConfig = {
   access: {
     create: authenticated,
     delete: authenticated,
-    read: authenticatedOrPublished,
+    read: () => true,
     update: authenticated,
   },
   fields: [
