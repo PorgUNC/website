@@ -30,6 +30,7 @@ export interface Config {
     invitations: Invitation;
     avatars: Avatar;
     graphs: Graph;
+    polltimes: Polltime;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -52,6 +53,7 @@ export interface Config {
     invitations: InvitationsSelect<false> | InvitationsSelect<true>;
     avatars: AvatarsSelect<false> | AvatarsSelect<true>;
     graphs: GraphsSelect<false> | GraphsSelect<true>;
+    polltimes: PolltimesSelect<false> | PolltimesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -258,7 +260,6 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -835,7 +836,6 @@ export interface User {
 export interface Avatar {
   id: number;
   alt?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1128,7 +1128,6 @@ export interface File {
   } | null;
   publishedDate?: string | null;
   publishedDate_tz?: SupportedTimezones;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1236,6 +1235,46 @@ export interface Invitation {
   id: number;
   email: string;
   token?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "polltimes".
+ */
+export interface Polltime {
+  id: number;
+  uuid?: string | null;
+  startDate: string;
+  endDate: string;
+  execTimes?:
+    | {
+        people: {
+          user: number | User;
+          times?:
+            | {
+                timeanddate: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  regularTimes?:
+    | {
+        people: {
+          name: string;
+          times?:
+            | {
+                timeanddate: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1477,6 +1516,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'graphs';
         value: number | Graph;
+      } | null)
+    | ({
+        relationTo: 'polltimes';
+        value: number | Polltime;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1923,7 +1966,6 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2018,7 +2060,6 @@ export interface FilesSelect<T extends boolean = true> {
   altText?: T;
   publishedDate?: T;
   publishedDate_tz?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2094,7 +2135,6 @@ export interface InvitationsSelect<T extends boolean = true> {
  */
 export interface AvatarsSelect<T extends boolean = true> {
   alt?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2235,6 +2275,49 @@ export interface GraphsSelect<T extends boolean = true> {
         year?: T;
         month?: T;
         day?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "polltimes_select".
+ */
+export interface PolltimesSelect<T extends boolean = true> {
+  uuid?: T;
+  startDate?: T;
+  endDate?: T;
+  execTimes?:
+    | T
+    | {
+        people?:
+          | T
+          | {
+              user?: T;
+              times?:
+                | T
+                | {
+                    timeanddate?: T;
+                    id?: T;
+                  };
+            };
+        id?: T;
+      };
+  regularTimes?:
+    | T
+    | {
+        people?:
+          | T
+          | {
+              name?: T;
+              times?:
+                | T
+                | {
+                    timeanddate?: T;
+                    id?: T;
+                  };
+            };
         id?: T;
       };
   updatedAt?: T;

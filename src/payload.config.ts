@@ -27,6 +27,7 @@ import { Invitations } from './collections/Invitations'
 import { Avatars } from './collections/Avatars'
 import { SiteHeader } from './globals/SiteHeader/config'
 import { Graphs } from '@/collections/Graphs'
+import { PollTimes } from '@/collections/PollTimes'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -106,7 +107,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars, Graphs],
+  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars, Graphs, PollTimes],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Footer, FeaturedPoll, SiteHeader],
   plugins: [
