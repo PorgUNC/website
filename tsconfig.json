@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "types": ["vite/client", "react", "react-dom"],
+    "types": ["react", "react-dom"],
     "baseUrl": ".",
     "esModuleInterop": true,
     "target": "ES2022",
