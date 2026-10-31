@@ -60,7 +60,10 @@ const SlotCell = memo(function SlotCell({
         disabled={!available}
         onCheckedChange={(value) => onToggle(slot, value)}
       />
-      <span className="sr-only">{formatTime(slot)}</span>
+      <span className="text-[10px] leading-none">
+        {formatTime(slot)}–
+        {formatTime(new Date(new Date(slot).getTime() + 15 * 60 * 1000).toISOString())}
+      </span>
     </label>
   )
 })
@@ -82,7 +85,7 @@ function formatTime(slot: string) {
   }).format(new Date(slot))
 }
 
-export function PollSignupGrid({ uuid }: { uuid: string }) {
+export default function PollSignupGrid({ uuid }: { uuid: string }) {
   const [data, setData] = useState<PollData | null>(null)
   const [name, setName] = useState('')
   const [selected, setSelected] = useState<Set<string>>(new Set())
@@ -306,49 +309,58 @@ export function PollSignupGrid({ uuid }: { uuid: string }) {
             </Button>
           </div>
         )}
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <p className="mb-2 text-xs text-muted-foreground sm:hidden">
+          Scroll to the right to see more days
+        </p>
+        <div className="relative w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-border">
           <div
-            className="grid min-w-[42rem]"
-            style={{
-              gridTemplateColumns: `4.5rem repeat(${slotsByDay.length}, minmax(8rem, 1fr))`,
-            }}
+            className="block w-[min(100%,calc(100vw-2rem))] max-w-full min-w-0 overflow-auto overscroll-contain"
+            role="region"
+            aria-label="Poll availability grid"
           >
-            <div className="border-b border-border bg-muted/40 p-2" />
-            {slotsByDay.map(({ day }) => (
-              <div
-                key={day}
-                className="border-b border-l border-border bg-muted/40 p-3 text-center text-sm font-semibold"
-              >
-                {formatDay(day)}
-              </div>
-            ))}
-            {visibleTimeIndexes.map((index) => {
-              const time = baseSlots[index]
-              return (
-                <div key={time} className="contents">
-                  <div className="flex items-start justify-end border-r border-border p-1 text-[11px] text-muted-foreground">
-                    {formatTime(time)}
-                  </div>
-                  {slotsByDay.map(({ day, slots }) => {
-                    const slot = slots[index]
-                    const available = adminMode || data.availableSlots.includes(slot)
-                    const checked = selected.has(slot)
-                    const signupNames = signupNamesBySlot.get(slot) ?? []
-                    return (
-                      <SlotCell
-                        key={slot}
-                        slot={slot}
-                        day={day}
-                        available={available}
-                        checked={checked}
-                        signupNames={signupNames}
-                        onToggle={toggle}
-                      />
-                    )
-                  })}
+            <div
+              className="grid w-full min-w-[42rem]"
+              style={{
+                gridTemplateColumns: `4.5rem repeat(${slotsByDay.length}, minmax(8rem, 1fr))`,
+              }}
+            >
+              <div className="border-b border-border bg-muted/40 p-2" />
+              {slotsByDay.map(({ day }) => (
+                <div
+                  key={day}
+                  className="border-b border-l border-border bg-muted/40 p-3 text-center text-sm font-semibold"
+                >
+                  {formatDay(day)}
                 </div>
-              )
-            })}
+              ))}
+              {visibleTimeIndexes.map((index) => {
+                const time = baseSlots[index]
+                return (
+                  <div key={time} className="contents">
+                    <div className="flex items-start justify-end border-r border-border p-1 text-[11px] text-muted-foreground">
+                      {formatTime(time)}
+                    </div>
+                    {slotsByDay.map(({ day, slots }) => {
+                      const slot = slots[index]
+                      const available = adminMode || data.availableSlots.includes(slot)
+                      const checked = selected.has(slot)
+                      const signupNames = signupNamesBySlot.get(slot) ?? []
+                      return (
+                        <SlotCell
+                          key={slot}
+                          slot={slot}
+                          day={day}
+                          available={available}
+                          checked={checked}
+                          signupNames={signupNames}
+                          onToggle={toggle}
+                        />
+                      )
+                    })}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-4">

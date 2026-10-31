@@ -136,6 +136,7 @@ export default async function FormPage({ params: paramsPromise, searchParams: se
             isPoll={true}
             tokenGeneratedAt={tokenGeneratedAt}
           />
+          <div className="h-[200vh]"></div>
         </div>
       )
     }
