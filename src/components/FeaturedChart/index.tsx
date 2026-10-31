@@ -65,7 +65,7 @@ interface PopupPosition {
   top: number
 }
 
-const pointDate = ({ year, month, day }: Point) =>
+const pointDate = ({ year, month, day }: Pick<Point, 'year' | 'month' | 'day'>) =>
   `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 
 const formatShortDate = ({ year, month, day }: WindowStart | WindowEnd) =>
@@ -204,6 +204,9 @@ export const FeaturedChart = ({
     if (!chartRef.current) return
     const series = chart.series ?? []
     const dates = [...new Set(series.flatMap(({ points }) => (points ?? []).map(pointDate)))].sort()
+    const windowStarts = (windows ?? []).map(({ 'start-date': start }) => pointDate(start))
+    const windowEnds = (windows ?? []).map(({ 'end-date': end }) => pointDate(end))
+    const xDomain = [...dates, ...windowStarts, ...windowEnds].sort()
     const pointsBySeries = series.map(
       ({ points: seriesPoints }) =>
         new Map((seriesPoints ?? []).map((point) => [pointDate(point), point])),
@@ -312,6 +315,8 @@ export const FeaturedChart = ({
       axis: {
         x: {
           type: 'timeseries',
+          min: xDomain[0],
+          max: xDomain[xDomain.length - 1],
           tick: {
             format: '%b %d',
             // rotate: 45,

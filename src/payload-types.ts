@@ -1247,6 +1247,7 @@ export interface Polltime {
   uuid?: string | null;
   startDate: string;
   endDate: string;
+  additionalInfo?: string | null;
   execTimes?:
     | {
         people: {
@@ -1265,6 +1266,10 @@ export interface Polltime {
     | {
         people: {
           name: string;
+          /**
+           * Set automatically for signed-in participants.
+           */
+          user?: (number | null) | User;
           times?:
             | {
                 timeanddate: string;
@@ -2288,6 +2293,7 @@ export interface PolltimesSelect<T extends boolean = true> {
   uuid?: T;
   startDate?: T;
   endDate?: T;
+  additionalInfo?: T;
   execTimes?:
     | T
     | {
@@ -2311,6 +2317,7 @@ export interface PolltimesSelect<T extends boolean = true> {
           | T
           | {
               name?: T;
+              user?: T;
               times?:
                 | T
                 | {

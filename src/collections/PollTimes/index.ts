@@ -2,10 +2,24 @@ import type { CollectionConfig } from 'payload'
 import crypto from 'crypto'
 import { fieldAdmin } from '@/collections/Users/access/admin'
 import admin from '@/collections/Users/access/admin'
+import { getClientSideURL } from '@/utilities/getURL'
 
 export const PollTimes: CollectionConfig = {
   slug: 'polltimes',
-  admin: { group: 'Users' },
+  admin: {
+    group: 'Users',
+    preview: (doc, { req }) => {
+      return `${getClientSideURL()}/pollsignups?uuid=${doc.uuid}`
+    },
+    // components: {
+    //   edit: {
+    //     PreviewButton: {
+    //         path: '@/components/PollPreviewButton',
+    //         exportName: 'PollPreviewButton',
+    //     }
+    //   }
+    // }
+  },
   labels: {
     singular: 'Poll Time',
     plural: 'Poll Times',
@@ -48,6 +62,10 @@ export const PollTimes: CollectionConfig = {
           pickerAppearance: 'dayOnly',
         },
       },
+    },
+    {
+      name: 'additionalInfo',
+      type: 'text',
     },
     {
       name: 'execTimes',
@@ -98,6 +116,15 @@ export const PollTimes: CollectionConfig = {
               name: 'name',
               type: 'text',
               required: true,
+            },
+            {
+              name: 'user',
+              type: 'relationship',
+              relationTo: 'users',
+              admin: {
+                description: 'Set automatically for signed-in participants.',
+                readOnly: true,
+              },
             },
             {
               name: 'times',
