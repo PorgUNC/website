@@ -91,9 +91,9 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [status, setStatus] = useState('')
   const [saving, setSaving] = useState(false)
-  const [adminMode, setAdminMode] = useState(false)
   const [saved, setSaved] = useState(false)
   const [savedSlots, setSavedSlots] = useState<string[]>([])
+  const adminMode = data?.isAdmin ?? false
 
   useEffect(() => {
     fetch(`/api/custom/pollsignups/${encodeURIComponent(uuid)}`)
@@ -212,9 +212,9 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
           )
           return { ...current, signups: [...signups, { name: name.trim(), slots: [...selected] }] }
         })
-        setSaved(true)
-        setSavedSlots([...selected])
       }
+      setSaved(true)
+      setSavedSlots([...selected])
       setStatus(result.message)
     } catch (caughtError) {
       setStatus(caughtError instanceof Error ? caughtError.message : 'Unable to save availability.')
@@ -294,21 +294,6 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
             />
           </label>
         )}
-        {data.isAdmin && (
-          <div className="mb-6 flex items-center gap-3">
-            <Button
-              type="button"
-              variant={adminMode ? 'default' : 'outline'}
-              onClick={() => {
-                setAdminMode((current) => !current)
-                setSelected(new Set(data.adminSlots))
-                setStatus('')
-              }}
-            >
-              {adminMode ? 'Participant view' : 'Edit executive times'}
-            </Button>
-          </div>
-        )}
         <p className="mb-2 text-xs text-muted-foreground sm:hidden">
           Scroll to the right to see more days
         </p>
@@ -377,7 +362,7 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
           )}
         </div>
       </form>
-      {saved && !adminMode && savedSlots.length > 0 && (
+      {saved && savedSlots.length > 0 && (
         <div className="mt-6 rounded-lg border border-border p-4">
           <h2 className="font-semibold">Add your availability to Google Calendar</h2>
           <p className="mt-1 text-sm text-muted-foreground">
