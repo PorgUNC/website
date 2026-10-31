@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { getDaySlots, getPollWeekdays } from '@/lib/pollTimes'
+import 'add-to-calendar-button';
 
 type Signup = { name: string; slots: string[]; userId?: number }
 type Executive = { name: string; slots: string[] }
@@ -83,6 +84,27 @@ function formatTime(slot: string) {
     minute: '2-digit',
     timeZone: 'America/New_York',
   }).format(new Date(slot))
+}
+
+function getCalendarDate(date: Date) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timeZone: 'America/New_York',
+  }).formatToParts(date)
+  const part = (type: 'year' | 'month' | 'day') =>
+    parts.find((value) => value.type === type)?.value ?? ''
+  return `${part('year')}-${part('month')}-${part('day')}`
+}
+
+function getCalendarTime(date: Date) {
+  return new Intl.DateTimeFormat('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+    timeZone: 'America/New_York',
+  }).format(date)
 }
 
 export default function PollSignupGrid({ uuid }: { uuid: string }) {
@@ -247,21 +269,6 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
     return events
   }
 
-  function googleCalendarUrl(event: { start: Date; end: Date }) {
-    const stamp = (date: Date) =>
-      date
-        .toISOString()
-        .replace(/[-:]/g, '')
-        .replace(/\.\d{3}/, '')
-    const params = new URLSearchParams({
-      action: 'TEMPLATE',
-      text: 'PORG Polling',
-      ...(data?.additionalInfo ? { details: data.additionalInfo } : {}),
-      dates: `${stamp(event.start)}/${stamp(event.end)}`,
-    })
-    return `https://calendar.google.com/calendar/render?${params.toString()}`
-  }
-
   if (!data) return <p className="container py-16">{status || 'Loading poll...'}</p>
 
   return (
@@ -364,22 +371,26 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
       </form>
       {saved && savedSlots.length > 0 && (
         <div className="mt-6 rounded-lg border border-border p-4">
-          <h2 className="font-semibold">Add your availability to Google Calendar</h2>
+          <h2 className="font-semibold">Add your availability to a calendar</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             These links combine adjacent 15-minute selections into larger events.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {getCalendarEvents().map((event) => (
-              <a
+              <add-to-calendar-button
                 key={`${event.start.toISOString()}-${event.end.toISOString()}`}
-                className="rounded border border-border px-3 py-2 text-sm text-primary underline hover:bg-muted"
-                href={googleCalendarUrl(event)}
-                target="_blank"
-                rel="noreferrer"
+                name="PORG Polling"
+                label={`${formatDay(getCalendarDate(event.start))} · ${formatTime(event.start.toISOString())}–${formatTime(event.end.toISOString())}`}
+                size="3"
+                options="'google','apple','outlook.com','iCal','yahoo'"
+                description={data.additionalInfo ?? ''}
+                start-date={getCalendarDate(event.start)}
+                end-date={getCalendarDate(event.end)}
+                start-time={getCalendarTime(event.start)}
+                end-time={getCalendarTime(event.end)}
+                time-zone="America/New_York"
               >
-                {formatDay(event.start.toISOString().slice(0, 10))} ·{' '}
-                {formatTime(event.start.toISOString())}–{formatTime(event.end.toISOString())}
-              </a>
+              </add-to-calendar-button>
             ))}
           </div>
         </div>
