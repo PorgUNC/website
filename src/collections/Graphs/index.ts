@@ -7,6 +7,10 @@ export const Graphs: CollectionConfig = {
   dbName: 'graphsCol',
   slug: 'graphs',
   admin: { group: 'Stats', useAsTitle: 'name' },
+  labels: {
+    singular: 'Homepage Graph',
+    plural: 'Homepage Graphs',
+  },
   access: {
     create: admin,
     delete: admin,

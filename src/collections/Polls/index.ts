@@ -31,6 +31,10 @@ import {
 
 export const Polls: CollectionConfig<'polls'> = {
   slug: 'polls',
+  labels: {
+    singular: 'Poll Report',
+    plural: 'Poll Reports',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -160,7 +164,7 @@ export const Polls: CollectionConfig<'polls'> = {
                 },
                 {
                   name: 'lineCharts',
-                  dbName: "plnChrt",
+                  dbName: 'plnChrt',
                   type: 'array',
                   labels: {
                     singular: 'Line Chart',
@@ -243,7 +247,7 @@ export const Polls: CollectionConfig<'polls'> = {
                   type: 'select',
                   required: true,
                   options: [
-                    {label: 'PDF', value: 'FaFilePdf'},
+                    { label: 'PDF', value: 'FaFilePdf' },
                     { label: 'File', value: 'FaFile' },
                     { label: 'Code', value: 'FaFileCode' },
                     { label: 'Text', value: 'FaFileAlt' },

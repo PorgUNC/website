@@ -34,6 +34,10 @@ import {
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: {
+    singular: 'News Post',
+    plural: 'News Posts',
+  },
   access: {
     create: authenticated,
     delete: authenticated,

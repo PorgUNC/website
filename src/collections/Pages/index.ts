@@ -28,6 +28,10 @@ import { PersonnelCollectionBlock } from '@/blocks/PersonnelCollection/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: 'Main Page',
+    plural: 'Main Pages',
+  },
   access: {
     create: admin,
     delete: admin,

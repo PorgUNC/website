@@ -11,14 +11,7 @@ export const PollTimes: CollectionConfig = {
     preview: (doc, { req }) => {
       return `${getClientSideURL()}/pollsignups?uuid=${doc.uuid}`
     },
-    // components: {
-    //   edit: {
-    //     PreviewButton: {
-    //         path: '@/components/PollPreviewButton',
-    //         exportName: 'PollPreviewButton',
-    //     }
-    //   }
-    // }
+    useAsTitle: 'startDate'
   },
   labels: {
     singular: 'Poll Time',
