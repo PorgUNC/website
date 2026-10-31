@@ -314,7 +314,7 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
         </p>
         <div className="relative w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-border">
           <div
-            className="block w-[min(100%,calc(100vw-2rem))] max-w-full min-w-0 overflow-auto overscroll-contain"
+            className="block w-[min(100%,calc(100vw-2rem))] max-w-full min-w-0 overflow-auto"
             role="region"
             aria-label="Poll availability grid"
           >
