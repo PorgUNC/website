@@ -2,7 +2,6 @@
 
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { getDaySlots, getPollWeekdays } from '@/lib/pollTimes'
 import 'add-to-calendar-button';
 
@@ -38,34 +37,32 @@ const SlotCell = memo(function SlotCell({
   signupNames,
   onToggle,
 }: SlotCellProps) {
+  const slotDescription = `${formatDay(day)} ${formatTime(slot)}${
+    signupNames.length ? ` — ${signupNames.join(', ')}` : ''
+  }`
+
   return (
-    <label
-      className={`m-0.5 flex min-h-7 items-center justify-center rounded-sm border text-xs transition-colors ${
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={checked}
+      aria-label={available ? slotDescription : 'Unavailable'}
+      disabled={!available}
+      onClick={() => onToggle(slot, !checked)}
+      className={`m-0.5 flex min-h-7 items-center justify-center rounded-sm border text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
         checked
           ? 'border-green-700 bg-green-500 text-white hover:bg-green-600 dark:border-green-200 dark:bg-green-500'
           : available
             ? 'cursor-pointer border-blue-600 bg-blue-400 hover:bg-blue-500 dark:border-blue-300 dark:bg-blue-600'
             : 'cursor-not-allowed border-border bg-muted/50'
       }`}
-      title={
-        available
-          ? `${formatDay(day)} ${formatTime(slot)}${
-              signupNames.length ? ` — ${signupNames.join(', ')}` : ''
-            }`
-          : 'Unavailable'
-      }
+      title={available ? slotDescription : 'Unavailable'}
     >
-      <Checkbox
-        className="sr-only"
-        checked={checked}
-        disabled={!available}
-        onCheckedChange={(value) => onToggle(slot, value)}
-      />
       <span className="text-[10px] leading-none">
         {formatTime(slot)}–
         {formatTime(new Date(new Date(slot).getTime() + 15 * 60 * 1000).toISOString())}
       </span>
-    </label>
+    </button>
   )
 })
 
@@ -306,12 +303,12 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
         </p>
         <div className="relative w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-border">
           <div
-            className="block w-[min(100%,calc(100vw-2rem))] max-w-full min-w-0 overflow-auto"
+            className="w-full min-w-0 overflow-x-auto overscroll-x-contain"
             role="region"
             aria-label="Poll availability grid"
           >
             <div
-              className="grid w-full min-w-[42rem]"
+              className="grid w-max min-w-[42rem]"
               style={{
                 gridTemplateColumns: `4.5rem repeat(${slotsByDay.length}, minmax(8rem, 1fr))`,
               }}
@@ -382,7 +379,7 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
                 name="PORG Polling"
                 label={`${formatDay(getCalendarDate(event.start))} · ${formatTime(event.start.toISOString())}–${formatTime(event.end.toISOString())}`}
                 size="3"
-                options="'google','apple','outlook.com','iCal','yahoo'"
+                options="'google','apple','outlook.com','ical','yahoo'"
                 description={data.additionalInfo ?? ''}
                 start-date={getCalendarDate(event.start)}
                 end-date={getCalendarDate(event.end)}
