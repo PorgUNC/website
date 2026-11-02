@@ -75,6 +75,33 @@ const formatShortDate = ({ year, month, day }: WindowStart | WindowEnd) =>
     timeZone: 'UTC',
   }).format(new Date(Date.UTC(year, month - 1, day)))
 
+const categoryPosition = (date: string, categories: string[]) => {
+  const timestamp = Date.parse(`${date}T00:00:00Z`)
+  if (categories.length < 2) return 0
+
+  const upperIndex = categories.findIndex(
+    (category) => Date.parse(`${category}T00:00:00Z`) >= timestamp,
+  )
+
+  if (upperIndex === 0) {
+    const first = Date.parse(`${categories[0]}T00:00:00Z`)
+    const second = Date.parse(`${categories[1]}T00:00:00Z`)
+    return (timestamp - first) / (second - first)
+  }
+
+  if (upperIndex === -1) {
+    const lastIndex = categories.length - 1
+    const previous = Date.parse(`${categories[lastIndex - 1]}T00:00:00Z`)
+    const last = Date.parse(`${categories[lastIndex]}T00:00:00Z`)
+    return lastIndex + (timestamp - last) / (last - previous)
+  }
+
+  const lowerIndex = upperIndex - 1
+  const lower = Date.parse(`${categories[lowerIndex]}T00:00:00Z`)
+  const upper = Date.parse(`${categories[upperIndex]}T00:00:00Z`)
+  return lowerIndex + (timestamp - lower) / (upper - lower)
+}
+
 const defaultSeriesColor = '#2563eb'
 
 const reportLinks = (
@@ -204,12 +231,78 @@ export const FeaturedChart = ({
     if (!chartRef.current) return
     const series = chart.series ?? []
     const dates = [...new Set(series.flatMap(({ points }) => (points ?? []).map(pointDate)))].sort()
-    const windowStarts = (windows ?? []).map(({ 'start-date': start }) => pointDate(start))
-    const windowEnds = (windows ?? []).map(({ 'end-date': end }) => pointDate(end))
-    const xDomain = [...dates, ...windowStarts, ...windowEnds].sort()
     const pointsBySeries = series.map(
       ({ points: seriesPoints }) =>
         new Map((seriesPoints ?? []).map((point) => [pointDate(point), point])),
+    )
+    const pollingWindows = (windows ?? []).map(({ 'start-date': start, 'end-date': end }) => ({
+      startDate: pointDate(start),
+      endDate: pointDate(end),
+      center: categoryPosition(pointDate(end), dates),
+    }))
+    const eventsByWindow = pollingWindows.map(() => [] as { text: string; date: string }[])
+    const unassignedEvents: { text: string; date: string }[] = []
+    const chartEvents = events ?? []
+    chartEvents.forEach(({ text, year, month, day }) => {
+      const date = pointDate({ year, month, day })
+      const windowIndex = pollingWindows.findIndex(
+        ({ startDate, endDate }) => startDate <= date && date <= endDate,
+      )
+      if (windowIndex === -1) {
+        unassignedEvents.push({ text, date })
+      } else {
+        eventsByWindow[windowIndex].push({ text, date })
+      }
+    })
+    const windowLayouts = pollingWindows.map((pollingWindow, index) => {
+      const centers = pollingWindows
+        .filter((_, otherIndex) => otherIndex !== index)
+        .map(({ center }) => Math.abs(center - pollingWindow.center))
+        .filter((distance) => distance > 0)
+      const width = Math.min(0.4, centers.length ? Math.min(...centers) * 0.45 : 0.4)
+      const start = pollingWindow.center - width
+      const end = pollingWindow.center
+      const windowEvents = eventsByWindow[index].sort((a, b) => a.date.localeCompare(b.date))
+
+      return {
+        start,
+        end,
+        events: windowEvents.map((event, eventIndex) => ({
+          text: event.text,
+          value: start + ((eventIndex + 1) / (windowEvents.length + 1)) * (end - start),
+          class: 'featured-chart-event',
+        })),
+      }
+    })
+    const eventLines = [
+      ...windowLayouts.flatMap(({ events: windowEvents }) => windowEvents),
+      ...unassignedEvents.map(({ text, date }) => ({
+        text,
+        value: categoryPosition(date, dates),
+        class: 'featured-chart-event',
+      })),
+    ].sort((a, b) => a.value - b.value)
+    const minimumEventLabelGap =
+      (18 * Math.max(1, dates.length - 1)) / Math.max(1, chartRef.current.clientWidth - 100)
+    const eventClusters: typeof eventLines[] = []
+    eventLines.forEach((eventLine) => {
+      const cluster = eventClusters[eventClusters.length - 1]
+      if (
+        cluster &&
+        eventLine.value - cluster[cluster.length - 1].value < minimumEventLabelGap
+      ) {
+        cluster.push(eventLine)
+      } else {
+        eventClusters.push([eventLine])
+      }
+    })
+    const eventGridLines = eventClusters.flatMap((cluster) =>
+      cluster.map((eventLine, index) => ({
+        ...eventLine,
+        position: cluster.length > 1
+          ? (['end', 'middle', 'start'] as const)[index % 3]
+          : 'end' as const,
+      })),
     )
     const ranges = pointsBySeries.map((pointMap) =>
       dates.map((date) => {
@@ -233,35 +326,28 @@ export const FeaturedChart = ({
         x: 'date',
         columns: [['date', ...dates], ...emptyColumns],
         colors,
+        onclick: (point, element) => {
+          const date = point.index === undefined ? undefined : dates[point.index]
+          const chartBounds = chartContainerRef.current?.getBoundingClientRect()
+          if (!date || !chartBounds) return
+
+          const pointBounds = element.getBoundingClientRect()
+          const popupWidth = Math.min(288, chartBounds.width - 16)
+          setSelectedDate(date)
+          setPopupPosition({
+            left: Math.max(
+              8,
+              Math.min(
+                chartBounds.width - popupWidth - 8,
+                pointBounds.left + pointBounds.width / 2 - chartBounds.left - popupWidth / 2,
+              ),
+            ),
+            top: pointBounds.bottom - chartBounds.top + 12,
+          })
+        },
         types: {
           ...Object.fromEntries(series.map(({ name }) => [name, areaLineRange()])),
         },
-      },
-      onclick: (event: globalThis.Event) => {
-        const mouseEvent = event as globalThis.MouseEvent
-        const chartBounds = chartContainerRef.current?.getBoundingClientRect()
-        if (!chartBounds) return
-
-        const positions = Array.from(chartRef.current?.querySelectorAll('.bb-axis-x .tick') ?? [])
-          .map((tick) => {
-            const bounds = tick.getBoundingClientRect()
-            return bounds.left + bounds.width / 2
-          })
-          .filter((position) => Number.isFinite(position))
-        if (positions.length !== dates.length) return
-        const index = positions.reduce(
-          (nearest, position, positionIndex) =>
-            Math.abs(position - mouseEvent.clientX) < Math.abs(positions[nearest] - mouseEvent.clientX)
-              ? positionIndex
-              : nearest,
-          0,
-        )
-        const popupWidth = Math.min(288, chartBounds.width - 16)
-        setSelectedDate(dates[index])
-        setPopupPosition({
-          left: Math.max(8, Math.min(chartBounds.width - popupWidth - 8, mouseEvent.clientX - chartBounds.left - popupWidth / 2)),
-          top: mouseEvent.clientY - chartBounds.top + 12,
-        })
       },
       transition: {
         duration: 1000,
@@ -314,16 +400,17 @@ export const FeaturedChart = ({
 
       axis: {
         x: {
-          type: 'timeseries',
-          min: xDomain[0],
-          max: xDomain[xDomain.length - 1],
+          type: 'category',
+          categories: dates,
           tick: {
-            format: '%b %d',
+            format: (_index: number, date: string) => {
+              const [year, month, day] = date.split('-').map(Number)
+              return formatShortDate({ year, month, day })
+            },
             // rotate: 45,
             // multiline: false,
-            culling: {
-              max: dates.length,
-            },
+            values: dates.map((_, index) => index),
+            culling: false,
           },
           // height: 60,
         },
@@ -339,18 +426,13 @@ export const FeaturedChart = ({
       },
       grid: {
         x: {
-          lines: (events ?? []).map(({ text, year, month, day }) => ({
-            value: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
-            text,
-            position: 'end' as const,
-            class: 'featured-chart-event',
-          })),
+          lines: eventGridLines,
         },
       },
-      regions: (windows ?? []).map(({ 'start-date': start, 'end-date': end }) => ({
+      regions: windowLayouts.map(({ start, end }) => ({
         axis: 'x' as const,
-        start: `${start.year}-${String(start.month).padStart(2, '0')}-${String(start.day).padStart(2, '0')}`,
-        end: `${end.year}-${String(end.month).padStart(2, '0')}-${String(end.day).padStart(2, '0')}`,
+        start,
+        end,
         class: 'polling-window',
         label: {
           // text: `Polling: ${formatShortDate(start)} - ${formatShortDate(end)}`,
