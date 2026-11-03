@@ -2,7 +2,7 @@
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
@@ -57,7 +57,14 @@ export const PollFormBlock: React.FC<
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const [isTokenExpired, setIsTokenExpired] = useState(false)
+  const confirmationRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    if (hasSubmitted && confirmationType === 'message') {
+      confirmationRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [hasSubmitted, confirmationType])
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
@@ -144,7 +151,9 @@ export const PollFormBlock: React.FC<
       <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
+            <div ref={confirmationRef}>
+              <RichText data={confirmationMessage} />
+            </div>
           )}
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
@@ -182,15 +191,11 @@ export const PollFormBlock: React.FC<
                     })}
                 </div>
 
-                <Button
-                  form={formID}
-                  type="submit"
-                  variant="default"
-                  disabled={isTokenExpired}
-                >
+                <Button form={formID} type="submit" variant="default" disabled={isTokenExpired}>
                   {submitButtonLabel}
                 </Button>
               </form>
+              <div className="h-[200vh]"></div>
             </>
           )}
         </FormProvider>
@@ -198,4 +203,3 @@ export const PollFormBlock: React.FC<
     </div>
   )
 }
-
