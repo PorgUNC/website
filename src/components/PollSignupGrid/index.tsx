@@ -123,7 +123,7 @@ const SlotCell = memo(function SlotCell({
       title={available ? slotDescription : 'Unavailable'}
     >
       {signupNames.length > 0 && (
-        <div className="flex items-center justify-start min-w-0 flex-1">
+        <div className="flex items-center justify-start min-w-0 flex-1 select-none">
           {signupNames.map((name, index) => (
             <span
               key={`${name}-${index}`}
@@ -138,7 +138,7 @@ const SlotCell = memo(function SlotCell({
           ))}
         </div>
       )}
-      <span className="ml-auto shrink-0 text-[10px] leading-none">
+      <span className="ml-auto shrink-0 text-[10px] leading-none select-none">
         {formatTime(slot)}–
         {formatTime(new Date(new Date(slot).getTime() + 15 * 60 * 1000).toISOString())}
       </span>
@@ -146,7 +146,7 @@ const SlotCell = memo(function SlotCell({
         <span
           id={`slot-tooltip-${slot}`}
           role="tooltip"
-          className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1 w-max max-w-64 -translate-x-1/2 whitespace-normal rounded border border-border bg-popover px-2 py-1 text-left text-xs text-popover-foreground shadow-md"
+          className="pointer-events-none select-none absolute bottom-full left-1/2 z-20 mb-1 w-max max-w-64 -translate-x-1/2 whitespace-normal rounded border border-border bg-popover px-2 py-1 text-left text-xs text-popover-foreground shadow-md"
         >
           {slotDescription}
         </span>
@@ -406,7 +406,7 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
               {slotsByDay.map(({ day }) => (
                 <div
                   key={day}
-                  className="border-b border-l border-border bg-muted/40 p-3 text-center text-sm font-semibold"
+                  className="border-b border-l border-border bg-muted/40 p-3 text-center text-sm font-semibold select-none"
                 >
                   {formatDay(day)}
                 </div>
@@ -415,7 +415,7 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
                 const time = baseSlots[index]
                 return (
                   <div key={time} className="contents">
-                    <div className="flex items-start justify-end border-r border-border p-1 text-[11px] text-muted-foreground">
+                    <div className="flex items-start justify-end border-r border-border p-1 text-[11px] text-muted-foreground select-none">
                       {formatTime(time)}
                     </div>
                     {slotsByDay.map(({ day, slots }) => {
