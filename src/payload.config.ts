@@ -28,6 +28,7 @@ import { Avatars } from './collections/Avatars'
 import { SiteHeader } from './globals/SiteHeader/config'
 import { Graphs } from '@/collections/Graphs'
 import { PollTimes } from '@/collections/PollTimes'
+import { MetaImage } from '@/globals/MetaImage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -109,7 +110,7 @@ export default buildConfig({
   }),
   collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars, Graphs, PollTimes],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Footer, FeaturedPoll, SiteHeader],
+  globals: [Footer, FeaturedPoll, SiteHeader, MetaImage],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

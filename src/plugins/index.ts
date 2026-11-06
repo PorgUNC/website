@@ -75,6 +75,16 @@ export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
     generateURL,
+    generateImage: async ({ doc, req }) => {
+      if (doc?.heroImage) {
+        return doc.heroImage
+      }
+      const metaImage = await req.payload.findGlobal({ slug: 'meta-image' })
+      if (metaImage) {
+        return metaImage['meta-image']
+      }
+      return null
+    }
   }),
   formBuilderPlugin({
     fields: {

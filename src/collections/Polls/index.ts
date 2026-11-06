@@ -298,6 +298,7 @@ export const Polls: CollectionConfig<'polls'> = {
             }),
             MetaImageField({
               relationTo: 'media',
+              hasGenerateFn: true,
             }),
             MetaDescriptionField({}),
             PreviewField({

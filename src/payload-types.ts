@@ -72,11 +72,13 @@ export interface Config {
     footer: Footer;
     'featured-poll': FeaturedPoll;
     'navigation-header': NavigationHeader;
+    'meta-image': MetaImage;
   };
   globalsSelect: {
     footer: FooterSelect<false> | FooterSelect<true>;
     'featured-poll': FeaturedPollSelect<false> | FeaturedPollSelect<true>;
     'navigation-header': NavigationHeaderSelect<false> | NavigationHeaderSelect<true>;
+    'meta-image': MetaImageSelect<false> | MetaImageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -260,6 +262,7 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -836,6 +839,7 @@ export interface User {
 export interface Avatar {
   id: number;
   alt?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1128,6 +1132,7 @@ export interface File {
   } | null;
   publishedDate?: string | null;
   publishedDate_tz?: SupportedTimezones;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1971,6 +1976,7 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2065,6 +2071,7 @@ export interface FilesSelect<T extends boolean = true> {
   altText?: T;
   publishedDate?: T;
   publishedDate_tz?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2140,6 +2147,7 @@ export interface InvitationsSelect<T extends boolean = true> {
  */
 export interface AvatarsSelect<T extends boolean = true> {
   alt?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2702,6 +2710,19 @@ export interface NavigationHeader {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "meta-image".
+ */
+export interface MetaImage {
+  id: number;
+  /**
+   * Select the static media to feature for OpenGraph previews.
+   */
+  'meta-image': number | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
@@ -2745,6 +2766,16 @@ export interface NavigationHeaderSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "meta-image_select".
+ */
+export interface MetaImageSelect<T extends boolean = true> {
+  'meta-image'?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

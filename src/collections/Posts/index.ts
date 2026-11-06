@@ -145,6 +145,7 @@ export const Posts: CollectionConfig<'posts'> = {
             }),
             MetaImageField({
               relationTo: 'media',
+              hasGenerateFn: true,
             }),
             MetaDescriptionField({}),
             PreviewField({
