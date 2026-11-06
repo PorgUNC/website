@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { getDaySlots, getPollWeekdays } from '@/lib/pollTimes'
 import 'add-to-calendar-button';
@@ -29,6 +29,19 @@ type SlotCellProps = {
   onToggle: (slot: string, checked: boolean | 'indeterminate') => void
 }
 
+function getInitials(name: string) {
+  const words = name.trim().split(/\s+/).filter(Boolean)
+  if (words.length === 0) return '?'
+  if (words.length === 1) return words[0][0]?.toUpperCase() ?? '?'
+  return `${words[0][0]?.toUpperCase() ?? ''}${words[words.length - 1][0]?.toUpperCase() ?? ''}`
+}
+
+function getNameColor(name: string) {
+  const seed = [...name].reduce((total, char) => total + char.charCodeAt(0), 0)
+  const hue = seed % 360
+  return `hsl(${hue} 68% 62%)`
+}
+
 const SlotCell = memo(function SlotCell({
   slot,
   day,
@@ -37,19 +50,70 @@ const SlotCell = memo(function SlotCell({
   signupNames,
   onToggle,
 }: SlotCellProps) {
+  const [showTooltip, setShowTooltip] = useState(false)
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hideTooltipTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const longPressTriggered = useRef(false)
   const slotDescription = `${formatDay(day)} ${formatTime(slot)}${
     signupNames.length ? ` — ${signupNames.join(', ')}` : ''
   }`
+
+  useEffect(
+    () => () => {
+      if (longPressTimer.current) clearTimeout(longPressTimer.current)
+      if (hideTooltipTimer.current) clearTimeout(hideTooltipTimer.current)
+    },
+    [],
+  )
+
+  function startLongPress() {
+    if (longPressTimer.current) clearTimeout(longPressTimer.current)
+    if (hideTooltipTimer.current) clearTimeout(hideTooltipTimer.current)
+    longPressTriggered.current = false
+    longPressTimer.current = setTimeout(() => {
+      longPressTriggered.current = true
+      setShowTooltip(true)
+    }, 500)
+  }
+
+  function endLongPress() {
+    if (longPressTimer.current) clearTimeout(longPressTimer.current)
+    longPressTimer.current = null
+    if (longPressTriggered.current) {
+      hideTooltipTimer.current = setTimeout(() => setShowTooltip(false), 2000)
+    }
+  }
 
   return (
     <button
       type="button"
       role="checkbox"
       aria-checked={checked}
+      aria-describedby={showTooltip ? `slot-tooltip-${slot}` : undefined}
       aria-label={available ? slotDescription : 'Unavailable'}
       disabled={!available}
-      onClick={() => onToggle(slot, !checked)}
-      className={`m-0.5 flex min-h-7 items-center justify-center rounded-sm border text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+      onPointerDown={startLongPress}
+      onPointerUp={endLongPress}
+      onPointerCancel={endLongPress}
+      onContextMenu={(event) => {
+        event.preventDefault()
+        if (!showTooltip) {
+          longPressTriggered.current = true
+          setShowTooltip(true)
+          hideTooltipTimer.current = setTimeout(() => setShowTooltip(false), 2000)
+        }
+      }}
+      onClick={(event) => {
+        if (longPressTriggered.current) {
+          event.preventDefault()
+          longPressTriggered.current = false
+          return
+        }
+        onToggle(slot, !checked)
+      }}
+      className={`relative m-0.5 flex min-h-7 items-center justify-between gap-1 rounded-sm border px-1.5 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+        showTooltip ? 'z-10' : ''
+      } ${
         checked
           ? 'border-green-700 bg-green-500 text-white hover:bg-green-600 dark:border-green-200 dark:bg-green-500'
           : available
@@ -58,10 +122,35 @@ const SlotCell = memo(function SlotCell({
       }`}
       title={available ? slotDescription : 'Unavailable'}
     >
-      <span className="text-[10px] leading-none">
+      {signupNames.length > 0 && (
+        <div className="flex items-center justify-start min-w-0 flex-1">
+          {signupNames.map((name, index) => (
+            <span
+              key={`${name}-${index}`}
+              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border border-white text-[9px] font-semibold text-white shadow-sm ${
+                index > 0 ? '-ml-1.5' : ''
+              }`}
+              style={{ backgroundColor: getNameColor(name) }}
+              title={name}
+            >
+              {getInitials(name)}
+            </span>
+          ))}
+        </div>
+      )}
+      <span className="ml-auto shrink-0 text-[10px] leading-none">
         {formatTime(slot)}–
         {formatTime(new Date(new Date(slot).getTime() + 15 * 60 * 1000).toISOString())}
       </span>
+      {showTooltip && (
+        <span
+          id={`slot-tooltip-${slot}`}
+          role="tooltip"
+          className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1 w-max max-w-64 -translate-x-1/2 whitespace-normal rounded border border-border bg-popover px-2 py-1 text-left text-xs text-popover-foreground shadow-md"
+        >
+          {slotDescription}
+        </span>
+      )}
     </button>
   )
 })
