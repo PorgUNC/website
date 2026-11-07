@@ -16,7 +16,7 @@ const dirname = path.dirname(filename)
 export const Files: CollectionConfig = {
   slug: 'files',
   admin: {
-    group: 'Uploads'
+    group: 'Uploads',
   },
   labels: {
     singular: 'File',
@@ -38,6 +38,7 @@ export const Files: CollectionConfig = {
       'text/html',
       'application/json',
       'text/markdown',
+      'text/x-markdown',
       'application/vnd.oasis.opendocument.spreadsheet',
       'application/vnd.oasis.opendocument.text',
       'application/rtf',
@@ -46,6 +47,7 @@ export const Files: CollectionConfig = {
       'application/xml',
       'text/xml',
       'text/plain',
+      'application/octet-stream',
     ],
   },
   fields: [
@@ -61,7 +63,7 @@ export const Files: CollectionConfig = {
     },
     {
       name: 'publishedDate',
-       type: 'date',
+      type: 'date',
       timezone: true,
       admin: {
         position: 'sidebar',
