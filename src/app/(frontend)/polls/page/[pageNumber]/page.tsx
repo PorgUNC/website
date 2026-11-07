@@ -33,6 +33,11 @@ export default async function PollsPage({ params: paramsPromise }: Args) {
     depth: 1,
     limit: POSTS_PER_PAGE,
     page: sanitizedPageNumber,
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
   })
 
   if (!pollsResult.docs.length && sanitizedPageNumber > 1) notFound()
@@ -84,6 +89,11 @@ export async function generateStaticParams() {
   const polls = await payload.find({
     collection: 'polls',
     limit: POSTS_PER_PAGE,
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
   })
 
   const totalPages = Math.ceil((polls.totalDocs || 0) / POSTS_PER_PAGE)
