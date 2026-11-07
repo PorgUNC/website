@@ -29,8 +29,8 @@ interface PollPieCardProps {
 }
 
 const DEFAULT_COLORS = [
-  '#8884d8',
   '#82ca9d',
+  '#8884d8',
   '#ffc658',
   '#ff8042',
   '#a4de6c',
