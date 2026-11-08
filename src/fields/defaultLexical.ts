@@ -1,5 +1,6 @@
 import type { TextFieldSingleValidation } from 'payload'
 import {
+  BlocksFeature,
   BoldFeature,
   ItalicFeature,
   LinkFeature,
@@ -20,27 +21,50 @@ import {
   TextStateFeature,
   AlignFeature,
   BlockquoteFeature,
+  ChecklistFeature,
+  InlineCodeFeature,
+  RelationshipFeature,
+  UploadFeature,
+  defaultColors,
 } from '@payloadcms/richtext-lexical'
+
+import { Code } from '@/blocks/Code/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
 
 export const defaultLexical = lexicalEditor({
   features: [
-    HeadingFeature({enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4']}),
+    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
+    ParagraphFeature(),
     FixedToolbarFeature(),
     InlineToolbarFeature(),
-    ParagraphFeature(),
-    UnderlineFeature(),
+    BlocksFeature({ blocks: [Code, MediaBlock] }),
     BoldFeature(),
     ItalicFeature(),
-    HorizontalRuleFeature(),
-    IndentFeature(),
+    UnderlineFeature(),
     StrikethroughFeature(),
     SubscriptFeature(),
     SuperscriptFeature(),
+    InlineCodeFeature(),
+    HorizontalRuleFeature(),
+    IndentFeature(),
     OrderedListFeature(),
     UnorderedListFeature(),
-    TextStateFeature(),
+    ChecklistFeature(),
+    TextStateFeature({
+      state: {
+        color: {
+          ...defaultColors.text,
+          'text-gray': {
+            label: 'Muted',
+            css: { color: 'hsl(var(--muted-foreground))' },
+          },
+        },
+      },
+    }),
     AlignFeature(),
     BlockquoteFeature(),
+    RelationshipFeature({ enabledCollections: ['pages', 'posts', 'polls'] }),
+    UploadFeature({ enabledCollections: ['media'] }),
     LinkFeature({
       enabledCollections: ['pages', 'posts', 'polls'],
       fields: ({ defaultFields }) => {
