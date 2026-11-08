@@ -39,6 +39,7 @@ export const Files: CollectionConfig = {
       'application/json',
       'text/markdown',
       'text/x-markdown',
+      'text/x-r-markdown',
       'application/vnd.oasis.opendocument.spreadsheet',
       'application/vnd.oasis.opendocument.text',
       'application/rtf',
