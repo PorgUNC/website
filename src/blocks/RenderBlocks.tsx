@@ -14,6 +14,7 @@ import { PollArchiveBlock } from '@/blocks/HomeBlocks/PollArchiveBlock/Component
 import { FeaturedChartBlock } from '@/blocks/HomeBlocks/FeaturedChartBlock/Component'
 import { PersonnelCollectionBlock } from '@/blocks/PersonnelCollection/Component'
 import { PlotlyBlock } from '@/blocks/PlotlyBlock/Component'
+import { PlotlySideBySideBlock } from '@/blocks/PlotlySideBySide/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -28,6 +29,7 @@ const blockComponents = {
   featuredchart: FeaturedChartBlock,
   personnelCollection: PersonnelCollectionBlock,
   plotlyBlock: PlotlyBlock,
+  plotlySideBySide: PlotlySideBySideBlock,
 }
 
 type BlockType = Page['layout'][0] | Post['layout'][0] | Poll['layout'][0]

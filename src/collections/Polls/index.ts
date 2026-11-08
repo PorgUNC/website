@@ -16,6 +16,7 @@ import { FormBlock } from '@/blocks/Form/config'
 import { LineChartBlock } from '@/blocks/PollBlocks/LineChartBlock/config'
 import { PieChartBlock } from '@/blocks/PollBlocks/PieChartBlock/config'
 import { PlotlyBlock } from '@/blocks/PlotlyBlock/config'
+import { PlotlySideBySide } from '@/blocks/PlotlySideBySide/config'
 
 import {
   MetaDescriptionField,
@@ -120,6 +121,7 @@ export const Polls: CollectionConfig<'polls'> = {
                 LineChartBlock,
                 PieChartBlock,
                 PlotlyBlock,
+                PlotlySideBySide,
               ],
             },
           ],

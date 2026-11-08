@@ -16,7 +16,6 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import PollMaterials from '@/components/PollMaterials'
 import { populateFormBlocks } from '@/utilities/populateFormBlocks'
-import PlotlyChart from '@/components/PlotlyChart'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
