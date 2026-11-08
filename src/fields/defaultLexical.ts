@@ -24,7 +24,7 @@ import {
   ChecklistFeature,
   InlineCodeFeature,
   RelationshipFeature,
-  UploadFeature,
+  // UploadFeature,
   defaultColors,
 } from '@payloadcms/richtext-lexical'
 
@@ -64,7 +64,7 @@ export const defaultLexical = lexicalEditor({
     AlignFeature(),
     BlockquoteFeature(),
     RelationshipFeature({ enabledCollections: ['pages', 'posts', 'polls'] }),
-    UploadFeature({ enabledCollections: ['media'] }),
+    // UploadFeature({ enabledCollections: ['media'] }),
     LinkFeature({
       enabledCollections: ['pages', 'posts', 'polls'],
       fields: ({ defaultFields }) => {

@@ -90,7 +90,7 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, textSize, ...rest } = props
+  const { className, enableProse = true, enableGutter = true, textSize = 'xl', ...rest } = props
   return (
     <ConvertRichText
       converters={jsxConverters}

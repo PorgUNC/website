@@ -1033,6 +1033,81 @@ export interface Poll {
         blockName?: string | null;
         blockType: 'pieChart';
       }
+    | {
+        data?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        caption?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Enable to let this block span the full page width.
+         */
+        fullWidth?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'plotlyBlock';
+      }
+    | {
+        leftChart:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        rightChart:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        caption?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Enable to let this block span the full page width.
+         */
+        fullWidth?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'plotlySideBySide';
+      }
   )[];
   statistics?: {
     pieCharts?:
@@ -1828,6 +1903,25 @@ export interface PollsSelect<T extends boolean = true> {
                           id?: T;
                         };
                   };
+              id?: T;
+              blockName?: T;
+            };
+        plotlyBlock?:
+          | T
+          | {
+              data?: T;
+              caption?: T;
+              fullWidth?: T;
+              id?: T;
+              blockName?: T;
+            };
+        plotlySideBySide?:
+          | T
+          | {
+              leftChart?: T;
+              rightChart?: T;
+              caption?: T;
+              fullWidth?: T;
               id?: T;
               blockName?: T;
             };

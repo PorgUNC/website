@@ -30,6 +30,7 @@ export default function PlotlyChart({ chart }: PlotlyChartProps) {
   if (!chart) return <div>Loading chart...</div>
 
   const isNarrow = containerWidth > 0 && containerWidth < 600
+  const isPieChart = chart.data?.some((trace: any) => trace.type === 'pie')
   const narrowFontSize = (size: number | undefined, max: number, fallback: number) =>
     isNarrow ? Math.min(size ?? fallback, max) : size
   const wrapTitle = (title: any) => {
@@ -132,6 +133,7 @@ export default function PlotlyChart({ chart }: PlotlyChartProps) {
     ...(isNarrow && {
       margin: {
         ...chart.layout?.margin,
+        ...(isPieChart && { l: 0, r: 0 }),
         b: Math.max(chart.layout?.margin?.b ?? 0, 150),
       },
       xaxis: {
@@ -156,8 +158,8 @@ export default function PlotlyChart({ chart }: PlotlyChartProps) {
       title: coloredLegendTitle,
       ...(isNarrow && {
         orientation: 'h',
-        x: 0,
-        xanchor: 'left',
+        x: isPieChart ? 0.5 : 0,
+        xanchor: isPieChart ? 'center' : 'left',
         y: -0.3,
         yanchor: 'top',
       }),
