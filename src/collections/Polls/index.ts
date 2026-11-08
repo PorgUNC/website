@@ -15,6 +15,7 @@ import { RichTextBlock } from '@/blocks/RichTextBlock/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { LineChartBlock } from '@/blocks/PollBlocks/LineChartBlock/config'
 import { PieChartBlock } from '@/blocks/PollBlocks/PieChartBlock/config'
+import { PlotlyBlock } from '@/blocks/PlotlyBlock/config'
 
 import {
   MetaDescriptionField,
@@ -118,6 +119,7 @@ export const Polls: CollectionConfig<'polls'> = {
                 FormBlock,
                 LineChartBlock,
                 PieChartBlock,
+                PlotlyBlock,
               ],
             },
           ],

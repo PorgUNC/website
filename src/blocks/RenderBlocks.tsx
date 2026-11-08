@@ -13,6 +13,7 @@ import PieChartBlock from '@/blocks/PollBlocks/PieChartBlock/Component'
 import { PollArchiveBlock } from '@/blocks/HomeBlocks/PollArchiveBlock/Component'
 import { FeaturedChartBlock } from '@/blocks/HomeBlocks/FeaturedChartBlock/Component'
 import { PersonnelCollectionBlock } from '@/blocks/PersonnelCollection/Component'
+import { PlotlyBlock } from '@/blocks/PlotlyBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -26,7 +27,7 @@ const blockComponents = {
   pollarchive: PollArchiveBlock,
   featuredchart: FeaturedChartBlock,
   personnelCollection: PersonnelCollectionBlock,
-
+  plotlyBlock: PlotlyBlock,
 }
 
 type BlockType = Page['layout'][0] | Post['layout'][0] | Poll['layout'][0]

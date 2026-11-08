@@ -16,6 +16,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import PollMaterials from '@/components/PollMaterials'
 import { populateFormBlocks } from '@/utilities/populateFormBlocks'
+import PlotlyChart from '@/components/PlotlyChart'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -57,20 +58,18 @@ export default async function Poll({params: paramsPromise}: Args) {
 
   return (
     <article className="pb-16">
-      <PageClient/>
+      <PageClient />
 
-      <PayloadRedirects disableNotFound url={url}/>
-      {draft && <LivePreviewListener/>}
+      <PayloadRedirects disableNotFound url={url} />
+      {draft && <LivePreviewListener />}
 
-      <PollHero post={poll as Post}/>
+      <PollHero post={poll as Post} />
 
       <div className="mx-auto flex flex-col gap-2">
-        <div className={"mt-4 w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto"}>
+        <div className={'mt-4 w-full px-4 sm:px-6 lg:px-0 max-w-[48rem] mx-auto'}>
           <PollMaterials sidebar={poll.sidebar} />
         </div>
-        <RenderBlocks blocks={layout} constraint={"post"}/>
-
-
+        <RenderBlocks blocks={layout} constraint={'post'} />
 
         {relatedPolls && relatedPolls.length > 0 && (
           <RelatedPosts
