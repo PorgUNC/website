@@ -1,5 +1,6 @@
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import {
+  defaultColors,
   DefaultNodeTypes,
   SerializedBlockNode,
   SerializedLinkNode,
@@ -35,9 +36,32 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+const richTextColors = {
+  ...defaultColors.text,
+  'text-gray': {
+    label: 'Muted',
+    css: { color: 'hsl(var(--muted-foreground))' },
+  },
+}
+
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
+  text: (args) => {
+    const textNode = args.node as typeof args.node & {
+      $?: { color?: unknown }
+      color?: unknown
+    }
+    const colorState = textNode.$?.color ?? textNode.color
+    const color =
+      typeof colorState === 'string' && colorState in richTextColors
+        ? richTextColors[colorState as keyof typeof richTextColors].css.color
+        : undefined
+    const textConverter = defaultConverters.text
+    const text = typeof textConverter === 'function' ? textConverter(args) : textNode.text
+
+    return color ? <span style={{ color }}>{text}</span> : text
+  },
   blocks: {
     banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
     mediaBlock: ({ node }) => (
@@ -55,7 +79,8 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   },
 })
 
-type TextSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl'
+type TextSize =
+  'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl'
 
 type Props = {
   data: DefaultTypedEditorState
