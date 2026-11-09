@@ -12,14 +12,14 @@ export const metadata: Metadata = {
 }
 
 
-export default async function PollSignupPage({ searchParams }: { searchParams: Promise<{ uuid: string }> }) {
-  const { uuid } = await searchParams
+export default async function PollSignupPage({ searchParams }: { searchParams: Promise<{ uuid: string, name: string }> }) {
+  const { uuid, name } = await searchParams
   if (!uuid) {
     return <div>Missing poll UUID.</div>
   }
   return (
     <div className={'mb-36'}>
-      <PollSignupGrid uuid={uuid} />
+      <PollSignupGrid uuid={uuid} givenName={name} />
     </div>
   )
 }

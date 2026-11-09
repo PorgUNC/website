@@ -193,15 +193,30 @@ function getCalendarTime(date: Date) {
   }).format(date)
 }
 
-export default function PollSignupGrid({ uuid }: { uuid: string }) {
+export default function PollSignupGrid({ uuid, givenName }: { uuid: string; givenName: string }) {
   const [data, setData] = useState<PollData | null>(null)
-  const [name, setName] = useState('')
+  const [name, setName] = useState(givenName ?? '')
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [status, setStatus] = useState('')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [savedSlots, setSavedSlots] = useState<string[]>([])
   const adminMode = data?.isAdmin ?? false
+
+  const calendarUrl = useMemo(() => {
+    const trimmedName = name.trim()
+    if (!trimmedName || typeof window === 'undefined') return undefined
+
+    const url = new URL(window.location.href)
+    url.searchParams.set('name', trimmedName)
+    return url.toString()
+  }, [name])
+  const calendarDescription = [
+    data?.additionalInfo,
+    calendarUrl && `[url]${calendarUrl}|View poll signup[/url]`,
+  ]
+    .filter(Boolean)
+    .join('\n\n')
 
   useEffect(() => {
     fetch(`/api/custom/pollsignups/${encodeURIComponent(uuid)}`)
@@ -211,12 +226,12 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
       })
       .then((poll) => {
         setData(poll)
-        setName(poll.currentUserName ?? '')
+        setName(poll.currentUserName ?? givenName ?? '')
         setSelected(new Set(poll.isAdmin ? poll.adminSlots : poll.currentUserSlots))
         setSavedSlots(poll.currentUserSlots)
       })
       .catch(() => setStatus('This poll could not be found.'))
-  }, [uuid])
+  }, [uuid, givenName])
 
   const allSlotsByDay = useMemo(() => {
     if (!data) return []
@@ -469,14 +484,14 @@ export default function PollSignupGrid({ uuid }: { uuid: string }) {
                 label={`${formatDay(getCalendarDate(event.start))} · ${formatTime(event.start.toISOString())}–${formatTime(event.end.toISOString())}`}
                 size="3"
                 options="'google','apple','outlook.com','ical','yahoo'"
-                description={data.additionalInfo ?? ''}
+                description={calendarDescription}
+                ics-url={calendarUrl}
                 start-date={getCalendarDate(event.start)}
                 end-date={getCalendarDate(event.end)}
                 start-time={getCalendarTime(event.start)}
                 end-time={getCalendarTime(event.end)}
                 time-zone="America/New_York"
-              >
-              </add-to-calendar-button>
+              ></add-to-calendar-button>
             ))}
           </div>
         </div>
