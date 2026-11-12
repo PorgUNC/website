@@ -91,6 +91,24 @@ export const Archive: Block = {
       relationTo: ['polls', 'posts'],
     },
     {
+      name: 'showImages',
+      type: 'checkbox',
+      label: 'Show Images',
+      defaultValue: true,
+    },
+    {
+      name: 'showDescriptions',
+      type: 'checkbox',
+      label: 'Show Descriptions',
+      defaultValue: true,
+    },
+    {
+      name: 'showDates',
+      type: 'checkbox',
+      label: 'Show Dates',
+      defaultValue: true,
+    },
+    {
       name: 'fullWidth',
       type: 'checkbox',
       label: 'Full Width (ignore layout constraints)',

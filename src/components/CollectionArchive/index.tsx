@@ -5,11 +5,14 @@ import { Card, CardPostData } from '@/components/Card'
 export type CollectionArchiveProps = {
   docs: (CardPostData & { doc?: { relationTo?: 'posts' | 'polls' } })[]
   relationTo?: 'posts' | 'polls'
+  showImages?: boolean
+  showDates?: boolean
+  showDescriptions?: boolean
 }
 
-export const CollectionArchive: React.FC<CollectionArchiveProps> = ({ docs, relationTo }) => {
+export const CollectionArchive: React.FC<CollectionArchiveProps> = ({ docs, relationTo, showImages, showDates, showDescriptions }) => {
   return (
-    <div className={cn('container')}>
+    <div >
       <div>
         <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-4 gap-x-4 lg:gap-y-8 lg:gap-x-8 xl:gap-x-8">
           {docs?.map((result, index) => {
@@ -23,6 +26,9 @@ export const CollectionArchive: React.FC<CollectionArchiveProps> = ({ docs, rela
                     doc={result}
                     relationTo={docRelation}
                     showCategories={docRelation === 'posts'}
+                    showImage={showImages}
+                    showDate={showDates}
+                    showDescription={showDescriptions}
                   />
                 </div>
               )

@@ -7,7 +7,15 @@ import React, { Fragment } from 'react'
 import type { Post } from '@/payload-types'
 import { Media } from '@/components/Media'
 
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
+const formatPublishedDate = (publishedAt: string) => {
+  const date = new Date(publishedAt)
+  const month = date.toLocaleDateString('en-US', { month: 'long' })
+  const day = date.getDate()
+  const year = date.getFullYear()
+  return `${month} ${day}, ${year}`
+}
+
+export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title' | 'publishedAt'>
 
 export const Card: React.FC<{
   alignItems?: 'center'
@@ -16,11 +24,15 @@ export const Card: React.FC<{
   relationTo?: 'posts' | 'polls'
   showCategories?: boolean
   title?: string
+  publishedAt?: string
+  showImage?: boolean
+  showDate?: boolean
+  showDescription?: boolean
 }> = (props) => {
   const { card, link } = useClickableCard({})
-  const { className, doc, relationTo = 'posts', showCategories, title: titleFromProps } = props
+  const { className, doc, relationTo = 'posts', showCategories, title: titleFromProps, showImage, showDate, showDescription } = props
 
-  const { slug, categories, meta, title } = doc || {}
+  const { slug, categories, meta, title, publishedAt } = doc || {}
   const { description, image: metaImage } = meta || {}
 
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
@@ -34,14 +46,12 @@ export const Card: React.FC<{
       ref={link.ref}
       className={cn(
         'group block rounded-xl overflow-hidden transition-all duration-200 border border-border/60 hover:shadow-md hover:-translate-y-0.5',
-        metaImage
-          ? 'bg-card'
-          : 'bg-muted/70 dark:bg-muted/40 backdrop-blur-sm',
+        metaImage ? 'bg-card' : 'bg-muted/70 dark:bg-muted/40 backdrop-blur-sm',
         'hover:cursor-pointer focus-visible:ring-2 focus-visible:ring-primary',
         className,
       )}
     >
-      {metaImage && typeof metaImage !== 'string' && (
+      {showImage && metaImage && typeof metaImage !== 'string' && (
         <div className="relative w-full">
           <Media resource={metaImage} size="33vw" />
         </div>
@@ -67,12 +77,16 @@ export const Card: React.FC<{
         )}
 
         {titleToUse && (
-          <h3 className="text-lg font-semibold leading-snug group-hover:underline">
-            {titleToUse}
-          </h3>
+          <h3 className="text-lg font-semibold leading-snug group-hover:underline">{titleToUse}</h3>
         )}
 
-        {description && (
+        {showDate && doc?.publishedAt && (
+          <p className="text-sm text-muted-foreground">
+            {formatPublishedDate(doc.publishedAt)}
+          </p>
+        )}
+
+        {showDescription && description && (
           <p className="text-sm text-muted-foreground">{sanitizedDescription}</p>
         )}
       </div>

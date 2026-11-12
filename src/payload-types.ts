@@ -946,6 +946,9 @@ export interface ArchiveBlock {
           }
       )[]
     | null;
+  showImages?: boolean | null;
+  showDescriptions?: boolean | null;
+  showDates?: boolean | null;
   /**
    * Enable to let this block span the full page width.
    */
@@ -1806,6 +1809,9 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
+  showImages?: T;
+  showDescriptions?: T;
+  showDates?: T;
   fullWidth?: T;
   id?: T;
   blockName?: T;
