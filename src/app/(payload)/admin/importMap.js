@@ -35,7 +35,10 @@ import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from 
 import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
 import { Logo as Logo_e93e9bd37dbcbcb6182f6bb2f2523bd9 } from '../../../components/Logo/Logo.tsx'
 import { Logo as Logo_052f807f174f21c83d718b269005437c } from '../../../components/Logo/AdminLogo.tsx'
+import { BackToDash as BackToDash_298b6425519fadea16779d8c40db2727 } from '@/components/AdminDashButton'
+import { BackToHome as BackToHome_298b6425519fadea16779d8c40db2727 } from '@/components/AdminDashButton'
 import { default as default_c3a9c2f6f2d79936e29a92543bf0c384 } from '@/components/DashboardWidget'
+import { default as default_67d3f2a61cbbb0245169974768bb3ce3 } from '@/components/PollSignupDashboardWidget'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
@@ -78,7 +81,10 @@ export const importMap = {
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
   "/components/Logo/Logo.tsx#Logo": Logo_e93e9bd37dbcbcb6182f6bb2f2523bd9,
   "/components/Logo/AdminLogo.tsx#Logo": Logo_052f807f174f21c83d718b269005437c,
+  "@/components/AdminDashButton#BackToDash": BackToDash_298b6425519fadea16779d8c40db2727,
+  "@/components/AdminDashButton#BackToHome": BackToHome_298b6425519fadea16779d8c40db2727,
   "@/components/DashboardWidget#default": default_c3a9c2f6f2d79936e29a92543bf0c384,
+  "@/components/PollSignupDashboardWidget#default": default_67d3f2a61cbbb0245169974768bb3ce3,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }

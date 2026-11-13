@@ -83,6 +83,7 @@ export interface Config {
   locale: null;
   widgets: {
     'main-dash': MainDashWidget;
+    'poll-signup-grid': PollSignupGridWidget;
     collections: CollectionsWidget;
   };
   user: User;
@@ -2885,6 +2886,16 @@ export interface MetaImageSelect<T extends boolean = true> {
  * via the `definition` "main-dash_widget".
  */
 export interface MainDashWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "poll-signup-grid_widget".
+ */
+export interface PollSignupGridWidget {
   data?: {
     [k: string]: unknown;
   };

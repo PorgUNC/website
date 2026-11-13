@@ -51,10 +51,17 @@ export default buildConfig({
           minWidth: 'full',
           maxWidth: 'full',
         },
+        {
+          slug: 'poll-signup-grid',
+          Component: '@/components/PollSignupDashboardWidget',
+          minWidth: 'full',
+          maxWidth: 'full',
+        },
       ],
       defaultLayout: () => {
         return [
           { widgetSlug: 'main-dash', width: 'full' },
+          { widgetSlug: 'poll-signup-grid', width: 'full' },
         ]
       },
     },
@@ -63,6 +70,10 @@ export default buildConfig({
       defaultTimezone: 'America/New_York',
     },
     components: {
+      beforeNavLinks: [
+        '@/components/AdminDashButton#BackToDash',
+        '@/components/AdminDashButton#BackToHome',
+      ],
       graphics: {
         Logo: '/components/Logo/AdminLogo.tsx#Logo',
         Icon: '/components/Logo/Logo.tsx#Logo',
@@ -108,7 +119,19 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Polls, Posts, Media, Files, Categories, Users, Invitations, Avatars, Graphs, PollTimes],
+  collections: [
+    Pages,
+    Polls,
+    Posts,
+    Media,
+    Files,
+    Categories,
+    Users,
+    Invitations,
+    Avatars,
+    Graphs,
+    PollTimes,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Footer, FeaturedPoll, SiteHeader, MetaImage],
   plugins: [

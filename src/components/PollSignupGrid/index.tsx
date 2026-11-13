@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { getDaySlots, getPollWeekdays } from '@/lib/pollTimes'
 import 'add-to-calendar-button';
+import './index.scss'
 
 type Signup = { name: string; slots: string[]; userId?: number }
 type Executive = { name: string; slots: string[] }
@@ -111,25 +112,21 @@ const SlotCell = memo(function SlotCell({
         }
         onToggle(slot, !checked)
       }}
-      className={`relative m-0.5 flex min-h-7 items-center justify-between gap-1 rounded-sm border px-1.5 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-        showTooltip ? 'z-10' : ''
-      } ${
+      className={`poll-signup-grid__slot ${
         checked
-          ? 'border-green-700 bg-green-500 text-white hover:bg-green-600 dark:border-green-200 dark:bg-green-500'
+          ? 'poll-signup-grid__slot--checked'
           : available
-            ? 'cursor-pointer border-blue-600 bg-blue-400 hover:bg-blue-500 dark:border-blue-300 dark:bg-blue-600'
-            : 'cursor-not-allowed border-border bg-muted/50'
-      }`}
+            ? 'poll-signup-grid__slot--available'
+            : 'poll-signup-grid__slot--unavailable'
+      } ${showTooltip ? 'poll-signup-grid__slot--tooltip-open' : ''}`}
       title={available ? slotDescription : 'Unavailable'}
     >
       {signupNames.length > 0 && (
-        <div className="flex items-center justify-start min-w-0 flex-1 select-none">
+        <div className="poll-signup-grid__signup-names">
           {signupNames.map((name, index) => (
             <span
               key={`${name}-${index}`}
-              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border border-white text-[9px] font-semibold text-white shadow-sm ${
-                index > 0 ? '-ml-1.5' : ''
-              }`}
+              className={`poll-signup-grid__avatar ${index > 0 ? 'poll-signup-grid__avatar--overlap' : ''}`}
               style={{ backgroundColor: getNameColor(name) }}
               title={name}
             >
@@ -138,7 +135,7 @@ const SlotCell = memo(function SlotCell({
           ))}
         </div>
       )}
-      <span className="ml-auto shrink-0 text-[10px] leading-none select-none">
+      <span className="poll-signup-grid__slot-time">
         {formatTime(slot)}–
         {formatTime(new Date(new Date(slot).getTime() + 15 * 60 * 1000).toISOString())}
       </span>
@@ -146,7 +143,7 @@ const SlotCell = memo(function SlotCell({
         <span
           id={`slot-tooltip-${slot}`}
           role="tooltip"
-          className="pointer-events-none select-none absolute bottom-full left-1/2 z-20 mb-1 w-max max-w-64 -translate-x-1/2 whitespace-normal rounded border border-border bg-popover px-2 py-1 text-left text-xs text-popover-foreground shadow-md"
+          className="poll-signup-grid__tooltip"
         >
           {slotDescription}
         </span>
@@ -373,7 +370,7 @@ export default function PollSignupGrid({ uuid, givenName }: { uuid: string; give
   if (!data) return <p className="container py-16">{status || 'Loading poll...'}</p>
 
   return (
-    <main className="container max-w-7xl py-2">
+    <main className="poll-signup-grid">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">
           {adminMode ? 'Set executive availability' : 'When are you available?'}
@@ -405,23 +402,23 @@ export default function PollSignupGrid({ uuid, givenName }: { uuid: string; give
         <p className="mb-2 text-xs text-muted-foreground sm:hidden">
           Scroll to the right to see more days
         </p>
-        <div className="relative w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-border">
+        <div className="poll-signup-grid__viewport">
           <div
-            className="w-full min-w-0 overflow-x-auto overscroll-x-contain"
+            className="poll-signup-grid__scroll-area"
             role="region"
             aria-label="Poll availability grid"
           >
             <div
-              className="grid w-max min-w-[42rem]"
+              className="poll-signup-grid__table"
               style={{
                 gridTemplateColumns: `4.5rem repeat(${slotsByDay.length}, minmax(8rem, 1fr))`,
               }}
             >
-              <div className="border-b border-border bg-muted/40 p-2" />
+              <div className="poll-signup-grid__corner" />
               {slotsByDay.map(({ day }) => (
                 <div
                   key={day}
-                  className="border-b border-l border-border bg-muted/40 p-3 text-center text-sm font-semibold select-none"
+                  className="poll-signup-grid__day-heading"
                 >
                   {formatDay(day)}
                 </div>
@@ -429,8 +426,8 @@ export default function PollSignupGrid({ uuid, givenName }: { uuid: string; give
               {visibleTimeIndexes.map((index) => {
                 const time = baseSlots[index]
                 return (
-                  <div key={time} className="contents">
-                    <div className="flex items-start justify-end border-r border-border p-1 text-[11px] text-muted-foreground select-none">
+                  <div key={time} className="poll-signup-grid__row">
+                    <div className="poll-signup-grid__time-label">
                       {formatTime(time)}
                     </div>
                     {slotsByDay.map(({ day, slots }) => {
