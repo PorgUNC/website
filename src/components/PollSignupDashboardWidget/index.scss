@@ -1,6 +1,7 @@
 .poll-signup-dashboard-widget {
   padding: var(--base-padding);
-  margin-bottom: 200px;
+  max-width: 1400px;
+  margin: 0 auto 200px;
 
   &__title {
     margin: 0 0 1rem;
