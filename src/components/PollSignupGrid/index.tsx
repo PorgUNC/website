@@ -376,17 +376,22 @@ export default function PollSignupGrid({ uuid, givenName }: { uuid: string; give
     <main className="container max-w-7xl py-2 poll-signup-grid">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">
-          {adminMode ? 'Set executive availability' : 'When are you available?'}
+          {adminMode
+            ? 'Select times that should be available for polling'
+            : 'Select times you can poll'}
         </h1>
         {data.additionalInfo && (
           <p className="mt-3 text-base font-medium">
             <span className="font-normal">{data.additionalInfo}</span>
           </p>
         )}
+        {/*<p className="mt-2 text-muted-foreground">*/}
+        {/*  {adminMode*/}
+        {/*    ? 'Choose the 15-minute times that should be available to participants.'*/}
+        {/*    : 'Select every 15-minute time that works for you.'}*/}
+        {/*</p>*/}
         <p className="mt-2 text-muted-foreground">
-          {adminMode
-            ? 'Choose the 15-minute times that should be available to participants.'
-            : 'Select every 15-minute time that works for you.'}
+           Right click or click and hold on a time to see all users signed up for it
         </p>
       </div>
       <form onSubmit={submit}>
