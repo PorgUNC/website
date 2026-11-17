@@ -43,16 +43,16 @@ export default async function PostsPage({ params: paramsPromise }: Args) {
   if (!postsResult.docs.length && sanitizedPageNumber > 1) notFound()
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="container pt-24 pb-24">
       <PageClient />
 
-      <div className="container mb-16">
+      <div className="mb-16">
         <div className="prose dark:prose-invert max-w-none">
           <h1>All Posts</h1>
         </div>
       </div>
 
-      <div className="container mb-8">
+      <div className="mb-8">
         <PageRange
           collection="posts"
           currentPage={postsResult.page}
@@ -63,7 +63,7 @@ export default async function PostsPage({ params: paramsPromise }: Args) {
 
       <CollectionArchive docs={postsResult.docs} relationTo="posts" />
 
-      <div className="container">
+      <div>
         {postsResult?.page && postsResult?.totalPages > 1 && (
           <Pagination
             page={postsResult.page}

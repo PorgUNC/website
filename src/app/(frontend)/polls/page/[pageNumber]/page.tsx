@@ -12,7 +12,6 @@ export const revalidate = 600
 
 // Define posts per page
 const POSTS_PER_PAGE = 6
-
 type Args = {
   params: Promise<{
     pageNumber?: string // optional
@@ -43,16 +42,16 @@ export default async function PollsPage({ params: paramsPromise }: Args) {
   if (!pollsResult.docs.length && sanitizedPageNumber > 1) notFound()
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="pt-24 pb-24 container">
       <PageClient />
 
-      <div className="container mb-16">
+      <div className=" mb-16">
         <div className="prose dark:prose-invert max-w-none">
           <h1>All Polls</h1>
         </div>
       </div>
 
-      <div className="container mb-8">
+      <div className="mb-8">
         <PageRange
           collection="polls"
           currentPage={pollsResult.page}
@@ -63,7 +62,7 @@ export default async function PollsPage({ params: paramsPromise }: Args) {
 
       <CollectionArchive docs={pollsResult.docs} relationTo="polls" />
 
-      <div className="container">
+      <div>
         {pollsResult?.page && pollsResult?.totalPages > 1 && (
           <Pagination
             page={pollsResult.page}
