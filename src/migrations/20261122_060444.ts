@@ -6,8 +6,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "invitations" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "users_sessions" CASCADE;
   DROP TABLE "invitations" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_invitations_fk";
-  
+--   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_invitations_fk";
+
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE text;
   DROP TYPE "public"."enum_users_roles";
   CREATE TYPE "public"."enum_users_roles" AS ENUM('admin', 'research', 'executive');
@@ -37,7 +37,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   	"created_at" timestamp(3) with time zone,
   	"expires_at" timestamp(3) with time zone NOT NULL
   );
-  
+
   CREATE TABLE "invitations" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"email" varchar NOT NULL,
@@ -45,7 +45,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
-  
+
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE text;
   DROP TYPE "public"."enum_users_roles";
   CREATE TYPE "public"."enum_users_roles" AS ENUM('admin', 'user');
@@ -65,7 +65,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   CREATE INDEX "users_sessions_parent_id_idx" ON "users_sessions" USING btree ("_parent_id");
   CREATE INDEX "invitations_updated_at_idx" ON "invitations" USING btree ("updated_at");
   CREATE INDEX "invitations_created_at_idx" ON "invitations" USING btree ("created_at");
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_invitations_fk" FOREIGN KEY ("invitations_id") REFERENCES "public"."invitations"("id") ON DELETE cascade ON UPDATE no action;
+--   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_invitations_fk" FOREIGN KEY ("invitations_id") REFERENCES "public"."invitations"("id") ON DELETE cascade ON UPDATE no action;
   CREATE UNIQUE INDEX "users_email_idx" ON "users" USING btree ("email");
   CREATE INDEX "payload_locked_documents_rels_invitations_id_idx" ON "payload_locked_documents_rels" USING btree ("invitations_id");
   ALTER TABLE "users" DROP COLUMN "sub";
