@@ -1,7 +1,5 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-
-import sharp from 'sharp' // sharp-import
+import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
@@ -12,23 +10,25 @@ import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
-import { Header } from './Header/config'
 import { FeaturedPoll } from './globals/FeaturedPoll'
-import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Files } from '@/collections/Files'
 import { Polls } from '@/collections/Polls'
-// import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-// import nodemailer from 'nodemailer'
 import { resendAdapter } from '@payloadcms/email-resend'
 
-import { Invitations } from './collections/Invitations'
 import { Avatars } from './collections/Avatars'
 import { SiteHeader } from './globals/SiteHeader/config'
 import { Graphs } from '@/collections/Graphs'
 import { PollTimes } from '@/collections/PollTimes'
 import { MetaImage } from '@/globals/MetaImage'
+import { authConfig } from '@/plugins/authConfig'
+import { formsConfig } from '@/plugins/formsConfig'
+import { nestedDocsConfig } from '@/plugins/nestedDocsConfig'
+import { redirectsConfig } from '@/plugins/redirectsConfig'
+import { searchConfig } from '@/plugins/searchConfig'
+import { seoConfig } from '@/plugins/seoConfig'
+import { storageConfig } from '@/plugins/storageConfig'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -74,6 +74,7 @@ export default buildConfig({
         '@/components/AdminDashButton#BackToDash',
         '@/components/AdminDashButton#BackToHome',
       ],
+      beforeLogin: ['@/components/LoginButton'],
       graphics: {
         Logo: '/components/Logo/AdminLogo.tsx#Logo',
         Icon: '/components/Logo/Logo.tsx#Logo',
@@ -127,7 +128,6 @@ export default buildConfig({
     Files,
     Categories,
     Users,
-    Invitations,
     Avatars,
     Graphs,
     PollTimes,
@@ -135,8 +135,13 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Footer, FeaturedPoll, SiteHeader, MetaImage],
   plugins: [
-    ...plugins,
-    // storage-adapter-placeholder
+    storageConfig,
+    searchConfig,
+    formsConfig,
+    seoConfig,
+    nestedDocsConfig,
+    redirectsConfig,
+    authConfig,
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,

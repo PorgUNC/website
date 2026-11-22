@@ -1,34 +1,25 @@
 import { CollectionConfig } from 'payload'
 
-// import { authenticated } from '../../access/authenticated'
-import {User} from '@/payload-types'
-import { protectRoles } from '@/collections/Users/hooks/protectRoles'
-import { checkRole } from '@/collections/Users/access/checkRole'
 import admin from '@/collections/Users/access/admin'
 import user from '@/collections/Users/access/user'
-
+import nobody from '@/collections/Users/access/nobody'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    create: admin,
+    create: nobody,
     read: user,
-    update: ({ req: { user } }) => {
-      if (checkRole(['admin'], user as User)) {
-        return true;
-      }
-      return {
-        id: { equals: user?.id }
-      };
-    },
+    update: admin,
     delete: admin,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
+    defaultColumns: ['name'],
     useAsTitle: 'name',
-    group: 'Users'
+    group: 'Users',
   },
-  auth: true,
+  auth: {
+    disableLocalStrategy: true,
+  },
   fields: [
     {
       name: 'name',
@@ -36,13 +27,35 @@ export const Users: CollectionConfig = {
       required: true,
     },
     {
+      name: 'sub',
+      type: 'text',
+      unique: true,
+      saveToJWT: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'avatar',
       type: 'upload',
       relationTo: 'avatars',
       required: false,
       admin: {
-        description: 'Optional profile picture for authors',
+        description: 'Profile picture uploaded from Zitadel',
       },
+    },
+    {
+      name: 'avatar_url',
+      type: 'text',
+      required: false,
+      admin: {
+        description: 'Profile picture URL from Zitadel',
+      },
+    },
+    {
+      name: 'email',
+      type: 'email',
+      required: false
     },
     {
       name: 'jobTitle',
@@ -51,12 +64,6 @@ export const Users: CollectionConfig = {
       admin: {
         description: 'Friendly title for position.',
       },
-      access: {
-        update: ({ req: { user } }) => {
-          const u = user as User;
-          return checkRole(['admin'], u) || u?.id === 1;
-        }
-      },
     },
     {
       name: 'roles',
@@ -64,19 +71,11 @@ export const Users: CollectionConfig = {
       hasMany: true,
       saveToJWT: true,
       options: [
-        {label: 'Admin', value: 'admin'},
-        {label: 'User', value: 'user'},
+        { label: 'Admin', value: 'admin' },
+        { label: 'Research', value: 'research' },
+        { label: 'Executive', value: 'executive' }
       ],
-      required: true,
-      hooks: {
-        beforeChange: [protectRoles]
-      },
-      access: {
-        update: ({ req: { user } }) => {
-          const u = user as User;
-          return checkRole(['admin'], u) || u?.id === 1;
-        }
-      },
+      required: false,
     },
   ],
   timestamps: true,

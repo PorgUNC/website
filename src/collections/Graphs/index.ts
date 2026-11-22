@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { revalidatePoll } from '@/collections/Graphs/hooks/revalidatePoll'
-import admin from '@/collections/Users/access/admin'
+import executive from '@/collections/Users/access/executive'
 
 
 export const Graphs: CollectionConfig = {
@@ -12,10 +12,10 @@ export const Graphs: CollectionConfig = {
     plural: 'Homepage Graphs',
   },
   access: {
-    create: admin,
-    delete: admin,
+    create: executive,
+    delete: executive,
     read: () => true,
-    update: admin,
+    update: executive,
   },
   fields: [
     {

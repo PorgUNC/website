@@ -1,7 +1,7 @@
 import React from 'react'
-import {User} from '@/payload-types'
-import {Media} from '@/components/Media'
-import {getPayload} from 'payload'
+import { User } from '@/payload-types'
+import { Media } from '@/components/Media'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 type PersonCardProps = {
@@ -28,11 +28,7 @@ export const PersonCard = async ({ userId }: PersonCardProps) => {
     <div className="flex flex-col items-center">
       <div className="relative w-32 h-32 sm:w-36 sm:h-36 md:w-32 md:h-32 rounded-full overflow-hidden ">
         {avatar && typeof avatar === 'object' ? (
-          <Media
-            resource={avatar}
-            fill
-            imgClassName="object-cover"
-          />
+          <Media resource={avatar} fill imgClassName="object-cover" />
         ) : (
           <div className="w-full h-full bg-muted flex items-center justify-center text-3xl sm:text-4xl md:text-3xl font-semibold text-muted-foreground">
             {name.charAt(0).toUpperCase()}

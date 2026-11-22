@@ -18,6 +18,7 @@ const DashboardWidget: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
 
   const sharedDriveUrl = process.env.NEXT_PUBLIC_SHARED_DRIVE_URL || ''
+  const zitadelUserSettingsUrl = process.env.PUBLIC_ZITADEL_USER_SETTTINGS_URL || ''
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -68,8 +69,18 @@ const DashboardWidget: React.FC = () => {
           href="/admin/collections/polls/create"
           className={`${baseClass}__action-button ${baseClass}__action-button--poll`}
         >
-          <svg className={`${baseClass}__icon`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          <svg
+            className={`${baseClass}__icon`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
           </svg>
           <div className={`${baseClass}__action-content`}>
             <span className={`${baseClass}__action-title`}>New Poll Report</span>
@@ -81,8 +92,18 @@ const DashboardWidget: React.FC = () => {
           href="/admin/collections/posts/create"
           className={`${baseClass}__action-button ${baseClass}__action-button--news`}
         >
-          <svg className={`${baseClass}__icon`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          <svg
+            className={`${baseClass}__icon`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+            />
           </svg>
           <div className={`${baseClass}__action-content`}>
             <span className={`${baseClass}__action-title`}>New News Post</span>
@@ -94,8 +115,18 @@ const DashboardWidget: React.FC = () => {
           href="/admin/collections/forms/create"
           className={`${baseClass}__action-button ${baseClass}__action-button--form`}
         >
-          <svg className={`${baseClass}__icon`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <svg
+            className={`${baseClass}__icon`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
           </svg>
           <div className={`${baseClass}__action-content`}>
             <span className={`${baseClass}__action-title`}>New Form</span>
@@ -110,8 +141,18 @@ const DashboardWidget: React.FC = () => {
             rel="noopener noreferrer"
             className={`${baseClass}__action-button ${baseClass}__action-button--drive`}
           >
-            <svg className={`${baseClass}__icon`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            <svg
+              className={`${baseClass}__icon`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+              />
             </svg>
             <div className={`${baseClass}__action-content`}>
               <span className={`${baseClass}__action-title`}>Shared Drive</span>
@@ -121,12 +162,29 @@ const DashboardWidget: React.FC = () => {
         )}
 
         <a
-          href="/admin/account"
+          href={zitadelUserSettingsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           className={`${baseClass}__action-button ${baseClass}__action-button--settings`}
         >
-          <svg className={`${baseClass}__icon`} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg
+            className={`${baseClass}__icon`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
           </svg>
           <div className={`${baseClass}__action-content`}>
             <span className={`${baseClass}__action-title`}>User Settings</span>
@@ -140,13 +198,9 @@ const DashboardWidget: React.FC = () => {
           <h3 className={`${baseClass}__section-title`}>Latest Forms</h3>
         </div>
 
-        {loading && (
-          <div className={`${baseClass}__loading`}>Loading forms...</div>
-        )}
+        {loading && <div className={`${baseClass}__loading`}>Loading forms...</div>}
 
-        {error && (
-          <div className={`${baseClass}__error`}>Error: {error}</div>
-        )}
+        {error && <div className={`${baseClass}__error`}>Error: {error}</div>}
 
         {!loading && !error && forms.length === 0 && (
           <div className={`${baseClass}__empty`}>No forms available yet.</div>
@@ -177,7 +231,12 @@ const DashboardWidget: React.FC = () => {
                     title="View submissions"
                   >
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                     <span>View Submissions</span>
                   </a>
@@ -188,7 +247,12 @@ const DashboardWidget: React.FC = () => {
                     download
                   >
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                     <span>Export CSV</span>
                   </a>
@@ -198,7 +262,12 @@ const DashboardWidget: React.FC = () => {
                     title="Edit form"
                   >
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
                     </svg>
                     <span>Edit</span>
                   </a>
@@ -212,7 +281,8 @@ const DashboardWidget: React.FC = () => {
       <div className={`${baseClass}__footer`}>
         <div className={`${baseClass}__stats`}>
           <span className={`${baseClass}__stat`}>
-            Showing <strong>{forms.length}</strong> most recent {forms.length === 1 ? 'form' : 'forms'}
+            Showing <strong>{forms.length}</strong> most recent{' '}
+            {forms.length === 1 ? 'form' : 'forms'}
           </span>
         </div>
       </div>

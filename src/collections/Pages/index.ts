@@ -1,7 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import admin from '@/collections/Users/access/admin'
-import { authenticated } from '../../access/authenticated'
+import executive from '@/collections/Users/access/executive'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
@@ -33,10 +32,10 @@ export const Pages: CollectionConfig<'pages'> = {
     plural: 'Main Pages',
   },
   access: {
-    create: admin,
-    delete: admin,
+    create: executive,
+    delete: executive,
     read: authenticatedOrPublished,
-    update: admin,
+    update: executive,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

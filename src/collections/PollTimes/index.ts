@@ -1,8 +1,8 @@
 import type { CollectionConfig } from 'payload'
 import crypto from 'crypto'
-import { fieldAdmin } from '@/collections/Users/access/admin'
-import admin from '@/collections/Users/access/admin'
+import executive from '@/collections/Users/access/executive'
 import { getClientSideURL } from '@/utilities/getURL'
+import { fieldExecutive } from '@/collections/Users/access/executive'
 
 export const PollTimes: CollectionConfig = {
   slug: 'polltimes',
@@ -11,17 +11,17 @@ export const PollTimes: CollectionConfig = {
     preview: (doc, { req }) => {
       return `${getClientSideURL()}/pollsignups?uuid=${doc.uuid}`
     },
-    useAsTitle: 'startDate'
+    useAsTitle: 'startDate',
   },
   labels: {
     singular: 'Poll Time',
     plural: 'Poll Times',
   },
   access: {
-    create: admin,
-    delete: admin,
+    create: executive,
+    delete: executive,
     read: () => true,
-    update: admin,
+    update: executive,
   },
   auth: false,
   fields: [
@@ -32,7 +32,7 @@ export const PollTimes: CollectionConfig = {
         readOnly: true,
       },
       access: {
-        read: fieldAdmin,
+        read: fieldExecutive,
         update: () => false,
       },
     },
