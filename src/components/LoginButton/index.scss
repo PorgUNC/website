@@ -1,0 +1,16 @@
+.login-button {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: var(--theme-elevation-800);
+  color: var(--theme-elevation-0);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--theme-elevation-700);
+  }
+}
