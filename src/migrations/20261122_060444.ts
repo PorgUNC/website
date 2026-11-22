@@ -8,22 +8,25 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TABLE "invitations" CASCADE;
 --   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_invitations_fk";
 
-  ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE text;
+   ALTER TABLE "users_roles"
+     ALTER COLUMN "value" SET DATA TYPE text;
 
    DELETE FROM "users_roles"
    WHERE "value" = 'user';
 
-   DROP TYPE "public"."enum_users_roles";
+   ALTER TYPE "public"."enum_users_roles"
+     RENAME TO "enum_users_roles_old";
 
    CREATE TYPE "public"."enum_users_roles"
      AS ENUM('admin', 'research', 'executive');
 
    ALTER TABLE "users_roles"
-     ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_roles"
+     ALTER COLUMN "value"
+       SET DATA TYPE "public"."enum_users_roles"
      USING "value"::"public"."enum_users_roles";
-  DROP TYPE "public"."enum_users_roles";
-  CREATE TYPE "public"."enum_users_roles" AS ENUM('admin', 'research', 'executive');
-  ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_roles" USING "value"::"public"."enum_users_roles";
+
+   DROP TYPE "public"."enum_users_roles_old";
+
   DROP INDEX "users_email_idx";
   DROP INDEX "payload_locked_documents_rels_invitations_id_idx";
   ALTER TABLE "users" ALTER COLUMN "email" DROP NOT NULL;
