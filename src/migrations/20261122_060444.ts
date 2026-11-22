@@ -48,7 +48,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
 
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE text;
   DROP TYPE "public"."enum_users_roles";
-  CREATE TYPE "public"."enum_users_roles" AS ENUM('admin', 'user');
+  CREATE TYPE "public"."enum_users_roles" AS ENUM('admin');
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_roles" USING "value"::"public"."enum_users_roles";
   DROP INDEX "users_sub_idx";
   ALTER TABLE "users" ALTER COLUMN "email" SET NOT NULL;
