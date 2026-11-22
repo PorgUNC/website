@@ -9,6 +9,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
 --   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_invitations_fk";
 
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE text;
+
+   DELETE FROM "users_roles"
+   WHERE "value" = 'user';
+
+   DROP TYPE "public"."enum_users_roles";
+
+   CREATE TYPE "public"."enum_users_roles"
+     AS ENUM('admin', 'research', 'executive');
+
+   ALTER TABLE "users_roles"
+     ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_roles"
+     USING "value"::"public"."enum_users_roles";
   DROP TYPE "public"."enum_users_roles";
   CREATE TYPE "public"."enum_users_roles" AS ENUM('admin', 'research', 'executive');
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_roles" USING "value"::"public"."enum_users_roles";
@@ -48,7 +60,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
 
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE text;
   DROP TYPE "public"."enum_users_roles";
-  CREATE TYPE "public"."enum_users_roles" AS ENUM('admin');
+  CREATE TYPE "public"."enum_users_roles" AS ENUM('admin', 'user');
   ALTER TABLE "users_roles" ALTER COLUMN "value" SET DATA TYPE "public"."enum_users_roles" USING "value"::"public"."enum_users_roles";
   DROP INDEX "users_sub_idx";
   ALTER TABLE "users" ALTER COLUMN "email" SET NOT NULL;
